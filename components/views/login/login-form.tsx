@@ -16,9 +16,11 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormInputField } from "@/components/form/field-input"
 import { LoginInterface } from "@/components/element/interface/global-interface"
-import AxiosInstance from "@/lib/axios/utils";
+// import AxiosInstance from "@/lib/axios/utils";
+import { useRouter } from 'next/navigation'
 
 export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter()
  
   const setDataLogin: LoginInterface = {
     email: "",
@@ -37,13 +39,22 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
     console.log(values)
     console.log(process.env.NEXT_PUBLIC_API_URL)
 
-      AxiosInstance.get('api/Karyawan')
-        .then((response: any) => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error)
-        });
+    //push to local storage
+    localStorage.setItem('dialogOpen', JSON.stringify({
+        title: "Error!",
+        message: 'mantapp bro',
+        type: "error"
+    }));
+
+    router.push('/backoffice/dashboard')
+
+      // AxiosInstance.get('api/Karyawan')
+      //   .then((response: any) => {
+      //       console.log(response);
+      //   })
+      //   .catch(error => {
+      //       console.log(error)
+      //   });
   }
 
   return (
