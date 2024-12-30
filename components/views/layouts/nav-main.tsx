@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight} from "lucide-react"
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   Collapsible,
@@ -18,55 +19,33 @@ import {
   // SidebarMenuSubButton,
   // SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { usePathname } from "next/navigation";
+import { SidebarItem } from "@/components/element/interface/global-interface";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-      items?: {
-        title: string;
-        url: string;
-        items?: {
-          title: string;
-          url: string;
-          items?: {
-            title: string;
-            url: string;
-            items?: {
-              title: string;
-              url: string;
-            }[];
-          }[];
-        }[];
-      }[];
-    }[];
-  }[];
-}) {
-  const pathname = usePathname();
+export function NavMain({ items}: { items: SidebarItem[] }) {
+  const currentPath = usePathname();
+  const router = useRouter();
+  const pathname = currentPath.replace(/^\/([^/]+)/, '$1')
 
   const checkActive = (url: string, items: any[]): boolean => {
-    if (url === pathname) return true
+    if (url === pathname) return true; // Match exact URL
     for (const item of items) {
-      if (item.url === pathname || (item.items && checkActive(pathname, item.items))) {
-        return true
+      // Recursively check child items
+      if (item.url === pathname || (item.items && checkActive(item.url, item.items))) {
+        return true;
       }
     }
-    return false
-  }
+    return false;
+  };
 
   const existSubmenu = (item: any) => !item.items || item.items.length === 0;
 
   const renderMenu = (menuItems: typeof items) => {
     return menuItems.map((item) => {
-      const isActive = pathname === item.url || (item.items && checkActive(item.url, item.items))
+      let isActive = false;
+
+      if (typeof item.url !== 'undefined') {
+        isActive = pathname === item.url || (item.items && checkActive(item.url, item.items));
+      }
     
       return (
         <Collapsible
@@ -80,6 +59,7 @@ export function NavMain({
               <SidebarMenuButton
                 tooltip={item.title}
                 className={existSubmenu(item) && isActive ? "bg-[hsl(var(--sidebar-accent))]" : ""}
+                onClick={() => item.url !== '#' && router.push(`/${item.url}`)}
               >
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>

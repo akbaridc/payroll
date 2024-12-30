@@ -10,7 +10,7 @@ export function SidebarResource() {
     sidebarItem: [
       {
         title: "Dashboard",
-        url: "#",
+        url: "backoffice/dashboard",
         icon: SquareTerminal,
       },
       Employee(),

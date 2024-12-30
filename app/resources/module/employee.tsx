@@ -8,8 +8,7 @@ export function Employee(){
         items: [
             {
                 title: "Master Employee",
-                url: "#",
-                
+                url: "backoffice/employee",
             },
             {
                 title: "Transaction",
