@@ -3,31 +3,14 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, X, Info, CircleAlert } from "lucide-react";
-import React, { useEffect, useState } from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 
 const AlertDialog = () => {
     const { alertDialog, setAlertDialog } = useAlertDialog();
-    const [open, setOpen] = useState(false);
 
-    // Fungsi untuk menutup dialog
-    const handleClose = () => {
-        setAlertDialog(null); 
-    };
+    const handleClose = () => setAlertDialog(null);
 
-    useEffect(() => {
-        if (alertDialog) {
-            // Jika ada dialog yang disimpan di context, tampilkan dialog
-            setOpen(true);
-        } else {
-            // Menutup dialog jika tidak ada data dialog
-            setOpen(false);
-        }
-    }, [alertDialog]); // Menjalankan efek ini hanya ketika alertDialog berubah
-
-    if (!alertDialog) {
-        return null;  // Jika tidak ada data dialog, tidak menampilkan apa-apa
-    }
+    if (!alertDialog) return null;
 
     const type = alertDialog.type ?? "";
 
@@ -46,7 +29,7 @@ const AlertDialog = () => {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
+        <Dialog open={!!alertDialog} onOpenChange={handleClose}>
             <DialogContent>
                 <DialogHeader>
                     {type ? (
@@ -61,7 +44,7 @@ const AlertDialog = () => {
                 </DialogHeader>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button type="button" onClick={handleClose}>
+                        <Button variant="outline" type="button" onClick={handleClose}>
                             Close
                         </Button>
                     </DialogClose>
