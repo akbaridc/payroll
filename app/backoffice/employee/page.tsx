@@ -76,7 +76,7 @@ const Employee = () => {
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold mb-4">Tasks</h1>
       <div className="flex gap-2">
-        <Button variant="ghost" className="text-foreground" title="Add Employee" onClick={() => router.push("/backoffice/employee/create")}><CirclePlus/></Button>
+        <Button variant="ghost" className="text-foreground" title="Add Employee" onClick={() => router.push("/backoffice/employee/create")}><CirclePlus className="w-48 h-48" /></Button>
       </div>
       <DataTable columns={columns} data={tasks}  />
     </div>

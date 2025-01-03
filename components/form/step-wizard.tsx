@@ -40,7 +40,6 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
   };
 
   const onJumpToStep = (step: number) => {
-    console.log(stepDone);
     if(!stepDone[step] && step !== currentStep) return setAlertDialog({title: "Warning!", message: "cannot open this step, because this step has not been completed", type: "warning"});
   }
 
@@ -49,11 +48,11 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
       {/* Step Headers */}
       <div className="p-4 flex justify-start flex-wrap md:flex-col md:w-[20%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
         {steps.map((step, index) => (
-          <div key={step.id} className={`p-2 flex gap-3 items-center cursor-pointer w-full transition rounded hover:bg-primary/70 hover:ease-out hover:duration-300 ${index === currentStep ? "text-background font-semibold bg-green-300" : "text-background"}`} onClick={() => onJumpToStep(index)}>
-            <div className={`h-8 w-8 rounded-full flex items-center justify-center bg-foreground`}>
+          <div key={step.id} className={`p-2 flex gap-3 items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)}>
+            <div className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? 'bg-primary text-white' : 'bg-foreground text-background' }`}>
               {index + 1}
             </div>
-            <span className={`text-sm ${index === currentStep ? "text-background" : "text-foreground"}`}>{step.title}</span>
+            <span>{step.title}</span>
           </div>
         ))}
       </div>
@@ -63,7 +62,7 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
 
         {/* Navigation Buttons */}
         <div className="flex gap-2 justify-end mt-4">
-          <button type="button" className={`px-4 py-2 bg-gray-500 rounded-md text-sm ${isFirstStep ? "opacity-50 cursor-not-allowed" : ""}`} onClick={prevStep} disabled={isFirstStep}>
+          <button type="button" className={`px-4 py-2 bg-slate-800 text-white rounded-md text-sm ${isFirstStep ? "opacity-50 cursor-not-allowed" : ""}`} onClick={prevStep} disabled={isFirstStep}>
             Back
           </button>
           <button type="submit" className={`px-4 py-2 ${isLastStep ? 'bg-green-500' : 'bg-yellow-500'}  text-background rounded-md text-sm`} onClick={nextStep} disabled={isLastStep} >

@@ -9,19 +9,19 @@ interface FormInputFieldProps {
   name: string
   type?: string
   placeholder?: string
-  control?: any
+  form?: any
   className?: string
   disabled?: boolean
   [key: string]: any
 }
 
-export function FormInputField({label,name,type = "text",placeholder = "",control,className,disabled,...props}: FormInputFieldProps) {
+export function FormInputField({label,name,type = "text",placeholder = "",form,className,disabled,...props}: FormInputFieldProps) {
   return (
-    <FormField control={control} name={name} render={({ field }) => (
+    <FormField control={form.control} name={name} render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
         <FormControl>
-          <Input {...field} type={type} placeholder={placeholder} className={className} disabled={disabled} />
+          <Input {...field} type={type} placeholder={placeholder} className={className} disabled={disabled} {...props}/>
         </FormControl>
         <FormMessage />
       </FormItem>

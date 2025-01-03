@@ -2,12 +2,23 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import StepWizard from "@/components/form/step-wizard"
-import Personal from "./components/personal";
-import Employee from "./components/employee";
-import Payroll from "./components/payroll";
-import Family from "./components/family";
-import Residence from "./components/residence";
-import Other from "./components/other";
+import Personal from "./components/personal/personal";
+import { PersonalValidation, PersonalDefault } from "./components/personal/schema";
+
+import Employee from "./components/employee/employee";
+import { EmployeeValidation, EmployeeDefault } from "./components/employee/schema";
+
+import Payroll from "./components/payroll/payroll";
+import { PayrollValidation, PayrollDefault } from "./components/payroll/schema";
+
+import Family from "./components/family/family";
+import { FamilyValidation, FamilyDefault } from "./components/family/schema";
+
+import Residence from "./components/residence/residence";
+import { ResidenceValidation, ResidenceDefault } from "./components/residence/schema";
+
+import Other from "./components/other/other";
+import { OtherValidation, OtherDefault } from "./components/other/schema";
 
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,35 +32,23 @@ export default function EmployeeCreate() {
   const { setAlertDialog } = useAlertDialog();
 
   const schema = z.object({
-    personal: z.object({
-      email: z.string().nonempty("Email is required").email("Invalid email"),
-    }),
-    employee: z.object({
-      name: z.string().nonempty("Name is required"),
-    }),
-    payroll: z.object({
-      name: z.string().nonempty("Name is required"),
-    }),
-    family: z.object({
-      name: z.string().nonempty("Name is required"),
-    }),
-    residence: z.object({
-      name: z.string().nonempty("Name is required"),
-    }),
-    other: z.object({
-      name: z.string().nonempty("Name is required"),
-    }),
+    personal: z.object(PersonalValidation()),
+    employee: z.object(EmployeeValidation()),
+    payroll: z.object(PayrollValidation()),
+    family: z.object(FamilyValidation()),
+    residence: z.object(ResidenceValidation()),
+    other: z.object(OtherValidation()),
   });
 
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      personal: { email: "" },
-      employee: { name: "" },
-      payroll: { name: "" },
-      family: { name: "" },
-      residence: { name: "" },
-      other: { name: "" },
+      personal: PersonalDefault(),
+      employee: EmployeeDefault(),
+      payroll: PayrollDefault(),
+      family: FamilyDefault(),
+      residence: ResidenceDefault(),
+      other: OtherDefault(),
     },
   });
 

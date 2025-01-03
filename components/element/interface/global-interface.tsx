@@ -52,3 +52,13 @@ export interface Employee {
   gender: string,
   religion: string
 }
+
+export interface ComboBox {
+  label: string
+  value: string | number
+}
+
+export interface RadioBox {
+  label: string
+  value: string
+}

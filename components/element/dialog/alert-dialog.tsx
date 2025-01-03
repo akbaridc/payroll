@@ -1,9 +1,9 @@
 "use client";  // Menandakan file ini dijalankan di sisi klien
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogDescription, DialogTitle} from "@/components/ui/dialog";
 import { Check, X, Info, CircleAlert } from "lucide-react";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
+import { Separator } from "@/components/ui/separator"
 
 const AlertDialog = () => {
     const { alertDialog, setAlertDialog } = useAlertDialog();
@@ -38,17 +38,10 @@ const AlertDialog = () => {
                             <div className="text-xl">{alertDialog.title}</div>
                         </DialogTitle>
                     ) : <DialogTitle>{alertDialog.title || 'Alert'}</DialogTitle>}
-                    <DialogDescription className="text-md">
-                        {alertDialog.message || ''}
-                    </DialogDescription>
+                    <DialogDescription className="text-md"></DialogDescription>
                 </DialogHeader>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="outline" type="button" onClick={handleClose}>
-                            Close
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
+                <Separator className="my-3" />
+                <p>{alertDialog.message || ''}</p>
             </DialogContent >
         </Dialog >
     );
