@@ -1,20 +1,23 @@
 import { z } from "zod";
 
+
 const EmployeeValidation = () => {
     return {
-        name: z.string().nonempty("Name is required"),
-        ktp: z.string().nonempty("No. KTP is required"),
-        phone: z.string().nonempty("Phone is required"),
-        email: z.string().nonempty("Email is required").email("Invalid email"),
-        place_birth: z.string().nonempty("Place of Birth is required"),
-        date_birth: z.string().nonempty("Date of Birth is required"),
-        gender: z.string().nonempty("Gender is required"),
-        religion: z.string().nonempty("Religion is required"),
+        nip: z.string().nonempty("NIP is required"),
+        company: z.string().nonempty("Company is required"),
+        divisi: z.string().nonempty("Divisi is required"),
+        level: z.string().nonempty("Level is required"),
+        frase: z.string().nullable(),
+        direct_supervisor: z.string().nonempty("Direct Supervisor is required"),
+        status: z.boolean().default(true),
+        join_date: z.string().nonempty("Join date is required"),
+        resign: z.boolean().default(false),
     }
 }
+  
 
 const EmployeeDefault = () => {
-    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"", religion: "" }
+    return { nip:"", company: "", divisi:"", level: "", frase:"", direct_supervisor: "", status: true, join_date: "", resign: false }
 }
 
 export {EmployeeValidation, EmployeeDefault}

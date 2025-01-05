@@ -92,7 +92,7 @@ body {
 }
 
 .custom-field {
-  @apply w-full rounded-none border-x-0 border-t-0 border-b-[1px] border-b-foreground/20 bg-transparent focus:outline-none focus:ring-0 focus:border-b-foreground focus:outline-0 focus:outline-transparent focus:outline-offset-0 invalid:border-b-red-500 invalid:text-red-600 active:outline-0 active:ring-0 autofill:bg-transparent transition duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-transparent !important;
+  @apply rounded-none border-x-0 border-t-0 border-b-[1px] border-b-foreground/20 bg-transparent focus:outline-none focus:ring-0 focus:border-b-foreground focus:outline-0 focus:outline-transparent focus:outline-offset-0 invalid:border-b-red-500 invalid:text-red-600 active:outline-0 active:ring-0 autofill:bg-transparent transition duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-transparent !important;
 }
 
 

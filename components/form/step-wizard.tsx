@@ -44,9 +44,9 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
   }
 
   return (
-    <div className="p-6 flex flex-col md:flex-row gap-4 w-full shadow-md rounded-md border border-foreground justify-start">
+    <div className="p-3 flex flex-col md:flex-row gap-4 w-full justify-start">
       {/* Step Headers */}
-      <div className="p-4 flex justify-start flex-wrap md:flex-col md:w-[20%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
+      <div className="p-4 flex justify-start flex-wrap md:flex-col md:w-[25%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
         {steps.map((step, index) => (
           <div key={step.id} className={`p-2 flex gap-3 items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)}>
             <div className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? 'bg-primary text-white' : 'bg-foreground text-background' }`}>
@@ -61,7 +61,7 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
         <div className="mb-6">{steps[currentStep].content}</div>
 
         {/* Navigation Buttons */}
-        <div className="flex gap-2 justify-end mt-4">
+        <div className="flex gap-2 justify-start mt-7">
           <button type="button" className={`px-4 py-2 bg-slate-800 text-white rounded-md text-sm ${isFirstStep ? "opacity-50 cursor-not-allowed" : ""}`} onClick={prevStep} disabled={isFirstStep}>
             Back
           </button>

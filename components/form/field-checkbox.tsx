@@ -2,27 +2,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components/ui/form-input-field.tsx
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 
-interface FormInputFieldProps {
+interface FormCheckboxFieldProps {
   label: string
   name: string
-  type?: string
-  placeholder?: string
+  id?: string
   form?: any
   className?: string
   disabled?: boolean
   [key: string]: any
 }
 
-export function FormInputField({label,name,type = "text",placeholder = "",form,className,disabled,...props}: FormInputFieldProps) {
+export function FormCheckboxField({label,name,id,form,className,disabled,...props}: FormCheckboxFieldProps) {
   return (
     <FormField control={form.control} name={name} render={({ field }) => (
       <FormItem>
-        <FormLabel>{label}</FormLabel>
+        <FormLabel className="mr-4">{label}</FormLabel>
         <FormControl>
-          <Input {...field} type={type} placeholder={placeholder} className={cn("w-full", className)} disabled={disabled} {...props}/>
+          <Checkbox {...field} className={cn("w-full", className)} id={id} checked={field.value || false} onCheckedChange={field.onChange} disabled={disabled} {...props} />
         </FormControl>
         <FormMessage />
       </FormItem>

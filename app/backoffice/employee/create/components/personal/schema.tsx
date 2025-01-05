@@ -16,7 +16,7 @@ const PersonalValidation = () => {
 }
 
 const PersonalDefault = () => {
-    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"", religion: "" }
+    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"0", religion: "" }
 }
 
 export {PersonalValidation, PersonalDefault}

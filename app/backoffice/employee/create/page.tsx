@@ -17,8 +17,8 @@ import { FamilyValidation, FamilyDefault } from "./components/family/schema";
 import Residence from "./components/residence/residence";
 import { ResidenceValidation, ResidenceDefault } from "./components/residence/schema";
 
-import Other from "./components/other/other";
-import { OtherValidation, OtherDefault } from "./components/other/schema";
+// import Other from "./components/other/other";
+// import { OtherValidation, OtherDefault } from "./components/other/schema";
 
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +37,7 @@ export default function EmployeeCreate() {
     payroll: z.object(PayrollValidation()),
     family: z.object(FamilyValidation()),
     residence: z.object(ResidenceValidation()),
-    other: z.object(OtherValidation()),
+    // other: z.object(OtherValidation()),
   });
 
   const methods = useForm({
@@ -48,29 +48,30 @@ export default function EmployeeCreate() {
       payroll: PayrollDefault(),
       family: FamilyDefault(),
       residence: ResidenceDefault(),
-      other: OtherDefault(),
+      // other: OtherDefault(),
     },
   });
 
   const steps = [
-    { id: 1, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
-    { id: 2, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
-    { id: 3, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
-    { id: 4, title: "Family", form: "family", content: <Family methods={methods} /> },
+    { id: 1, title: "Family", form: "family", content: <Family methods={methods} /> },
+    { id: 2, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
+    { id: 3, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
+    { id: 4, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
     { id: 5, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
-    { id: 6, title: "Other Data", form: "other", content: <Other methods={methods} /> },
+    // { id: 6, title: "Other Data", form: "other", content: <Other methods={methods} /> },
   ];
 
   async function onSubmit(value: any): Promise<boolean> {
     try {
       const formSchema = Object.keys(value)[0];
+      console.log(value);
 
       if(formSchema == 'personal'){}
       if(formSchema == 'employee'){}
       if(formSchema == 'payroll'){}
       if(formSchema == 'family'){}
       if(formSchema == 'residence'){}
-      if(formSchema == 'other'){}
+      // if(formSchema == 'other'){}
 
       setAlertDialog({title: "Success!", message: "Your action was completed successfully.", type: "success"});
 
@@ -83,12 +84,15 @@ export default function EmployeeCreate() {
   }
 
   return (
-    <div className="w-full min-h-full">
-      <Form {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <StepWizard steps={steps} methods={methods} onSubmit={onSubmit} />
-        </form>
-      </Form>
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Employee Create</h1>
+      <div className="p-3 shadow-md rounded-md border border-foreground">
+        <Form {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <StepWizard steps={steps} methods={methods} onSubmit={onSubmit} />
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

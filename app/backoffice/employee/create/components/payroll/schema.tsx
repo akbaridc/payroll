@@ -2,19 +2,24 @@ import { z } from "zod";
 
 const PayrollValidation = () => {
     return {
-        name: z.string().nonempty("Name is required"),
-        ktp: z.string().nonempty("No. KTP is required"),
-        phone: z.string().nonempty("Phone is required"),
-        email: z.string().nonempty("Email is required").email("Invalid email"),
-        place_birth: z.string().nonempty("Place of Birth is required"),
-        date_birth: z.string().nonempty("Date of Birth is required"),
-        gender: z.string().nonempty("Gender is required"),
-        religion: z.string().nonempty("Religion is required"),
+        category_employee: z.string().nonempty("Category Employee is required"),
+        salary: z.number().nonnegative("Basic Salary is required").min(1, "Basic Salary is required"),
+        bpjs: z.string().nullable(),
+        bank: z.string().nullable(),
+        acc_number: z.string().nullable(),
+        acc_name: z.string().nullable(),
+        npwp15: z.string().nullable(),
+        npwp16: z.string().nullable(),
+        netto: z.string().nullable(),
+        pph21: z.string().nullable(),
+        tax: z.string().nullable(),
+        type_tax: z.string().nullable(),
+        obligation: z.string().nullable(),
     }
 }
 
 const PayrollDefault = () => {
-    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"", religion: "" }
+    return { category_employee:"", salary: 0, bpjs:"", bank: "", acc_number:"", acc_name: "", npwp15:"", npwp16: "", netto: "", pph21: "", tax: "", type_tax: "", obligation: "" }
 }
 
 export {PayrollValidation, PayrollDefault}
