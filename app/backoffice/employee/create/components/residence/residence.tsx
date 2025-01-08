@@ -7,7 +7,7 @@ const Residence = ({ methods }: { methods: any }) => {
     return (
       <div className="grid grid-row-2">
         <FormInputField 
-          control={methods.control} 
+          control={methods} 
           name="residence.name" 
           label="Name"
         />

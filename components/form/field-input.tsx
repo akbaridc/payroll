@@ -18,7 +18,7 @@ interface FormInputFieldProps {
 
 export function FormInputField({label,name,type = "text",placeholder = "",form,className,disabled,...props}: FormInputFieldProps) {
   return (
-    <FormField control={form.control} name={name} render={({ field }) => (
+    <FormField control={form?.control} name={name} render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
         <FormControl>

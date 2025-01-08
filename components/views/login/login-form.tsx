@@ -69,10 +69,10 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
               <div className="grid gap-6">
                 <div className="grid gap-6">
                   <div className="grid gap-2">
-                    <FormInputField control={form.control} name="email" label="Email" placeholder="m@example.com" />
+                    <FormInputField control={form} name="email" label="Email" placeholder="m@example.com" />
                   </div>
                   <div className="grid gap-2">
-                    <FormInputField type="password" control={form.control} name="password" label="Password" />
+                    <FormInputField type="password" control={form} name="password" label="Password" />
                   </div>
                   <Button type="submit" className="w-full">
                     Login
