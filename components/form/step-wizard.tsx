@@ -41,18 +41,20 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
 
   const onJumpToStep = (step: number) => {
     if(!stepDone[step] && step !== currentStep) return setAlertDialog({title: "Warning!", message: "cannot open this step, because this step has not been completed", type: "warning"});
+
+    setCurrentStep(step);
   }
 
   return (
     <div className="p-3 flex flex-col md:flex-row gap-4 w-full justify-start">
       {/* Step Headers */}
-      <div className="p-4 flex justify-start flex-wrap md:flex-col md:w-[25%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
+      <div className="p-4 flex justify-start md:flex-col md:w-[25%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
         {steps.map((step, index) => (
-          <div key={step.id} className={`p-2 flex gap-3 items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)}>
+          <div key={step.id} className={`p-2 flex gap-3 justify-center md:justify-start items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)}>
             <div className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? 'bg-primary text-white' : 'bg-foreground text-background' }`}>
               {index + 1}
             </div>
-            <span>{step.title}</span>
+            <span className="hidden md:block" title={step.title}>{step.title}</span>
           </div>
         ))}
       </div>
@@ -66,7 +68,7 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
             Back
           </button>
           <button type="submit" className={`px-4 py-2 ${isLastStep ? 'bg-green-500' : 'bg-yellow-500'}  text-background rounded-md text-sm`} onClick={nextStep} disabled={isLastStep} >
-            {isLastStep ? "Finish" : "Submit & Continue"}
+            {isLastStep ? "Save" : "Submit & Continue"}
           </button>
         </div>
       </div>
