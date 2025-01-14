@@ -3,11 +3,11 @@ import { z } from "zod";
 const FamilyValidation = () => {
   return z.array(
     z.object({
-      name: z.string().nonempty("Name is required"),
-      relationship: z.string().nonempty("Relationship is required"),
-      date_birth: z.string().nonempty("Date of Birth is required"),
-      gender: z.string().nonempty("Gender is required"),
-      religion: z.string().nonempty("Religion is required"),
+      name: z.string().nullable(),
+      relationship: z.string().nullable(),
+      date_birth: z.date().nullable(),
+      gender: z.string().nullable(),
+      religion: z.string().nullable(),
     })
   );
 };

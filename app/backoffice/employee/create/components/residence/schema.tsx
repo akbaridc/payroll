@@ -2,19 +2,18 @@ import { z } from "zod";
 
 const ResidenceValidation = () => {
     return {
-        name: z.string().nonempty("Name is required"),
-        ktp: z.string().nonempty("No. KTP is required"),
-        phone: z.string().nonempty("Phone is required"),
-        email: z.string().nonempty("Email is required").email("Invalid email"),
-        place_birth: z.string().nonempty("Place of Birth is required"),
-        date_birth: z.string().nonempty("Date of Birth is required"),
-        gender: z.string().nonempty("Gender is required"),
-        religion: z.string().nonempty("Religion is required"),
+        fictive_address: z.string().nullable(),
+        address: z.string().nullable(),
+        contact: z.string().nullable(),
+        province: z.string().nullable(),
+        city: z.string().nullable(),
+        district: z.string().nullable(),
+        ward: z.string().nullable()
     }
 }
 
 const ResidenceDefault = () => {
-    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"", religion: "" }
+    return { fictive_address:"", address: "", contact:"", province: "", city:"", district: "", ward:"" }
 }
 
 export {ResidenceValidation, ResidenceDefault}

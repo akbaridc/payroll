@@ -6,16 +6,10 @@ import { FormInputField } from "@/components/form/field-input";
 import { RadioGroupForm } from "@/components/form/radio-group";
 import { ComboboxForm } from "@/components/form/combobox";
 import { CirclePlus, Trash } from "lucide-react";
-import { Gender } from "@/app/resources/static-option-value";
+import { Genders, Religions, Relationships } from "@/app/resources/static-option-value";
 import { FamilyDefaultInterface } from "./schema";
 
 const Family = ({ methods }: { methods: any }) => {
-
-  const religionOption = [
-    { label: "Islam", value: "Islam" },
-    { label: "Kristen", value: "Kristen" },
-    { label: "Budha", value: "Budha" },
-  ];
 
   const [families, setFamilies] = useState([...methods.getValues('family')]);
   
@@ -42,10 +36,10 @@ const Family = ({ methods }: { methods: any }) => {
         <div key={index} className="flex gap-2 border-b-2 border-foreground pb-4 mb-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-[90%]">
             <FormInputField className="custom-field w-full" form={methods} name={`family[${index}].name`} label="Name"/>
-            <RadioGroupForm form={methods} name={`family[${index}].gender`} label="Gender" radioItem={Gender()} />
+            <RadioGroupForm form={methods} name={`family[${index}].gender`} label="Gender" radioItem={Genders()} />
             <FormInputField className="custom-field w-full" form={methods} name={`family[${index}].date_birth`} label="Date of Birth" type="date" />
-            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].religion`} label="Religion" combobox={religionOption} />
-            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].relationship`} label="Relationship" combobox={religionOption} />
+            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].religion`} label="Religion" combobox={Religions()} />
+            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].relationship`} label="Relationship" combobox={Relationships()} />
           </div>
           <div className="flex justify-center mx-auto gap-3">
             <CirclePlus className="cursor-pointer hover:text-primary" onClick={addFamily} />

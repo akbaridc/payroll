@@ -16,10 +16,10 @@ interface ComboBoxProps {
     form?: any
     className?: string
     disabled?: boolean,
-    combobox: ComboBox[]
+    combobox?: ComboBox[],
 }
 
-export function ComboboxForm({label, name, form, className, disabled, combobox}: ComboBoxProps) {
+export function ComboboxForm({label, name, form, className, disabled, combobox = [], ...props}: ComboBoxProps) {
   return (
     <FormField 
       control={form.control} 
@@ -60,6 +60,7 @@ export function ComboboxForm({label, name, form, className, disabled, combobox}:
                                       value={cmbx.label} 
                                       key={cmbx.value} 
                                       onSelect={() => {form.setValue(name, cmbx.value)}}
+                                      {...props}
                                     >
                                         {cmbx.label}
                                         <Check 

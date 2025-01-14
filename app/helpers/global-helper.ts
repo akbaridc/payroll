@@ -31,11 +31,15 @@ const generateRandomString = (length: number) => {
 const directiveRawDate = (value: string) => {
     // Sisipkan '/' setelah setiap dua angka
     const formattedValue = value.replace(/(\d{2})(?=\d)/g, '$1/');
-    console.log(formattedValue);
+    const splitFormat = formattedValue.split('/');
+    let newFormat = '';
+    if(splitFormat.length === 4) {
+      newFormat = `${splitFormat[0]}/${splitFormat[1]}/${splitFormat[2]}${splitFormat[3]}`
+    }
     
     // Pastikan formatnya menjadi dd/mm/yyyy
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(formattedValue)) {
-      const [day, month, year] = formattedValue.split('/').map(Number);
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(newFormat)) {
+      const [day, month, year] = newFormat.split('/').map(Number);
 
       // Buat objek Date
       const date = new Date(year, month - 1, day);

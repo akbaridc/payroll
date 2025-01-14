@@ -5,27 +5,7 @@ import { FormInputField } from "@/components/form/field-input";
 import { FormInputFieldDate } from "@/components/form/field-input-date";
 import { ComboboxForm } from "@/components/form/combobox";
 import { RadioGroupForm } from "@/components/form/radio-group";
-
-const genderOption = [
-  {
-    label: 'Male',value:'0'
-  },
-  {
-    label: 'Female',value:'1'
-  },
-];
-
-const religionOption = [
-    {
-      label: 'Islam',value:'Islam'
-    },
-    {
-      label: 'Kristem',value:'Kristen'
-    },
-    {
-      label: 'Budha',value:'Budha'
-    },
-];
+import { Genders, Religions } from "@/app/resources/static-option-value";
 
 const Personal = ({ methods }: { methods: any }) => {
     return (
@@ -36,8 +16,8 @@ const Personal = ({ methods }: { methods: any }) => {
         <FormInputField className="custom-field w-full" form={methods} name="personal.email" label="Email" />
         <FormInputField className="custom-field w-full" form={methods} name="personal.place_birth" label="Place of Birth" />
         <FormInputFieldDate className="custom-field w-fit" form={methods} name="personal.date_birth" label="Date of Birth"/>
-        <RadioGroupForm form={methods} name="personal.gender" label="Gender" radioItem={genderOption} />
-        <ComboboxForm className="custom-field" form={methods} name="personal.religion" label="Religion" combobox={religionOption} />
+        <RadioGroupForm form={methods} name="personal.gender" label="Gender" radioItem={Genders()} />
+        <ComboboxForm className="custom-field" form={methods} name="personal.religion" label="Religion" combobox={Religions()} />
       </div>
     );
   };

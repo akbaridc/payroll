@@ -10,7 +10,7 @@ const EmployeeValidation = () => {
         frase: z.string().nullable(),
         direct_supervisor: z.string().nonempty("Direct Supervisor is required"),
         status: z.boolean().default(true),
-        join_date: z.string().nonempty("Join date is required"),
+        join_date: z.date({required_error: "Join date is required"}),
         resign: z.boolean().default(false),
     }
 }
