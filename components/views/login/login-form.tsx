@@ -16,12 +16,12 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormInputField } from "@/components/form/field-input"
 import { LoginInterface } from "@/components/element/interface/global-interface"
-// import AxiosInstance from "@/lib/axios/utils";
-import { useRouter } from 'next/navigation'
+import AxiosInstance from "@/lib/axios/utils";
+// import { useRouter } from 'next/navigation'
 import { useState } from "react";
 
 export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<"div">) {
-  const router = useRouter()
+  // const router = useRouter()
   const [loading, setLoading] = useState(false);
  
   const setDataLogin: LoginInterface = {email: "",password: "",}
@@ -38,26 +38,28 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
     console.log(values)
     console.log(process.env.NEXT_PUBLIC_API_URL)
     setLoading(true);
-    //push to local storage
-    localStorage.setItem('dialogOpen', JSON.stringify({
-        title: "Error!",
-        message: 'mantapp bro',
-        type: "error"
-    }));
     
-    setTimeout(() => {
-      setLoading(false);
-      router.push('/backoffice/dashboard')
-    },2000)
-    
+      AxiosInstance.post('api/auth/login', values)
+        .then((response: any) => {
+            console.log(response);
 
-      // AxiosInstance.get('api/Karyawan')
-      //   .then((response: any) => {
-      //       console.log(response);
-      //   })
-      //   .catch(error => {
-      //       console.log(error)
-      //   });
+            //push to local storage
+            // localStorage.setItem('dialogOpen', JSON.stringify({
+            //     title: "Error!",
+            //     message: 'mantapp bro',
+            //     type: "error"
+            // }));
+            
+            // setTimeout(() => {
+            //   setLoading(false);
+            //   router.push('/backoffice/dashboard')
+            // },2000)
+        })
+        .catch(error => {
+            console.log(error)
+        }).finally(() => {
+          setLoading(false);
+        });
   }
 
   return (
