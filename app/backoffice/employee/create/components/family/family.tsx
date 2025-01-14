@@ -44,8 +44,8 @@ const Family = ({ methods }: { methods: any }) => {
             <FormInputField className="custom-field w-full" form={methods} name={`family[${index}].name`} label="Name"/>
             <RadioGroupForm form={methods} name={`family[${index}].gender`} label="Gender" radioItem={Gender()} />
             <FormInputField className="custom-field w-full" form={methods} name={`family[${index}].date_birth`} label="Date of Birth" type="date" />
-            <ComboboxForm className="custom-field w-full" form={methods} name={`family[${index}].religion`} label="Religion" combobox={religionOption} />
-            <ComboboxForm className="custom-field w-full" form={methods} name={`family[${index}].relationship`} label="Relationship" combobox={religionOption} />
+            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].religion`} label="Religion" combobox={religionOption} />
+            <ComboboxForm className="custom-field" form={methods} name={`family[${index}].relationship`} label="Relationship" combobox={religionOption} />
           </div>
           <div className="flex justify-center mx-auto gap-3">
             <CirclePlus className="cursor-pointer hover:text-primary" onClick={addFamily} />

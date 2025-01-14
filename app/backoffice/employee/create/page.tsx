@@ -53,11 +53,11 @@ export default function EmployeeCreate() {
   });
 
   const steps = [
-    { id: 1, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
-    { id: 2, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
-    { id: 3, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
-    { id: 4, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
-    { id: 5, title: "Family", form: "family", content: <Family methods={methods} /> },
+    { id: 1, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
+    { id: 2, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
+    { id: 3, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
+    { id: 4, title: "Family", form: "family", content: <Family methods={methods} /> },
+    { id: 5, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
     // { id: 6, title: "Other Data", form: "other", content: <Other methods={methods} /> },
   ];
 

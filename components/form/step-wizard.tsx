@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
+import { ButtonAct } from "@/components/form/button";
 
 type StepWizardProps = {
   steps: { id: number; title: string; form:string; content: React.ReactNode }[];
@@ -13,12 +14,14 @@ type StepWizardProps = {
 const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => {
   const { setAlertDialog } = useAlertDialog();
   const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [stepDone, setStepDone] = useState<number[]>([]);
   
   const isLastStep = currentStep === steps.length - 1;
   const isFirstStep = currentStep === 0;
   
   const nextStep = async () => {
+    setLoading(true);
     const currentFormKey = steps[currentStep].form;
     const isValid = await methods.trigger(currentFormKey);
 
@@ -31,7 +34,10 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
         setCurrentStep(currentStep + 1);
         setStepDone((prevStepDone) => [...new Set([...prevStepDone, steps[currentStep].id])]);
         setTimeout(() => setStepDone((prevStepDone) => [...new Set([...prevStepDone, steps[currentStep + 1].id])]), 500);
+        setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
   };
 
@@ -50,11 +56,11 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
       {/* Step Headers */}
       <div className="p-4 flex justify-start md:flex-col md:w-[25%] gap-2 items-baseline border-b md:border-r md:border-b-0 border-foreground">
         {steps.map((step, index) => (
-          <div key={step.id} className={`p-2 flex gap-3 justify-center md:justify-start items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)}>
+          <div key={step.id} className={`p-2 flex gap-3 justify-center md:justify-start items-center cursor-pointer w-full transition rounded hover:border-b hover:border-b-foreground hover:ease-out hover:duration-300 text-foreground`} onClick={() => onJumpToStep(index)} title={step.title}>
             <div className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? 'bg-primary text-white' : 'bg-foreground text-background' }`}>
               {index + 1}
             </div>
-            <span className="hidden md:block" title={step.title}>{step.title}</span>
+            <span className="hidden md:block">{step.title}</span>
           </div>
         ))}
       </div>
@@ -67,9 +73,8 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, methods, onSubmit }) => 
           <button type="button" className={`px-4 py-2 bg-slate-800 text-white rounded-md text-sm ${isFirstStep ? "opacity-50 cursor-not-allowed" : ""}`} onClick={prevStep} disabled={isFirstStep}>
             Back
           </button>
-          <button type="submit" className={`px-4 py-2 ${isLastStep ? 'bg-green-500' : 'bg-yellow-500'}  text-background rounded-md text-sm`} onClick={nextStep} disabled={isLastStep} >
-            {isLastStep ? "Save" : "Submit & Continue"}
-          </button>
+
+          <ButtonAct text={isLastStep ? "Save" : "Submit & Continue"} loading={loading} className={`px-4 py-2 w-fit ${isLastStep ? 'bg-green-500 hover:bg-green-500' : 'bg-yellow-500 hover:bg-yellow-600'}  text-background rounded-md text-sm`} onClick={nextStep} disabled={isLastStep} />
         </div>
       </div>
     </div>

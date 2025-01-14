@@ -2,7 +2,7 @@
 "use client";
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { ButtonAct } from "@/components/form/button";
 import {
   Card,
   CardContent,
@@ -18,14 +18,13 @@ import { FormInputField } from "@/components/form/field-input"
 import { LoginInterface } from "@/components/element/interface/global-interface"
 // import AxiosInstance from "@/lib/axios/utils";
 import { useRouter } from 'next/navigation'
+import { useState } from "react";
 
 export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<"div">) {
   const router = useRouter()
+  const [loading, setLoading] = useState(false);
  
-  const setDataLogin: LoginInterface = {
-    email: "",
-    password: "",
-  }
+  const setDataLogin: LoginInterface = {email: "",password: "",}
 
   const form = useForm({
     resolver: zodResolver(z.object({
@@ -38,15 +37,19 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
   const onSubmit = (values: LoginInterface) => {
     console.log(values)
     console.log(process.env.NEXT_PUBLIC_API_URL)
-
+    setLoading(true);
     //push to local storage
     localStorage.setItem('dialogOpen', JSON.stringify({
         title: "Error!",
         message: 'mantapp bro',
         type: "error"
     }));
-
-    router.push('/backoffice/dashboard')
+    
+    setTimeout(() => {
+      setLoading(false);
+      router.push('/backoffice/dashboard')
+    },2000)
+    
 
       // AxiosInstance.get('api/Karyawan')
       //   .then((response: any) => {
@@ -74,9 +77,7 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
                   <div className="grid gap-2">
                     <FormInputField type="password" control={form} name="password" label="Password" />
                   </div>
-                  <Button type="submit" className="w-full">
-                    Login
-                  </Button>
+                  <ButtonAct text="Submit" loading={loading} />
                 </div>
               </div>
             </form>

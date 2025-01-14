@@ -28,4 +28,26 @@ const generateRandomString = (length: number) => {
     return result;
 }
 
-export { extractUrls, generateRandomString };
+const directiveRawDate = (value: string) => {
+    // Sisipkan '/' setelah setiap dua angka
+    const formattedValue = value.replace(/(\d{2})(?=\d)/g, '$1/');
+    console.log(formattedValue);
+    
+    // Pastikan formatnya menjadi dd/mm/yyyy
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(formattedValue)) {
+      const [day, month, year] = formattedValue.split('/').map(Number);
+
+      // Buat objek Date
+      const date = new Date(year, month - 1, day);
+
+      // Periksa apakah tanggal valid
+      if (!isNaN(date.getTime())) {
+        return date;
+      }
+    }
+
+    // Jika tidak valid, kembalikan null
+    return null;
+};
+
+export { extractUrls, generateRandomString, directiveRawDate };

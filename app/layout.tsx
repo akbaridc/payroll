@@ -1,6 +1,7 @@
 import "./globals.css";
 import { AlertDialogProvider } from "@/components/element/context/alert-dialog-context";
 import AlertDialog from "@/components/element/dialog/alert-dialog";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const metadata = {
   title: "Create Next App",
