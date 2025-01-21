@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
         useEffect(() => {
             if (!token) {
-                router.replace("/auth/login"); // Redirect jika tidak ada token
+                router.replace("/"); // Redirect jika tidak ada token
             }
         }, [router, token]);
 

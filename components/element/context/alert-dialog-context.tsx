@@ -49,9 +49,25 @@ export const AlertDialogProvider: React.FC<AlertDialogProviderProps> = ({
     // Memeriksa localStorage saat halaman pertama kali dimuat atau rute berubah
     useEffect(() => {
         const storedAlertData = localStorage.getItem("dialogOpen");
+
         if (storedAlertData) {
             setAlertDialog(JSON.parse(storedAlertData));
         }
+
+        const showDialogCookie = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('dialogOpen='));
+
+        if (showDialogCookie) {
+            const dialogData = JSON.parse(showDialogCookie.split('=')[1]);
+            setAlertDialog(dialogData);
+
+            // Clear the cookie after reading
+            document.cookie = "dialogOpen=; Max-Age=0; path=/";
+        }
+
+
+        
     }, [pathname]); // Periksa ulang setiap kali rute berubah
 
     useEffect(() => {

@@ -11,16 +11,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormInputField } from "@/components/form/field-input";
 import { LoginInterface } from "@/components/element/interface/global-interface";
-import AxiosInstance from "@/lib/axios/utils";
-// import { useRouter } from 'next/navigation'
+import axios from "@/lib/axios";
+import { useRouter } from 'next/navigation'
 import { useState } from "react";
+import { mutate } from "swr";
+import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-    // const router = useRouter()
+    const router = useRouter()
     const [loading, setLoading] = useState(false);
+    const { setAlertDialog } = useAlertDialog();
 
     const setDataLogin: LoginInterface = { email: "", password: "" };
 
@@ -34,31 +37,28 @@ export function LoginForm({
         defaultValues: setDataLogin,
     });
 
-    const onSubmit = (values: LoginInterface) => {
-        console.log(values);
-        console.log(process.env.NEXT_PUBLIC_API_URL);
+    const onSubmit =  async (values: LoginInterface) => {
         setLoading(true);
 
-        AxiosInstance.post("api/auth/login", values)
-            .then((response: any) => {
-                console.log(response);
+        await axios.post("/api/login", values)
+            .then(async (response) => {
+                console.log(response)
+                localStorage.setItem("user", JSON.stringify(response.data.data));
 
-                //push to local storage
-                // localStorage.setItem('dialogOpen', JSON.stringify({
-                //     title: "Error!",
-                //     message: 'mantapp bro',
-                //     type: "error"
-                // }));
+                document.cookie = `auth_token=${response.data.token}; path=/;`;
 
-                // setTimeout(() => {
-                //   setLoading(false);
-                //   router.push('/backoffice/dashboard')
-                // },2000)
+                await mutate("api/user", async () => {
+                    const response = await axios.get("api/user");
+                    return response.data.data;
+                });
+
+                setAlertDialog({title: "Success!",message: "Login successfully",type: "success",});
+                setLoading(false);
+                router.push("/backoffice/dashboard");
             })
-            .catch((error) => {
-                console.log(error);
-            })
-            .finally(() => {
+            .catch(error => {
+                setAlertDialog({title: "Error!",message: error.response.data?.message || "Something went wrong",type: "error",});
+            }).finally(() => {
                 setLoading(false);
             });
     };

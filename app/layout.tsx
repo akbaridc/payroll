@@ -1,6 +1,7 @@
 import "./globals.css";
-import { AlertDialogProvider } from "@/components/element/context/alert-dialog-context";
-import AlertDialog from "@/components/element/dialog/alert-dialog";
+
+import ClientWrapper from "@/components/views/layouts/wrapper";
+
 import "react-datepicker/dist/react-datepicker.css";
 
 export const metadata = {
@@ -16,10 +17,9 @@ export default async function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                <AlertDialogProvider>
+                <ClientWrapper>
                     {children}
-                    <AlertDialog />
-                </AlertDialogProvider>
+                </ClientWrapper>
             </body>
         </html>
     );

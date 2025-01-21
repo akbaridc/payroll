@@ -1,22 +1,36 @@
-// File: /pages/_middleware.ts (for TypeScript) or /pages/_middleware.js (for JavaScript)
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-    // Assuming you are using session storage or cookies for auth
-    const isAuthenticated = Boolean(req.cookies.get("auth_token")); // Replace with your actual auth check
-    console.log(isAuthenticated);
+    
+    // Get the auth token from cookies
+    const authToken = req.cookies.get("auth_token"); // Use cookies to store the token on the client side
 
-    // Check if the user is on a protected route and is not authenticated
-    // if (!isAuthenticated && req.nextUrl.pathname !== '/auth') {
-    //   // Redirect them to the login page if they are not authenticated
-    //   return NextResponse.redirect(new URL('/auth', req.url));
-    // }
+    // Check if the user is accessing the root page and is already authenticated
+    if (authToken && req.nextUrl.pathname === "/") {
+        // Redirect to the backoffice dashboard if user is authenticated and visiting the root URL
+        const response = NextResponse.redirect(new URL('/', req.url)); // Adjust the redirect path as needed
 
-    // Allow the request to continue if they are authenticated or if the route is public (e.g., login page)
+        // Set a cookie that will be used by the client-side to show the dialog
+        response.cookies.set("dialogOpen", JSON.stringify({
+            title: "Error!",
+            message: "You must be logged in to access this page.",
+            type: "error",
+        }));
+
+        return response;
+    }
+
+    // Example check for protected route
+    if (!authToken && req.nextUrl.pathname.startsWith("/backoffice")) {
+        // Redirect if not authenticated
+        return NextResponse.redirect(new URL('/', req.url)); // Adjust the redirect path as needed
+    }
+
+    // Allow the request to continue if the user is authenticated or the route is public
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/backoffice/:path*"],
+    matcher: ["/backoffice/:path*", "/"],  // Adjust to match your protected routes
 };
