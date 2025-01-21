@@ -8,12 +8,20 @@ const ResidenceValidation = () => {
         province: z.string().nullable(),
         city: z.string().nullable(),
         district: z.string().nullable(),
-        ward: z.string().nullable()
-    }
-}
+        ward: z.string().nullable(),
+    };
+};
 
 const ResidenceDefault = () => {
-    return { fictive_address:"", address: "", contact:"", province: "", city:"", district: "", ward:"" }
-}
+    return {
+        fictive_address: "",
+        address: "",
+        contact: "",
+        province: "",
+        city: "",
+        district: "",
+        ward: "",
+    };
+};
 
-export {ResidenceValidation, ResidenceDefault}
+export { ResidenceValidation, ResidenceDefault };

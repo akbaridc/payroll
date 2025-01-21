@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const extractUrls = (items: { url: string, items?: any[] }[], baseUrl: string = ''): string[] => {
+const extractUrls = (
+    items: { url: string; items?: any[] }[],
+    baseUrl: string = "",
+): string[] => {
     const urls: string[] = [];
 
     items.forEach((item) => {
@@ -8,46 +11,48 @@ const extractUrls = (items: { url: string, items?: any[] }[], baseUrl: string = 
 
         // If there are nested items, recurse into them
         item.items?.forEach((nestedItem) => {
-            urls.push(...extractUrls([nestedItem], currentUrl));  // Recursively process nested items
+            urls.push(...extractUrls([nestedItem], currentUrl)); // Recursively process nested items
         });
     });
 
     return urls;
 };
-  
 
 const generateRandomString = (length: number) => {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = "";
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const charactersLength = characters.length;
     let counter = 0;
     while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
+        result += characters.charAt(
+            Math.floor(Math.random() * charactersLength),
+        );
+        counter += 1;
     }
     return result;
-}
+};
 
 const directiveRawDate = (value: string) => {
     // Sisipkan '/' setelah setiap dua angka
-    const formattedValue = value.replace(/(\d{2})(?=\d)/g, '$1/');
-    const splitFormat = formattedValue.split('/');
-    let newFormat = '';
-    if(splitFormat.length === 4) {
-      newFormat = `${splitFormat[0]}/${splitFormat[1]}/${splitFormat[2]}${splitFormat[3]}`
+    const formattedValue = value.replace(/(\d{2})(?=\d)/g, "$1/");
+    const splitFormat = formattedValue.split("/");
+    let newFormat = "";
+    if (splitFormat.length === 4) {
+        newFormat = `${splitFormat[0]}/${splitFormat[1]}/${splitFormat[2]}${splitFormat[3]}`;
     }
-    
+
     // Pastikan formatnya menjadi dd/mm/yyyy
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(newFormat)) {
-      const [day, month, year] = newFormat.split('/').map(Number);
+        const [day, month, year] = newFormat.split("/").map(Number);
 
-      // Buat objek Date
-      const date = new Date(year, month - 1, day);
+        // Buat objek Date
+        const date = new Date(year, month - 1, day);
 
-      // Periksa apakah tanggal valid
-      if (!isNaN(date.getTime())) {
-        return date;
-      }
+        // Periksa apakah tanggal valid
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
     }
 
     // Jika tidak valid, kembalikan null

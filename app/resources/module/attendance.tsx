@@ -1,6 +1,6 @@
 import { Bot } from "lucide-react";
 
-export function Attendance(){
+export function Attendance() {
     return {
         title: "Attendance",
         url: "#",
@@ -54,8 +54,7 @@ export function Attendance(){
                                 title: "Leave Request",
                                 url: "#",
                             },
-
-                        ]
+                        ],
                     },
                     {
                         title: "Change Work Hour",
@@ -65,7 +64,7 @@ export function Attendance(){
                         title: "Create Shift Schedule",
                         url: "#",
                     },
-                ]
+                ],
             },
             {
                 title: "Report",
@@ -79,7 +78,7 @@ export function Attendance(){
                         title: "Attendance Summary and Detail",
                         url: "#",
                     },
-                ]
+                ],
             },
             {
                 title: "Utility",
@@ -110,7 +109,7 @@ export function Attendance(){
                         title: "Manual Attendance Process",
                         url: "#",
                     },
-                ]
+                ],
             },
             {
                 title: "Attendance Time Sheet",
@@ -125,5 +124,5 @@ export function Attendance(){
                 url: "#",
             },
         ],
-    }
+    };
 }

@@ -6,17 +6,17 @@ import { Payroll } from "./module/payroll";
 import { Setting } from "./module/setting";
 
 export function SidebarResource() {
-  return {
-    sidebarItem: [
-      {
-        title: "Dashboard",
-        url: "backoffice/dashboard",
-        icon: SquareTerminal,
-      },
-      Employee(),
-      Attendance(),
-      Payroll(),
-      Setting(),
-    ],
-  };
+    return {
+        sidebarItem: [
+            {
+                title: "Dashboard",
+                url: "backoffice/dashboard",
+                icon: SquareTerminal,
+            },
+            Employee(),
+            Attendance(),
+            Payroll(),
+            Setting(),
+        ],
+    };
 }

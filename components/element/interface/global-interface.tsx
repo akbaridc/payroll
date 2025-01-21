@@ -1,4 +1,4 @@
-import { type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react";
 
 export interface LoginInterface {
     email: string;
@@ -11,54 +11,54 @@ export interface SidebarItem {
     icon?: LucideIcon;
     isActive?: boolean;
     items?: {
-      title: string;
-      url: string;
-      icon?: LucideIcon;
-      isActive?: boolean;
-      items?: {
         title: string;
         url: string;
         icon?: LucideIcon;
         isActive?: boolean;
         items?: {
-          title: string;
-          url: string;
-          icon?: LucideIcon;
-          isActive?: boolean;
-          items?: {
             title: string;
             url: string;
             icon?: LucideIcon;
             isActive?: boolean;
             items?: {
-              title: string;
-              url: string;
-              icon?: LucideIcon;
-              isActive?: boolean;
+                title: string;
+                url: string;
+                icon?: LucideIcon;
+                isActive?: boolean;
+                items?: {
+                    title: string;
+                    url: string;
+                    icon?: LucideIcon;
+                    isActive?: boolean;
+                    items?: {
+                        title: string;
+                        url: string;
+                        icon?: LucideIcon;
+                        isActive?: boolean;
+                    }[];
+                }[];
             }[];
-          }[];
         }[];
-      }[];
-    }[]
+    }[];
 }
 
 export interface Employee {
-  name: string,
-  ktp: string,
-  phone: string,
-  email: string,
-  born: string,
-  date_birth: string,
-  gender: string,
-  religion: string
+    name: string;
+    ktp: string;
+    phone: string;
+    email: string;
+    born: string;
+    date_birth: string;
+    gender: string;
+    religion: string;
 }
 
 export interface ComboBox {
-  label: string
-  value: string | number
+    label: string;
+    value: string | number;
 }
 
 export interface RadioBox {
-  label: string
-  value: string
+    label: string;
+    value: string;
 }

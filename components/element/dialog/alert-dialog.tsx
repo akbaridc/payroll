@@ -1,9 +1,15 @@
-"use client";  // Menandakan file ini dijalankan di sisi klien
+"use client"; // Menandakan file ini dijalankan di sisi klien
 
-import { Dialog, DialogContent, DialogHeader, DialogDescription, DialogTitle} from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogDescription,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { Check, X, Info, CircleAlert } from "lucide-react";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/components/ui/separator";
 
 const AlertDialog = () => {
     const { alertDialog, setAlertDialog } = useAlertDialog();
@@ -33,17 +39,23 @@ const AlertDialog = () => {
             <DialogContent>
                 <DialogHeader>
                     {type ? (
-                        <DialogTitle className={`flex gap-2 items-center font-bold tracking-wider ${setColor[type as keyof typeof setColor]}`} >
+                        <DialogTitle
+                            className={`flex gap-2 items-center font-bold tracking-wider ${setColor[type as keyof typeof setColor]}`}
+                        >
                             {setIcons[type as keyof typeof setIcons]}
                             <div className="text-xl">{alertDialog.title}</div>
                         </DialogTitle>
-                    ) : <DialogTitle>{alertDialog.title || 'Alert'}</DialogTitle>}
+                    ) : (
+                        <DialogTitle>
+                            {alertDialog.title || "Alert"}
+                        </DialogTitle>
+                    )}
                     <DialogDescription className="text-md"></DialogDescription>
                 </DialogHeader>
                 <Separator className="my-3" />
-                <p>{alertDialog.message || ''}</p>
-            </DialogContent >
-        </Dialog >
+                <p>{alertDialog.message || ""}</p>
+            </DialogContent>
+        </Dialog>
     );
 };
 

@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 const EmployeeValidation = () => {
     return {
         nip: z.string().nonempty("NIP is required"),
@@ -10,14 +9,23 @@ const EmployeeValidation = () => {
         frase: z.string().nullable(),
         direct_supervisor: z.string().nonempty("Direct Supervisor is required"),
         status: z.boolean().default(true),
-        join_date: z.date({required_error: "Join date is required"}),
+        join_date: z.date({ required_error: "Join date is required" }),
         resign: z.boolean().default(false),
-    }
-}
-  
+    };
+};
 
 const EmployeeDefault = () => {
-    return { nip:"", company: "", divisi:"", level: "", frase:"", direct_supervisor: "", status: true, join_date: "", resign: false }
-}
+    return {
+        nip: "",
+        company: "",
+        divisi: "",
+        level: "",
+        frase: "",
+        direct_supervisor: "",
+        status: true,
+        join_date: "",
+        resign: false,
+    };
+};
 
-export {EmployeeValidation, EmployeeDefault}
+export { EmployeeValidation, EmployeeDefault };

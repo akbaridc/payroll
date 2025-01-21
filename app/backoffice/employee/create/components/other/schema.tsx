@@ -10,11 +10,20 @@ const OtherValidation = () => {
         date_birth: z.string().nonempty("Date of Birth is required"),
         gender: z.string().nonempty("Gender is required"),
         religion: z.string().nonempty("Religion is required"),
-    }
-}
+    };
+};
 
 const OtherDefault = () => {
-    return { name:"", ktp: "", phone:"", email: "", place_birth:"", date_birth: "", gender:"", religion: "" }
-}
+    return {
+        name: "",
+        ktp: "",
+        phone: "",
+        email: "",
+        place_birth: "",
+        date_birth: "",
+        gender: "",
+        religion: "",
+    };
+};
 
-export {OtherValidation, OtherDefault}
+export { OtherValidation, OtherDefault };
