@@ -9,6 +9,7 @@ const ResidenceValidation = () => {
         city: z.string().nullable(),
         district: z.string().nullable(),
         ward: z.string().nullable(),
+        postal_code: z.string().nullable(),
     };
 };
 
@@ -21,6 +22,7 @@ const ResidenceDefault = () => {
         city: "",
         district: "",
         ward: "",
+        postal_code: "",
     };
 };
 

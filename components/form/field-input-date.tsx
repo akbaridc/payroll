@@ -46,7 +46,7 @@ export function FormInputFieldDate({
                             }}
                             dateFormat="dd/MM/yyyy"
                             placeholderText="dd/mm/yyyy"
-                            className={cn("w-full inline-block", className)}
+                            className={cn("text-start items-start w-full inline-block", className)}
                             disabled={disabled}
                             {...props}
                         />

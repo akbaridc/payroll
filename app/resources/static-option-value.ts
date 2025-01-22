@@ -26,6 +26,25 @@ const Religions = () => {
     ];
 };
 
+const Divisis = () => {
+    return [
+        { label: "IT Suppport", value: "IT Suppport" },
+        { label: "Quality Assurance", value: "Quality Assurance" },
+        { label: "Research and Development", value: "Research and Development" },
+        { label: "Admin", value: "Admin" },
+    ];
+};
+
+const Levels = () => {
+    return [
+        { label: "Manager", value: "Manager" },
+        { label: "Asistant Manager", value: "Asistant Manager" },
+        { label: "Project Owner", value: "Project Owner" },
+        { label: "Programmer", value: "Programmer" },
+        { label: "Admin", value: "Admin" },
+    ];
+};
+
 const Relationships = () => {
     return [
         { label: "Ayah", value: "0" },
@@ -55,14 +74,14 @@ const StatusEmployees = () => {
     return [
         { label: "Tetap", value: "0" },
         { label: "Kontrak (PKWT)", value: "1" },
-        { label: "Harian Lepas", value: "1" },
-        { label: "Freelance", value: "1" },
-        { label: "Penuh Waktu (Full-Time)", value: "1" },
-        { label: "Paruh Waktu (Part-Time)", value: "1" },
-        { label: "Musiman", value: "1" },
-        { label: "Outsourcing", value: "1" },
-        { label: "Magang (Internship)", value: "1" },
-        { label: "Probation (Masa Percobaan)", value: "1" },
+        { label: "Harian Lepas", value: "2" },
+        { label: "Freelance", value: "3" },
+        { label: "Penuh Waktu (Full-Time)", value: "4" },
+        { label: "Paruh Waktu (Part-Time)", value: "5" },
+        { label: "Musiman", value: "6" },
+        { label: "Outsourcing", value: "7" },
+        { label: "Magang (Internship)", value: "8" },
+        { label: "Probation (Masa Percobaan)", value: "9" },
     ];
 };
 
@@ -111,6 +130,8 @@ const Wards = (district: string) => {
 export {
     Genders,
     Religions,
+    Divisis,
+    Levels,
     Relationships,
     StatusEmployees,
     Provinces,

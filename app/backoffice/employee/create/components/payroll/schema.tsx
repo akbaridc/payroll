@@ -4,8 +4,8 @@ const PayrollValidation = () => {
     return {
         category_employee: z.string().nonempty("Category Employee is required"),
         salary: z
-            .number()
-            .nonnegative("Basic Salary is required")
+            .string()
+            .nonempty("Basic Salary is required")
             .min(1, "Basic Salary is required"),
         bpjs: z.string().nullable(),
         bank: z.string().nullable(),

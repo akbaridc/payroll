@@ -3,11 +3,11 @@ import { z } from "zod";
 const EmployeeValidation = () => {
     return {
         nip: z.string().nonempty("NIP is required"),
-        company: z.string().nonempty("Company is required"),
+        company: z.string().nullable(),
         divisi: z.string().nonempty("Divisi is required"),
         level: z.string().nonempty("Level is required"),
         frase: z.string().nullable(),
-        direct_supervisor: z.string().nonempty("Direct Supervisor is required"),
+        direct_supervisor: z.string().nullable(),
         status: z.boolean().default(true),
         join_date: z.date({ required_error: "Join date is required" }),
         resign: z.boolean().default(false),
