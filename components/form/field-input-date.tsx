@@ -41,8 +41,10 @@ export function FormInputFieldDate({
                             onChange={(date) => field.onChange(date)}
                             onChangeRaw={(e) => {
                                 const target = e.target as HTMLInputElement;
-                                const date = directiveRawDate(target.value);
-                                if (date) field.onChange(date);
+                                if(target.value){
+                                    const date = directiveRawDate(target.value);
+                                    if (date) field.onChange(date);
+                                }
                             }}
                             dateFormat="dd/MM/yyyy"
                             placeholderText="dd/mm/yyyy"

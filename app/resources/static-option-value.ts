@@ -95,36 +95,27 @@ const Provinces = () => {
 };
 
 const Cities = (province: string) => {
-    return cities.map((value: any) => {
-        if (value.province_id === province) {
-            return {
+    return cities.filter((value: any) => value.province_id === province)
+            .map((value: any) => ({
                 label: value.name,
                 value: value.id,
-            };
-        }
-    });
+            }));
 };
 
 const Districts = (city: string) => {
-    return districts.map((value: any) => {
-        if (value.city_id === city) {
-            return {
-                label: value.name,
-                value: value.id,
-            };
-        }
-    });
+    return districts.filter((value: any) => value.city_id === city)
+                .map((value: any) => ({
+                    label: value.name,
+                    value: value.id,
+                }));
 };
 
 const Wards = (district: string) => {
-    return wards.map((value: any) => {
-        if (value.district_id === district) {
-            return {
-                label: value.name,
-                value: value.id,
-            };
-        }
-    });
+    return wards.filter((value: any) => value.district_id === district)
+                .map((value: any) => ({
+                    label: value.name,
+                    value: value.id,
+                }));
 };
 
 export {

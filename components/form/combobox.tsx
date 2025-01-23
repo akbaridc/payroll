@@ -34,6 +34,7 @@ interface ComboBoxProps {
     className?: string;
     disabled?: boolean;
     combobox?: ComboBox[];
+    onChange?: (value: string) => void;
 }
 
 export function ComboboxForm({
@@ -43,6 +44,7 @@ export function ComboboxForm({
     className,
     disabled,
     combobox = [],
+    onChange,
     ...props
 }: ComboBoxProps) {
     return (
@@ -66,10 +68,7 @@ export function ComboboxForm({
                                     )}
                                 >
                                     {field.value
-                                        ? combobox.find(
-                                              (cmbx) =>
-                                                  cmbx.value === field.value,
-                                          )?.label
+                                        ? combobox.find((cmbx) =>cmbx.value === field.value)?.label
                                         : `Select ${label}`}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
@@ -80,9 +79,7 @@ export function ComboboxForm({
                             align="start"
                         >
                             <Command>
-                                <CommandInput
-                                    placeholder={`Search ${label}...`}
-                                />
+                                <CommandInput placeholder={`Search ${label}...`} />
                                 <CommandList>
                                     <CommandEmpty>No data found.</CommandEmpty>
                                     <CommandGroup>
@@ -92,23 +89,13 @@ export function ComboboxForm({
                                                 value={cmbx.label}
                                                 key={cmbx.value}
                                                 onSelect={() => {
-                                                    form.setValue(
-                                                        name,
-                                                        cmbx.value,
-                                                    );
+                                                    form.setValue(name,cmbx.value);
+                                                    if (onChange) onChange(cmbx.value);
                                                 }}
                                                 {...props}
                                             >
                                                 {cmbx.label}
-                                                <Check
-                                                    className={cn(
-                                                        "ml-auto",
-                                                        cmbx.value ===
-                                                            field.value
-                                                            ? "opacity-100"
-                                                            : "opacity-0",
-                                                    )}
-                                                />
+                                                <Check className={cn("ml-auto",cmbx.value === field.value ? "opacity-100" : "opacity-0")} />
                                             </CommandItem>
                                         ))}
                                     </CommandGroup>

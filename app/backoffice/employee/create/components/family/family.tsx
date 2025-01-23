@@ -40,7 +40,7 @@ const Family = ({ methods }: { methods: any }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-[90%]">
                         <FormInputField className="custom-field w-full" form={methods} name={`family[${index}].name`} label="Name" />
                         <RadioGroupForm form={methods} name={`family[${index}].gender`} label="Gender" radioItem={Genders()} />
-                        <FormInputFieldDate className="custom-field w-1/2" form={methods} name="personal.date_birth" label="Date of Birth" />
+                        <FormInputFieldDate className="custom-field w-1/2" form={methods} name={`family[${index}].date_birth`} label="Date of Birth" />
                         <ComboboxForm className="custom-field" form={methods} name={`family[${index}].religion`} label="Religion" combobox={Religions()} />
                         <ComboboxForm className="custom-field" form={methods} name={`family[${index}].relationship`} label="Relationship" combobox={Relationships()} />
                     </div>

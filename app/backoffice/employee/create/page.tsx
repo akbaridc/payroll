@@ -61,17 +61,19 @@ export default function EmployeeCreate() {
     });
 
     const steps = [
-        { id: 1, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
-        { id: 2, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
-        { id: 3, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
-        { id: 4, title: "Family", form: "family", content: <Family methods={methods} /> },
-        { id: 5, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
+        { id: 1, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
+        { id: 2, title: "Personal", form: "personal", content: <Personal methods={methods} /> },
+        { id: 3, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
+        { id: 4, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
+        { id: 5, title: "Family", form: "family", content: <Family methods={methods} /> },
         // { id: 6, title: "Other Data", form: "other", content: <Other methods={methods} /> },
     ];
 
     async function onSubmit(value: any): Promise<boolean> {
         try {
             const formSchema = Object.keys(value)[0];
+            console.log(value);
+            return false;
 
             let message = "";
             const existingData = JSON.parse(localStorage.getItem("employee")) ?? {};
@@ -132,17 +134,20 @@ export default function EmployeeCreate() {
                 message = "Payroll data has been save successfully";
             }
             if (formSchema == "family") {
-                payloadLocalStorageFamily = value.family.map((item: any) => {
-                    return {
-                        karyawan_keluarga_nama: item.name,
-                        karyawan_keluarga_tanggal_lahir: item.date_birth,
-                        karyawan_keluarga_hub_keluarga: item.relationship,
-                        karyawan_keluarga_jenis_kelamin: item.gender,
-                        karyawan_keluarga_agama: item.religion,
-                        karyawan_keluarga_pendidikan: 'SMA',
-                        karyawan_keluarga_is_aktif: 1,
-                    }
-                });
+                if(value.family.length > 0 && (value.family[0].name && value.family[0].date_birth)){
+                    payloadLocalStorageFamily = value.family.map((item: any) => {
+                        return {
+                            karyawan_keluarga_nama: item.name,
+                            karyawan_keluarga_tanggal_lahir: item.date_birth,
+                            karyawan_keluarga_hub_keluarga: item.relationship,
+                            karyawan_keluarga_jenis_kelamin: item.gender,
+                            karyawan_keluarga_agama: item.religion,
+                            karyawan_keluarga_pendidikan: 'SMA',
+                            karyawan_keluarga_is_aktif: 1,
+                        }
+                    });
+                }
+                
 
                 message = "Family data has been save successfully";
             }
