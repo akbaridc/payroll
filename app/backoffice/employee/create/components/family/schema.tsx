@@ -5,8 +5,8 @@ const FamilyValidation = () => {
         z.object({
             name: z.string().nullable(),
             relationship: z.string().nullable(),
-            date_birth: z.string()
-                        .transform((val) => (val === "" ? null : new Date(val)))
+            date_birth: z.date()
+                        .transform((val) => (val === null ? null : new Date(val)))
                         .pipe(z.union([z.date(), z.null()])),
             gender: z.string().nullable(),
             religion: z.string().nullable(),

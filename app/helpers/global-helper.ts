@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import axios from "@/lib/axios";
+
 const extractUrls = (
     items: { url: string; items?: any[] }[],
     baseUrl: string = "",
@@ -59,4 +62,13 @@ const directiveRawDate = (value: string) => {
     return null;
 };
 
-export { extractUrls, generateRandomString, directiveRawDate };
+const generateNewID = async () => {
+    let result = null;
+    await axios.get("/api/GetNewId").then(async (response) => {
+        if(response.status == 200) result = response.data.data[0].newid;
+    });
+
+    return result;
+}
+
+export { extractUrls, generateRandomString, directiveRawDate, generateNewID };

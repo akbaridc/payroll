@@ -18,6 +18,8 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
+import axios from "@/lib/axios";
+import { useRouter } from 'next/navigation'
 
 export function NavUser({
     user,
@@ -29,6 +31,16 @@ export function NavUser({
     };
 }) {
     const { isMobile } = useSidebar();
+    const router = useRouter()
+
+    const logout = async () => {
+        await axios.post("/api/logout").then(() => {
+                document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+                localStorage.removeItem("user");
+                router.push("/");
+            });
+    }
 
     return (
         <SidebarMenu>
@@ -98,7 +110,7 @@ export function NavUser({
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer" onClick={logout}>
                             <LogOut />
                             Log out
                         </DropdownMenuItem>

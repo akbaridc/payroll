@@ -7,210 +7,80 @@ import { CirclePlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-
-interface Task {
-    id: string;
-    title: string;
-    status: string;
-    priority: string;
-}
+import axios from "@/lib/axios";
 
 const Employee = () => {
-    const router = useRouter();
-    const tasks: Task[] = [
-        {
-            id: "TASK-8782",
-            title: "You can't compress the program...",
-            status: "In Progress",
-            priority: "Medium",
-        },
-        {
-            id: "TASK-7878",
-            title: "Try to calculate the EXE feed...",
-            status: "Backlog",
-            priority: "Medium",
-        },
-        {
-            id: "TASK-7839",
-            title: "We need to bypass the neural TCP card!",
-            status: "Todo",
-            priority: "High",
-        },
-        {
-            id: "TASK-5562",
-            title: "The SAS interface is down...",
-            status: "Backlog",
-            priority: "Medium",
-        },
-        {
-            id: "TASK-8686",
-            title: "I'll parse the wireless SSL protocol...",
-            status: "Canceled",
-            priority: "Medium",
-        },
-        {
-            id: "TASK-1280",
-            title: "Use the digital TLS panel...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-        {
-            id: "TASK-7262",
-            title: "The UTF8 application is down...",
-            status: "Done",
-            priority: "High",
-        },
-    ];
+    const router = useRouter();;
+
+    const fetchEmployees = async ({ page, length, search }: any) => {
+        const payload = {
+          size:length,
+          page,
+          search
+        };
+    
+        const response = await axios.post("/api/GetPaginateKaryawan", payload);
+        if (response.status === 200) {
+          return {
+            data: response.data.data,
+            total: response.data.meta.total,
+          };
+        }
+    
+        return { data: [], total: 0 };
+    };
 
     const columns = [
         {
-            accessorKey: "id",
+            accessorKey: "karyawan_foto",
+            alias: "Picture",
             header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Task" />
+                <DataTableColumnHeader column={column} title="Picture" />
             ),
         },
         {
-            accessorKey: "title",
+            accessorKey: "karyawan_nama",
+            alias: "Name",
             header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Title" />
+                <DataTableColumnHeader column={column} title="Name" />
             ),
         },
         {
-            accessorKey: "status",
+            accessorKey: "karyawan_divisi_nama",
+            alias: "Divisi",
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="Divisi" />
+            ),
+        },
+        {
+            accessorKey: "karyawan_level_nama",
+            alias: "Level",
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="Level" />
+            ),
+        },
+        {
+            accessorKey: "karyawan_is_aktif",
+            alias: "Status",
             header: ({ column }: { column: any }) => (
                 <DataTableColumnHeader column={column} title="Status" />
             ),
-        },
-        {
-            accessorKey: "priority",
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Priority" />
-            ),
+            cell: ({ row }: { row: any }) => {
+                const status = row.getValue("karyawan_is_aktif");
+                return status === 1 ? <span>AKTIF</span> : <span>NON-AKTIF</span>;
+            },
         },
     ];
 
     return (
         <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Tasks</h1>
+            <h1 className="text-2xl font-bold mb-4">Employee</h1>
             <div className="flex gap-2">
-                <Button
-                    variant="ghost"
-                    className="text-foreground"
-                    title="Add Employee"
-                    onClick={() => router.push("/backoffice/employee/create")}
-                >
+                <Button variant="ghost" className="text-foreground" title="Add Employee" onClick={() => router.push("/backoffice/employee/create")}>
                     <CirclePlus className="w-48 h-48" />
                 </Button>
             </div>
-            <DataTable columns={columns} data={tasks} />
+            <DataTable columns={columns} fetchData={fetchEmployees} />
         </div>
     );
 };

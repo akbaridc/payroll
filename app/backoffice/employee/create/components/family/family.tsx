@@ -18,8 +18,10 @@ const Family = ({ methods }: { methods: any }) => {
     const [families, setFamilies] = useState([...methods.getValues("family")]);
 
     const addFamily = () => {
-        setFamilies([...families, FamilyDefaultInterface()]);
-        methods.setValue("family", [...families, FamilyDefaultInterface()]);
+        const currentFamilies = methods.getValues("family");
+        setFamilies([...currentFamilies, FamilyDefaultInterface()]);
+        methods.setValue("family", [...currentFamilies, FamilyDefaultInterface()]);
+
     };
 
     const removeFamily = (index: number) => {

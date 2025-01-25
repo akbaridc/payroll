@@ -43,6 +43,7 @@ export function DataTableViewOptions<TData>({
                             column.getCanHide(),
                     )
                     .map((column) => {
+                        const displayAlias = column.columnDef.alias
                         return (
                             <DropdownMenuCheckboxItem
                                 key={column.id}
@@ -52,7 +53,7 @@ export function DataTableViewOptions<TData>({
                                     column.toggleVisibility(!!value)
                                 }
                             >
-                                {column.id}
+                                {displayAlias}
                             </DropdownMenuCheckboxItem>
                         );
                     })}

@@ -28,20 +28,20 @@ const Religions = () => {
 
 const Divisis = () => {
     return [
-        { label: "IT Suppport", value: "IT Suppport" },
-        { label: "Quality Assurance", value: "Quality Assurance" },
-        { label: "Research and Development", value: "Research and Development" },
-        { label: "Admin", value: "Admin" },
+        { label: "IT Suppport", value: "C248ADF7-5B50-405A-9614-C1F2C6995041" },
+        { label: "Quality Assurance", value: "C248ADF7-5B50-405A-9614-C1F2C6995042" },
+        { label: "Research and Development", value: "C248ADF7-5B50-405A-9614-C1F2C6995043" },
+        { label: "Admin", value: "C248ADF7-5B50-405A-9614-C1F2C6995044" },
     ];
 };
 
 const Levels = () => {
     return [
-        { label: "Manager", value: "Manager" },
-        { label: "Asistant Manager", value: "Asistant Manager" },
-        { label: "Project Owner", value: "Project Owner" },
-        { label: "Programmer", value: "Programmer" },
-        { label: "Admin", value: "Admin" },
+        { label: "Manager", value: "C248ADF7-5B50-405A-9614-C1F2C6995045" },
+        { label: "Asistant Manager", value: "C248ADF7-5B50-405A-9614-C1F2C6995046" },
+        { label: "Project Owner", value: "C248ADF7-5B50-405A-9614-C1F2C6995047" },
+        { label: "Programmer", value: "C248ADF7-5B50-405A-9614-C1F2C6995048" },
+        { label: "Admin", value: "C248ADF7-5B50-405A-9614-C1F2C6995050" },
     ];
 };
 
@@ -72,16 +72,16 @@ const Relationships = () => {
 
 const StatusEmployees = () => {
     return [
-        { label: "Tetap", value: "0" },
-        { label: "Kontrak (PKWT)", value: "1" },
-        { label: "Harian Lepas", value: "2" },
-        { label: "Freelance", value: "3" },
-        { label: "Penuh Waktu (Full-Time)", value: "4" },
-        { label: "Paruh Waktu (Part-Time)", value: "5" },
-        { label: "Musiman", value: "6" },
-        { label: "Outsourcing", value: "7" },
-        { label: "Magang (Internship)", value: "8" },
-        { label: "Probation (Masa Percobaan)", value: "9" },
+        { label: "Tetap", value: "C248ADF7-5B50-405A-9614-C1F2C6995051" },
+        { label: "Kontrak (PKWT)", value: "C248ADF7-5B50-405A-9614-C1F2C6995052" },
+        { label: "Harian Lepas", value: "C248ADF7-5B50-405A-9614-C1F2C6995053" },
+        { label: "Freelance", value: "C248ADF7-5B50-405A-9614-C1F2C6995054" },
+        { label: "Penuh Waktu (Full-Time)", value: "C248ADF7-5B50-405A-9614-C1F2C6995055" },
+        { label: "Paruh Waktu (Part-Time)", value: "C248ADF7-5B50-405A-9614-C1F2C6995056" },
+        { label: "Musiman", value: "C248ADF7-5B50-405A-9614-C1F2C6995057" },
+        { label: "Outsourcing", value: "C248ADF7-5B50-405A-9614-C1F2C6995058" },
+        { label: "Magang (Internship)", value: "C248ADF7-5B50-405A-9614-C1F2C6995059" },
+        { label: "Probation (Masa Percobaan)", value: "C248ADF7-5B50-405A-9614-C1F2C6995060" },
     ];
 };
 

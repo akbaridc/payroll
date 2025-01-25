@@ -44,16 +44,7 @@ const StepWizard: React.FC<StepWizardProps> = ({
                 setStepDone((prevStepDone) => [
                     ...new Set([...prevStepDone, steps[currentStep].id]),
                 ]);
-                setTimeout(
-                    () =>
-                        setStepDone((prevStepDone) => [
-                            ...new Set([
-                                ...prevStepDone,
-                                steps[currentStep + 1].id,
-                            ]),
-                        ]),
-                    500,
-                );
+                setTimeout(() => setStepDone((prevStepDone) => [...new Set([...prevStepDone,steps[currentStep + 1].id,]),]),500,);
                 setLoading(false);
             }
         } else {
@@ -117,7 +108,6 @@ const StepWizard: React.FC<StepWizardProps> = ({
                         loading={loading}
                         className={`px-4 py-2 w-fit ${isLastStep ? "bg-green-500 hover:bg-green-500" : "bg-yellow-500 hover:bg-yellow-600"}  text-background rounded-md text-sm`}
                         onClick={nextStep}
-                        disabled={isLastStep}
                     />
                 </div>
             </div>
