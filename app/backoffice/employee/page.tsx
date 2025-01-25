@@ -8,6 +8,7 @@ import { CirclePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
+import Image from "next/image";
 
 const Employee = () => {
     const router = useRouter();;
@@ -37,6 +38,14 @@ const Employee = () => {
             header: ({ column }: { column: any }) => (
                 <DataTableColumnHeader column={column} title="Picture" />
             ),
+            cell: ({ row }: { row: any }) => {
+                // Get the photo value and check if it is null or undefined
+                const picture = row.getValue("karyawan_foto") 
+                    ? (row.getValue("karyawan_foto") === "default.jpg" ? "/default.jpg" : row.getValue("karyawan_foto"))
+                    : "/default.jpg"; // Fallback to default image if it's null or undefined
+            
+                return <Image src={picture} alt="Logo" width={60} height={60} />;
+            },
         },
         {
             accessorKey: "karyawan_nama",
