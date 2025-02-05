@@ -3,16 +3,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import StepWizard from "@/components/form/step-wizard";
 import Personal from "./components/personal/personal";
-import {
-    PersonalValidation,
-    PersonalDefault,
-} from "./components/personal/schema";
+import { PersonalValidation, PersonalDefault } from "./components/personal/schema";
 
 import Employee from "./components/employee/employee";
-import {
-    EmployeeValidation,
-    EmployeeDefault,
-} from "./components/employee/schema";
+import { EmployeeValidation, EmployeeDefault } from "./components/employee/schema";
 
 import Payroll from "./components/payroll/payroll";
 import { PayrollValidation, PayrollDefault } from "./components/payroll/schema";
@@ -21,10 +15,7 @@ import Family from "./components/family/family";
 import { FamilyValidation, FamilyDefault } from "./components/family/schema";
 
 import Residence from "./components/residence/residence";
-import {
-    ResidenceValidation,
-    ResidenceDefault,
-} from "./components/residence/schema";
+import { ResidenceValidation, ResidenceDefault } from "./components/residence/schema";
 
 // import Other from "./components/other/other";
 // import { OtherValidation, OtherDefault } from "./components/other/schema";
@@ -37,7 +28,7 @@ import { z } from "zod";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter } from 'next/navigation'
-import { generateNewID } from "@/app/helpers/global-helper";
+import { generateNewID, setErrorRequest } from "@/app/helpers/global-helper";
 
 export default function EmployeeCreate() {
     const router = useRouter()
@@ -49,7 +40,6 @@ export default function EmployeeCreate() {
         payroll: z.object(PayrollValidation()),
         family: FamilyValidation(),
         residence: z.object(ResidenceValidation()),
-        // other: z.object(OtherValidation()),
     });
 
     const methods = useForm({
@@ -60,7 +50,6 @@ export default function EmployeeCreate() {
             payroll: PayrollDefault(),
             family: FamilyDefault(),
             residence: ResidenceDefault(),
-            // other: OtherDefault(),
         },
     });
 
@@ -69,21 +58,20 @@ export default function EmployeeCreate() {
         { id: 2, title: "Employee", form: "employee", content: <Employee methods={methods} /> },
         { id: 3, title: "Payroll", form: "payroll", content: <Payroll methods={methods} /> },
         { id: 4, title: "Family", form: "family", content: <Family methods={methods} /> },
-        { id: 5, title: "Employee Residence", form: "residence", content: <Residence methods={methods} /> },
-        // { id: 6, title: "Other Data", form: "other", content: <Other methods={methods} /> },
+        { id: 5, title: "Residence", form: "residence", content: <Residence methods={methods} /> },
     ];
 
     async function onSubmit(value: any): Promise<boolean> {
         try {
             const formSchema = Object.keys(value)[0];
-
-            let message = "";
+            let messageSuccess = "";
+            
             const existingData = JSON.parse(localStorage.getItem("employee")) ?? {};
             let payloadLocalStorage = {};
             let payloadLocalStorageFamily = [];
             let payloadLocalStorageAddress = {};
 
-            if (formSchema == "personal") {
+            if (formSchema === "personal") {
                 payloadLocalStorage = {
                     ...existingData,
                     karyawan_nama: value.personal.name,
@@ -96,9 +84,9 @@ export default function EmployeeCreate() {
                     karyawan_agama: value.personal.religion,
                 }
 
-                message = "Personal data has been save successfully";
+                messageSuccess = "Personal data has been save successfully";
             }
-            if (formSchema == "employee") {
+            if (formSchema === "employee") {
                 payloadLocalStorage = {
                     ...existingData,
                     karyawan_nip: value.employee.nip,
@@ -112,9 +100,9 @@ export default function EmployeeCreate() {
                     karyawan_is_resign: value.employee.resign,
                 }
 
-                message = "Employee data has been save successfully";
+                messageSuccess = "Employee data has been save successfully";
             }
-            if (formSchema == "payroll") {
+            if (formSchema === "payroll") {
                 payloadLocalStorage = {
                     ...existingData,
                     kategori_ptkp_id: value.payroll.category_employee,
@@ -133,9 +121,9 @@ export default function EmployeeCreate() {
                     // karyawan_is_aktif: value.payroll.obligation,
                 }
 
-                message = "Payroll data has been save successfully";
+                messageSuccess = "Payroll data has been save successfully";
             }
-            if (formSchema == "family") {
+            if (formSchema === "family") {
                 payloadLocalStorage = {...existingData};
                 if(value.family.length > 0 && (value.family[0].name && value.family[0].date_birth)){
                     payloadLocalStorageFamily = value.family.map((item: any) => {
@@ -151,10 +139,9 @@ export default function EmployeeCreate() {
                     });
                 }
                 
-
-                message = "Family data has been save successfully";
+                messageSuccess = "Family data has been save successfully";
             }
-            if (formSchema == "residence") {
+            if (formSchema === "residence") {
                 payloadLocalStorage = {...existingData};
                 payloadLocalStorageAddress = {
                     karyawan_detail_judul_alamat: value.residence.fictive_address,
@@ -169,7 +156,7 @@ export default function EmployeeCreate() {
                     karyawan_detail_is_aktif: 1,
                 }
 
-                message = "";
+                messageSuccess = ""
             }
 
             localStorage.setItem("employee",JSON.stringify(payloadLocalStorage));
@@ -180,7 +167,7 @@ export default function EmployeeCreate() {
                 localStorage.setItem("employee-address",JSON.stringify(payloadLocalStorageAddress));
             }
 
-            if(formSchema !== 'residence' && message) setAlertDialog({title: "Success!",message: message,type: "success"});
+            if(formSchema !== 'residence' && messageSuccess) setAlertDialog({title: "Success!",message:messageSuccess,type: "success"});
             
 
             if(formSchema == "residence"){
@@ -202,14 +189,16 @@ export default function EmployeeCreate() {
                 await axios.post("/api/Karyawan", employee).then(async (response) => {
                     if(response.status === 200){
                         if(employeeFamily.length > 0){
-                            employeeFamily.forEach(async (item: any) => {
-                                const karyawan_keluarga_id = await generateNewID();
-                                const payload = {karyawan_keluarga_id, karyawan_id, ...item }
-
-                                await axios.post("/api/KaryawanKeluarga", payload).catch(error => {
-                                    errorMessage = error.response.data?.message || "Something went wrong";
-                                })
-                            })
+                            try {
+                                const familyRequests = employeeFamily.map(async (item: any) => {
+                                    const karyawan_keluarga_id = await generateNewID();
+                                    return axios.post("/api/KaryawanKeluarga", { karyawan_keluarga_id, karyawan_id, ...item });
+                                });
+                                await Promise.all(familyRequests);
+                            } catch (error:any) {
+                                console.error(error)
+                                errorMessage = "Something went wrong";
+                            }
                         }
 
                         if(Object.keys(employeeAddress).length > 0) {
@@ -224,10 +213,15 @@ export default function EmployeeCreate() {
                     }
                     
                 }).catch(error => {
+                    const errors = error.response?.data?.data;
+                    setErrorRequest(errors, methods.setError, { karyawan_nik: "ktp" });
+                    setErrorRequest(errors, methods.setError, { karyawan_nip: "nip" });
+
                     errorMessage = error.response.data?.message || "Something went wrong";
                 })
 
                 if(errorMessage) {
+                    // axios.delete(`/api/Karyawan/${karyawan_id}`);
                     setAlertDialog({title: "Error!",message: errorMessage,type: "error"});
                     return false;
                 }

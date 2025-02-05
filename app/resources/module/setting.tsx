@@ -11,134 +11,16 @@ export function Setting() {
                 url: "#",
                 items: [
                     {
-                        title: "Basic Data Employee",
-                        url: "#",
-                        items: [
-                            {
-                                title: "Religion",
-                                url: "#",
-                            },
-                            {
-                                title: "Education Level",
-                                url: "#",
-                            },
-                            {
-                                title: "Education Major",
-                                url: "#",
-                            },
-                            {
-                                title: "Bank",
-                                url: "#",
-                            },
-                            {
-                                title: "City",
-                                url: "#",
-                            },
-                        ],
+                        title: "Religion",
+                        url: "backoffice/setting/master-data/religion",
                     },
                     {
-                        title: "Organization Data",
-                        url: "#",
-
-                        items: [
-                            {
-                                title: "Organization Level",
-                                url: "#",
-                            },
-                            {
-                                title: "Orfanization Structure",
-                                url: "#",
-                            },
-                            {
-                                title: "Grade",
-                                url: "#",
-                            },
-                            {
-                                title: "Title",
-                                url: "#",
-                            },
-                            {
-                                title: "Account Code",
-                                url: "#",
-                            },
-                            {
-                                title: "Segment",
-                                url: "#",
-                            },
-                            {
-                                title: "Cost Center",
-                                url: "#",
-                            },
-                            {
-                                title: "Employee Status",
-                                url: "#",
-                            },
-                            {
-                                title: "Termination",
-                                url: "#",
-                            },
-                            {
-                                title: "Facility",
-                                url: "#",
-                            },
-                        ],
+                        title: "Division",
+                        url: "backoffice/setting/master-data/divisi",
                     },
                     {
-                        title: "Attendance Data",
-                        url: "#",
-
-                        items: [
-                            {
-                                title: "Calender Setting",
-                                url: "#",
-                            },
-                            {
-                                title: "Shift",
-                                url: "#",
-                            },
-                            {
-                                title: "Group Shift",
-                                url: "#",
-                            },
-                            {
-                                title: "Holiday",
-                                url: "#",
-                            },
-                        ],
-                    },
-                    {
-                        title: "Payroll Data",
-                        url: "#",
-
-                        items: [
-                            {
-                                title: "Minimum Wage",
-                                url: "#",
-                            },
-                            {
-                                title: "Master Variable",
-                                url: "#",
-                            },
-                            {
-                                title: "Master Formula",
-                                url: "#",
-                            },
-                        ],
-                    },
-                    {
-                        title: "Bonus dan THR",
-                        url: "#",
-
-                        items: [
-                            {
-                                title: "Master Variable",
-                                url: "#",
-                            },
-                            {
-                                title: "Master Formula",
-                                url: "#",
-                            },
-                        ],
+                        title: "Levels",
+                        url: "backoffice/setting/master-data/level",
                     },
                 ],
             },

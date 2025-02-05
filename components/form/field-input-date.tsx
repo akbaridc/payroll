@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import {FormControl,FormField,FormItem,FormLabel,FormMessage} from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import DatePicker from "react-datepicker";
 import { directiveRawDate } from "@/app/helpers/global-helper";
@@ -20,14 +14,7 @@ interface FormInputFieldProps {
     [key: string]: any;
 }
 
-export function FormInputFieldDate({
-    label,
-    name,
-    form,
-    className,
-    disabled,
-    ...props
-}: FormInputFieldProps) {
+export function FormInputFieldDate({label,name,form,className,disabled,...props}: FormInputFieldProps) {
     return (
         <FormField
             control={form?.control}
@@ -37,13 +24,15 @@ export function FormInputFieldDate({
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <DatePicker
-                            selected={field.value}
+                            selected={field.value ? new Date(field.value) : null}
                             onChange={(date) => field.onChange(date)}
                             onChangeRaw={(e) => {
                                 const target = e.target as HTMLInputElement;
-                                if(target.value){
+                                if (target.value) {
                                     const date = directiveRawDate(target.value);
                                     if (date) field.onChange(date);
+                                } else {
+                                    field.onChange(null);
                                 }
                             }}
                             dateFormat="dd/MM/yyyy"

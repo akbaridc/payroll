@@ -35,6 +35,7 @@ interface ComboBoxProps {
     disabled?: boolean;
     combobox?: ComboBox[];
     onChange?: (value: string) => void;
+    [key: string]: any;
 }
 
 export function ComboboxForm({

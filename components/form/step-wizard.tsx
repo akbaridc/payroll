@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { ButtonAct } from "@/components/form/button";
+import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation'
 
 type StepWizardProps = {
     steps: {
@@ -16,11 +18,8 @@ type StepWizardProps = {
     onSubmit: (data: any) => Promise<boolean>;
 };
 
-const StepWizard: React.FC<StepWizardProps> = ({
-    steps,
-    methods,
-    onSubmit,
-}) => {
+const StepWizard: React.FC<StepWizardProps> = ({steps,methods,onSubmit}) => {
+    const router = useRouter()
     const { setAlertDialog } = useAlertDialog();
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -41,12 +40,12 @@ const StepWizard: React.FC<StepWizardProps> = ({
 
             if (success && !isLastStep) {
                 setCurrentStep(currentStep + 1);
-                setStepDone((prevStepDone) => [
-                    ...new Set([...prevStepDone, steps[currentStep].id]),
-                ]);
-                setTimeout(() => setStepDone((prevStepDone) => [...new Set([...prevStepDone,steps[currentStep + 1].id,]),]),500,);
+                setStepDone((prevStepDone) => [...new Set([...prevStepDone, steps[currentStep].id])]);
+                setTimeout(() => setStepDone((prevStepDone) => [...new Set([...prevStepDone,steps[currentStep + 1].id])]),500);
                 setLoading(false);
             }
+
+            setLoading(false);
         } else {
             setLoading(false);
         }
@@ -79,9 +78,7 @@ const StepWizard: React.FC<StepWizardProps> = ({
                         onClick={() => onJumpToStep(index)}
                         title={step.title}
                     >
-                        <div
-                            className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? "bg-primary text-white" : "bg-foreground text-background"}`}
-                        >
+                        <div className={`h-8 w-8 rounded-full flex items-center justify-center ${index === currentStep ? "bg-primary text-white" : "bg-foreground text-background"}`}>
                             {index + 1}
                         </div>
                         <span className="hidden md:block">{step.title}</span>
@@ -94,17 +91,21 @@ const StepWizard: React.FC<StepWizardProps> = ({
 
                 {/* Navigation Buttons */}
                 <div className="flex gap-2 justify-start mt-7">
+                    <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                        Back
+                    </Button>
+
                     <button
                         type="button"
                         className={`px-4 py-2 bg-slate-800 text-white rounded-md text-sm ${isFirstStep ? "opacity-50 cursor-not-allowed" : ""}`}
                         onClick={prevStep}
                         disabled={isFirstStep}
                     >
-                        Back
+                        Previous
                     </button>
 
                     <ButtonAct
-                        text={isLastStep ? "Save" : "Submit & Continue"}
+                        text={isLastStep ? "Save Employee" : "Submit & Continue"}
                         loading={loading}
                         className={`px-4 py-2 w-fit ${isLastStep ? "bg-green-500 hover:bg-green-500" : "bg-yellow-500 hover:bg-yellow-600"}  text-background rounded-md text-sm`}
                         onClick={nextStep}

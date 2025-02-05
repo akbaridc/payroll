@@ -2,14 +2,14 @@ import { z } from "zod";
 
 const ResidenceValidation = () => {
     return {
-        fictive_address: z.string().nullable(),
-        address: z.string().nullable(),
-        contact: z.string().nullable(),
-        province: z.string().nullable(),
-        city: z.string().nullable(),
-        district: z.string().nullable(),
-        ward: z.string().nullable(),
-        postal_code: z.string().nullable(),
+        fictive_address: z.string().nonempty("Fictive Address is required"),
+        address: z.string().nonempty("Address is required"),
+        contact: z.string().nonempty("Contact Address is required"),
+        province: z.string().nonempty("Province is required"),
+        city: z.string().nonempty("City is required"),
+        district: z.string().nonempty("District is required"),
+        ward: z.string().nonempty("Ward is required"),
+        postal_code: z.string().nonempty("Postal Code is required"),
     };
 };
 

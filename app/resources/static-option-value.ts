@@ -26,25 +26,6 @@ const Religions = () => {
     ];
 };
 
-const Divisis = () => {
-    return [
-        { label: "IT Suppport", value: "C248ADF7-5B50-405A-9614-C1F2C6995041" },
-        { label: "Quality Assurance", value: "C248ADF7-5B50-405A-9614-C1F2C6995042" },
-        { label: "Research and Development", value: "C248ADF7-5B50-405A-9614-C1F2C6995043" },
-        { label: "Admin", value: "C248ADF7-5B50-405A-9614-C1F2C6995044" },
-    ];
-};
-
-const Levels = () => {
-    return [
-        { label: "Manager", value: "C248ADF7-5B50-405A-9614-C1F2C6995045" },
-        { label: "Asistant Manager", value: "C248ADF7-5B50-405A-9614-C1F2C6995046" },
-        { label: "Project Owner", value: "C248ADF7-5B50-405A-9614-C1F2C6995047" },
-        { label: "Programmer", value: "C248ADF7-5B50-405A-9614-C1F2C6995048" },
-        { label: "Admin", value: "C248ADF7-5B50-405A-9614-C1F2C6995050" },
-    ];
-};
-
 const Relationships = () => {
     return [
         { label: "Ayah", value: "0" },
@@ -121,8 +102,6 @@ const Wards = (district: string) => {
 export {
     Genders,
     Religions,
-    Divisis,
-    Levels,
     Relationships,
     StatusEmployees,
     Provinces,

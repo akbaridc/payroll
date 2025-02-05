@@ -71,4 +71,12 @@ const generateNewID = async () => {
     return result;
 }
 
-export { extractUrls, generateRandomString, directiveRawDate, generateNewID };
+const setErrorRequest = (errors: any, schema: any, fields: any) => {
+    if (errors) {
+        Object.keys(errors).forEach((key) => {
+            const convertFieldName = fields[key] || key;
+            schema.setError(convertFieldName, {type: "manual",message: errors[key][0]});
+        });
+    }
+}
+export { extractUrls, generateRandomString, directiveRawDate, generateNewID, setErrorRequest };

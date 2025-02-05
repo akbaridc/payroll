@@ -61,17 +61,8 @@ export function NavMain({ items }: { items: SidebarItem[] }) {
                 >
                     <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                            <SidebarMenuButton
-                                tooltip={item.title}
-                                className={
-                                    existSubmenu(item) && isActive
-                                        ? "bg-[hsl(var(--sidebar-accent))]"
-                                        : ""
-                                }
-                                onClick={() =>
-                                    item.url !== "#" &&
-                                    router.push(`/${item.url}`)
-                                }
+                            <SidebarMenuButton tooltip={item.title} className={existSubmenu(item) && isActive ? "bg-[hsl(var(--sidebar-accent))]" : "" }
+                                onClick={() => item.url !== "#" && router.push(`/${item.url}`) }
                             >
                                 {item.icon && <item.icon />}
                                 <span>{item.title}</span>

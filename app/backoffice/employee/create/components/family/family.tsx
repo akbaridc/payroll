@@ -18,7 +18,7 @@ const Family = ({ methods }: { methods: any }) => {
     const [families, setFamilies] = useState([...methods.getValues("family")]);
 
     const addFamily = () => {
-        const currentFamilies = methods.getValues("family");
+        const currentFamilies = methods.getValues("family") || [];
         setFamilies([...currentFamilies, FamilyDefaultInterface()]);
         methods.setValue("family", [...currentFamilies, FamilyDefaultInterface()]);
 

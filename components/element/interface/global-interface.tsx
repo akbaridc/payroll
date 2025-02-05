@@ -62,3 +62,16 @@ export interface RadioBox {
     label: string;
     value: string;
 }
+
+export interface InterfaceDivisionForm {
+    code: string;
+    name: string;
+    active: boolean;
+}
+
+export interface InterfaceLevelForm {
+    code: string;
+    name: string;
+    divisi: string;
+    active: boolean;
+}

@@ -7,7 +7,10 @@ const PayrollValidation = () => {
             .string()
             .nonempty("Basic Salary is required")
             .min(1, "Basic Salary is required"),
-        bpjs: z.string().nonempty("Basic Salary is required"),
+        bpjs: z
+            .string()
+            .nonempty("Basic BPJS is required")
+            .min(1, "Basic BPJS is required"),
         bank: z.string().nullable(),
         acc_number: z.string().nullable(),
         acc_name: z.string().nullable(),
@@ -25,7 +28,7 @@ const PayrollDefault = () => {
     return {
         category_employee: "",
         salary: 0,
-        bpjs: "",
+        bpjs: 0,
         bank: "",
         acc_number: "",
         acc_name: "",

@@ -10,7 +10,7 @@ const Payroll = ({ methods }: { methods: any }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <ComboboxForm className="custom-field" form={methods} name="payroll.category_employee" label="Category Employee" combobox={StatusEmployees()} />
             <FormInputField className="custom-field w-full" form={methods} name="payroll.salary" label="Basic Salary / Hours" onInput={(e: any) => (e.target.value = e.target.value.replace(/[^0-9]/g, ""))} />
-            <FormInputField className="custom-field w-full" form={methods} name="payroll.bpjs" label="Basic BPJS" />
+            <FormInputField className="custom-field w-full" form={methods} name="payroll.bpjs" label="Basic BPJS" onInput={(e: any) => (e.target.value = e.target.value.replace(/[^0-9]/g, ""))}/>
             <ComboboxForm className="custom-field" form={methods} name="payroll.bank" label="Bank" combobox={[]} />
             <FormInputField className="custom-field w-full" form={methods} name="payroll.acc_number" label="Account Number" />
             <FormInputField className="custom-field w-full" form={methods} name="payroll.acc_name" label="Account Name" />

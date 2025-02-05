@@ -40,7 +40,7 @@ body {
         --sidebar-primary: 240 5.9% 10%;
         --sidebar-primary-foreground: 215 27.9% 16.9%;
         --sidebar-accent: 240 3.7% 15.9%;
-        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
         --sidebar-border: 240 3.7% 15.9%;
         --sidebar-ring: 217.2 91.2% 59.8%;
     }
@@ -93,4 +93,14 @@ body {
 
 .custom-field {
     @apply rounded-none border-x-0 border-t-0 border-b-[1px] border-b-foreground/20 bg-transparent focus:outline-none focus:ring-0 focus:border-b-foreground focus:outline-0 focus:outline-transparent focus:outline-offset-0 invalid:border-b-red-500 invalid:text-red-600 active:outline-0 active:ring-0 autofill:bg-transparent transition duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-transparent !important;
+}
+
+
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, and Opera */
 }

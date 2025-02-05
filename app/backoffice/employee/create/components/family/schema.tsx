@@ -5,9 +5,12 @@ const FamilyValidation = () => {
         z.object({
             name: z.string().nullable(),
             relationship: z.string().nullable(),
-            date_birth: z.date()
-                        .transform((val) => (val === null ? null : new Date(val)))
-                        .pipe(z.union([z.date(), z.null()])),
+            date_birth: z.union([z.string(), z.date(), z.null()])
+                        .transform((val) => {
+                            if (val === "" || val === null) return null;
+                            if (typeof val === "string" && !isNaN(Date.parse(val))) return new Date(val);
+                            return val;
+                        }),
             gender: z.string().nullable(),
             religion: z.string().nullable(),
         }),

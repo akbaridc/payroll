@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -5,17 +6,22 @@ import React from "react";
 interface ButtonActProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;
     loading: boolean;
+    variant?: any;
 }
+
 
 export function ButtonAct({
     text,
     type = "submit",
     className,
+    variant = "default",
     loading,
     ...props
 }: ButtonActProps) {
     return (
         <Button
+            size="sm"
+            variant={variant}
             type={type}
             className={cn("w-full flex items-center justify-center", className)}
             {...props}
