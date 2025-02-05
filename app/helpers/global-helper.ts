@@ -79,4 +79,9 @@ const setErrorRequest = (errors: any, schema: any, fields: any) => {
         });
     }
 }
-export { extractUrls, generateRandomString, directiveRawDate, generateNewID, setErrorRequest };
+
+const user = () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+}
+export { extractUrls, generateRandomString, directiveRawDate, generateNewID, setErrorRequest, user };
