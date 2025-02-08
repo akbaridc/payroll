@@ -20,7 +20,7 @@ export function FormInputFieldDate({label,name,form,className,disabled,...props}
             control={form?.control}
             name={name}
             render={({ field }) => (
-                <FormItem className="flex flex-col gap-3">
+                <FormItem className="flex flex-col gap-6">
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <DatePicker

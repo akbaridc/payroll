@@ -22,6 +22,10 @@ export function Setting() {
                         title: "Levels",
                         url: "backoffice/setting/master-data/level",
                     },
+                    {
+                        title: "Holidays",
+                        url: "backoffice/setting/master-data/holiday",
+                    },
                 ],
             },
             {

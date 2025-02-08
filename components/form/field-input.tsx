@@ -32,6 +32,10 @@ export function FormInputField({
     disabled,
     ...props
 }: FormInputFieldProps) {
+    if (type === "hidden") {
+        return <Input {...form?.register(name)} type="hidden" {...props} />;
+    }
+    
     return (
         <FormField
             control={form?.control}
