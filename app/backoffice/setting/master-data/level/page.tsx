@@ -12,12 +12,14 @@ import DeleteDialog from "@/components/element/dialog/delete-dialog";
 import {useState} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { StatusBadge } from "@/components/badge/status";
+import { EditDialog } from "./dialog/edit-dialog";
 
 const Levels = () => {
     const router = useRouter();
     const { setAlertDialog } = useAlertDialog();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleted, setIsDeleted] = useState("");
+    const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
 
     const fetchLevels = async ({ page, length, search }: any) => {
         const payload = {
@@ -85,6 +87,9 @@ const Levels = () => {
                         <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/level/${karyawan_level_id}`)}>
                             <Pencil />
                         </Button>
+                        <Button type="button" variant="warning" size="sm" onClick={() => setIsOpenEditDialog(true)}>
+                            Open Modal
+                        </Button>
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_level_id)}>
                             <Trash />
                         </Button>
@@ -123,6 +128,7 @@ const Levels = () => {
                 </div>
                 <DataTable columns={columns} fetchData={fetchLevels} />
             </div>
+            <EditDialog open={isOpenEditDialog} setOpen={setIsOpenEditDialog} />
             <DeleteDialog open={isDialogOpen} setOpen={setIsDialogOpen} onClick={handleDelete} />
         </>
     );
