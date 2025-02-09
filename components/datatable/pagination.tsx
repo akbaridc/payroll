@@ -18,12 +18,12 @@ export const DataTablePagination = ({
   totalPages,
   pageSize,
   totalItems,
-  pageSizes = [5, 10, 20, 30, 40, 50, 100],
+  pageSizes = [5, 10, 20, 30, 40, 50, 100, -1],
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
   const startRow = (currentPage - 1) * pageSize + 1;
-  const endRow = Math.min(currentPage * pageSize, totalItems);
+  const endRow = pageSize === -1 ? totalItems : Math.min(currentPage * pageSize, totalItems);
 
   return (
     <div className="flex items-center justify-between px-2 mt-6">
@@ -43,14 +43,14 @@ export const DataTablePagination = ({
             <SelectContent side="top">
               {pageSizes.map((size) => (
                 <SelectItem key={size} value={`${size}`}>
-                  {size}
+                  {size === -1 ? "All" : size}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {currentPage} of {totalPages}
+          Page {currentPage} of {pageSize === -1 ? 1 : totalPages}
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -75,7 +75,7 @@ export const DataTablePagination = ({
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === (pageSize === -1 ? 1 : totalPages)}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />

@@ -16,15 +16,16 @@ interface DataTableProps<TData> {
       length: number;
       search: string;
     }) => Promise<{ data: TData[]; total: number }>;
+    lengthOption?: any;
   }
 
-  export function DataTable<TData>({ columns, fetchData }: DataTableProps<TData>) {
+  export function DataTable<TData>({ columns, fetchData, lengthOption }: DataTableProps<TData>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [data, setData] = React.useState<TData[]>([]);
     const [total, setTotal] = React.useState(0);
     const [page, setPage] = React.useState(1);
-    const [length, setLength] = React.useState(10);
+    const [length, setLength] = React.useState(lengthOption || 10);
     const [search, setSearch] = React.useState("");
 
     const fetchDataCallback = React.useCallback(async () => {
