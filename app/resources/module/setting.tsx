@@ -30,6 +30,10 @@ export function Setting() {
                         title: "Category Absensi",
                         url: "backoffice/setting/master-data/category-absensi",
                     },
+                    {
+                        title: "Allowance",
+                        url: "backoffice/setting/master-data/allowance",
+                    },
                 ],
             },
             {

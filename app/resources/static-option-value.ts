@@ -116,6 +116,27 @@ const Wards = (district: string) => {
                 }));
 };
 
+const TypeAllowance = () => {
+    return [
+        { label: "Menambah Pendapatan", value: "MENAMBAH PENDAPATAN" },
+        { label: "Mengurangi Pendapatan", value: "MENGURANGI PENDAPATAN" },
+    ];
+};
+
+const PaymentBasis = () => {
+    return [
+        { label: "Tetap", value: "TETAP" },
+    ];
+};
+
+const PaidMode = () => {
+    return [
+        { label: "Perusahaan", value: "PERUSAHAAN" },
+        { label: "Karyawan", value: "KARYAWAN" },
+    ];
+};
+
+
 export {
     Genders,
     Religions,
@@ -125,5 +146,8 @@ export {
     Cities,
     Districts,
     Wards,
-    Month
+    Month,
+    TypeAllowance,
+    PaymentBasis,
+    PaidMode
 };

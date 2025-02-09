@@ -12,23 +12,21 @@ import DeleteDialog from "@/components/element/dialog/delete-dialog";
 import {useState} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { StatusBadge } from "@/components/badge/status";
-import { EditDialog } from "./dialog/edit-dialog";
 
-const Levels = () => {
+const AllowancePage = () => {
     const router = useRouter();
     const { setAlertDialog } = useAlertDialog();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleted, setIsDeleted] = useState("");
-    const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
 
-    const fetchLevels = async ({ page, length, search }: any) => {
+    const fetchAllowance = async ({ page, length, search }: any) => {
         const payload = {
           size:length,
           page,
           search
         };
     
-        const response = await axios.post("/api/level-paginate", payload);
+        const response = await axios.post("/api/GetPaginateTunjangan", payload);
         if (response.status === 200) {
           return {
             data: response.data.data,
@@ -41,7 +39,7 @@ const Levels = () => {
 
     const columns = [
         {
-            accessorKey: "karyawan_level_kode",
+            accessorKey: "tunjangan_kode",
             alias: "Code",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -49,7 +47,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "karyawan_level_nama",
+            accessorKey: "tunjangan_nama",
             alias: "Name",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -57,21 +55,37 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "karyawan_divisi_nama",
-            alias: "Divisi",
+            accessorKey: "tunjangan_jenistunjangan",
+            alias: "Jenis",
             size: 150,
             header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Divisi" />
+                <DataTableColumnHeader column={column} title="Jenis" />
             ),
         },
         {
-            accessorKey: "karyawan_level_is_aktif",
+            accessorKey: "tunjangan_dasarbayar",
+            alias: "Dasar Bayar",
+            size: 150,
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="Dasar Bayar" />
+            ),
+        },
+        {
+            accessorKey: "tunjangan_keterangan",
+            alias: "Keterangan",
+            size: 150,
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="Keterangan" />
+            ),
+        },
+        {
+            accessorKey: "tunjangan_is_aktif",
             alias: "Status",
             header: ({ column }: { column: any }) => (
                 <DataTableColumnHeader column={column} title="Status" />
             ),
             cell: ({ row }: { row: any }) => {
-                const status = row.getValue("karyawan_level_is_aktif");
+                const status = row.getValue("tunjangan_is_aktif");
                 return <StatusBadge status={status} />;
             },
         },
@@ -81,13 +95,13 @@ const Levels = () => {
             header: "Actions",
             size: 70,
             cell: ({ row }: { row: any }) => {
-                const karyawan_level_id = row.original.karyawan_level_id;
+                const tunjangan_id = row.original.tunjangan_id;
                 return (
                     <div className="flex space-x-2">
-                        <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/level/${karyawan_level_id}`)}>
+                        <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/allowance/${tunjangan_id}`)}>
                             <Pencil />
                         </Button>
-                        <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_level_id)}>
+                        <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(tunjangan_id)}>
                             <Trash />
                         </Button>
                     </div>
@@ -103,7 +117,7 @@ const Levels = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await axios.delete(`/api/KaryawanLevel/${isDeleted}`);
+            const response = await axios.delete(`/api/Tunjangan/${isDeleted}`);
             if (response.status === 200) {
                 setIsDialogOpen(false)
                 setAlertDialog({title: "Success!",message: "Delete successfully",type: "success"});
@@ -117,18 +131,17 @@ const Levels = () => {
     return (
         <>
             <div className="container mx-auto">
-                <h1 className="text-2xl font-bold mb-4">Levels</h1>
+                <h1 className="text-2xl font-bold mb-4">Allowance</h1>
                 <div className="flex gap-2">
-                    <Button  className="text-foreground" title="Add Level" onClick={() => router.push("/backoffice/setting/master-data/level/create")}>
+                    <Button className="text-foreground" title="Add Divisi" onClick={() => router.push("/backoffice/setting/master-data/allowance/create")}>
                         <CirclePlus className="w-48 h-48" /> Add data
                     </Button>
                 </div>
-                <DataTable columns={columns} fetchData={fetchLevels} />
+                <DataTable columns={columns} fetchData={fetchAllowance} />
             </div>
-            <EditDialog open={isOpenEditDialog} setOpen={setIsOpenEditDialog} />
             <DeleteDialog open={isDialogOpen} setOpen={setIsDialogOpen} onClick={handleDelete} />
         </>
     );
 };
 
-export default Levels;
+export default AllowancePage;
