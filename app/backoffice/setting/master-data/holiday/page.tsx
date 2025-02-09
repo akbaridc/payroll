@@ -3,7 +3,7 @@
 
 import { DataTable } from "@/components/datatable/content";
 import { DataTableColumnHeader } from "@/components/datatable/header";
-import { CirclePlus, Trash, Pencil } from "lucide-react";
+import { CirclePlus, Trash, Pencil, Eye } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -11,22 +11,21 @@ import axios from "@/lib/axios";
 import DeleteDialog from "@/components/element/dialog/delete-dialog";
 import {useState} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
-import { StatusBadge } from "@/components/badge/status";
 
-const Levels = () => {
+const Holiday = () => {
     const router = useRouter();
     const { setAlertDialog } = useAlertDialog();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleted, setIsDeleted] = useState("");
 
-    const fetchLevels = async ({ page, length, search }: any) => {
+    const fetchHoliday = async ({ page, length, search }: any) => {
         const payload = {
           size:length,
           page,
           search
         };
     
-        const response = await axios.post("/api/level-paginate", payload);
+        const response = await axios.post("/api/GetPaginateLiburNasionalIndex", payload);
         if (response.status === 200) {
           return {
             data: response.data.data,
@@ -39,39 +38,12 @@ const Levels = () => {
 
     const columns = [
         {
-            accessorKey: "karyawan_level_kode",
-            alias: "Code",
+            accessorKey: "libur_nasional_tahun",
+            alias: "Years",
             size: 150,
             header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Code" />
+                <DataTableColumnHeader column={column} title="Years" />
             ),
-        },
-        {
-            accessorKey: "karyawan_level_nama",
-            alias: "Name",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Name" />
-            ),
-        },
-        {
-            accessorKey: "karyawan_divisi_nama",
-            alias: "Divisi",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Divisi" />
-            ),
-        },
-        {
-            accessorKey: "karyawan_level_is_aktif",
-            alias: "Status",
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Status" />
-            ),
-            cell: ({ row }: { row: any }) => {
-                const status = row.getValue("karyawan_level_is_aktif");
-                return <StatusBadge status={status} />;
-            },
         },
         {
             id: "actions",
@@ -79,13 +51,16 @@ const Levels = () => {
             header: "Actions",
             size: 70,
             cell: ({ row }: { row: any }) => {
-                const karyawan_level_id = row.original.karyawan_level_id;
+                const libur_nasional_tahun = row.original.libur_nasional_tahun;
                 return (
                     <div className="flex space-x-2">
-                        <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/level/${karyawan_level_id}`)}>
+                        <Button type="button" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/holiday/${libur_nasional_tahun}/view`)}>
+                            <Eye />
+                        </Button>
+                        <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/holiday/${libur_nasional_tahun}`)}>
                             <Pencil />
                         </Button>
-                        <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_level_id)}>
+                        <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(libur_nasional_tahun)}>
                             <Trash />
                         </Button>
                     </div>
@@ -101,7 +76,7 @@ const Levels = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await axios.delete(`/api/KaryawanLevel/${isDeleted}`);
+            const response = await axios.delete(`/api/LiburNasional/${isDeleted}`);
             if (response.status === 200) {
                 setIsDialogOpen(false)
                 setAlertDialog({title: "Success!",message: "Delete successfully",type: "success"});
@@ -115,17 +90,17 @@ const Levels = () => {
     return (
         <>
             <div className="container mx-auto">
-                <h1 className="text-2xl font-bold mb-4">Levels</h1>
+                <h1 className="text-2xl font-bold mb-4">Holiday</h1>
                 <div className="flex gap-2">
-                    <Button  className="text-foreground" title="Add Level" onClick={() => router.push("/backoffice/setting/master-data/level/create")}>
+                    <Button className="text-foreground" title="Add Holiday" onClick={() => router.push("/backoffice/setting/master-data/holiday/create")}>
                         <CirclePlus className="w-48 h-48" /> Add data
                     </Button>
                 </div>
-                <DataTable columns={columns} fetchData={fetchLevels} />
+                <DataTable columns={columns} fetchData={fetchHoliday} />
             </div>
             <DeleteDialog open={isDialogOpen} setOpen={setIsDialogOpen} onClick={handleDelete} />
         </>
     );
 };
 
-export default Levels;
+export default Holiday;
