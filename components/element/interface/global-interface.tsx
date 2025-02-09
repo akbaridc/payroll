@@ -75,3 +75,12 @@ export interface InterfaceLevelForm {
     divisi: string;
     active: boolean;
 }
+
+export interface InterfacePeriodePayrollForm {
+    attendance_kode: string;
+    attendance_tgl_awal: string;
+    attendance_tgl_akhir: string;
+    attendance_periode_thn: string;
+    attendance_periode_bln: string;
+    attendance_is_aktif: boolean;
+}

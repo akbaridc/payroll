@@ -7,6 +7,10 @@ export function Payroll() {
         icon: Bot,
         items: [
             {
+                title: "Periode Payroll",
+                url: "backoffice/payroll/periode-payroll",
+            },
+            {
                 title: "Master",
                 url: "#",
                 items: [

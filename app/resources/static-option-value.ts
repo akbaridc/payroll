@@ -51,6 +51,23 @@ const Relationships = () => {
     ];
 };
 
+const Month = () => {
+    return [
+        { label: "January", value: "1" },
+        { label: "February", value: "2" },
+        { label: "March", value: "3" },
+        { label: "April", value: "4" },
+        { label: "May", value: "5" },
+        { label: "June", value: "6" },
+        { label: "July", value: "7" },
+        { label: "August", value: "8" },
+        { label: "September", value: "9" },
+        { label: "October", value: "10" },
+        { label: "November", value: "11" },
+        { label: "December", value: "12" }
+    ];
+};
+
 const StatusEmployees = () => {
     return [
         { label: "Tetap", value: "C248ADF7-5B50-405A-9614-C1F2C6995051" },
@@ -108,4 +125,5 @@ export {
     Cities,
     Districts,
     Wards,
+    Month
 };
