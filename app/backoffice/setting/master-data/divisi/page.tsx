@@ -3,7 +3,7 @@
 
 import { DataTable } from "@/components/datatable/content";
 import { DataTableColumnHeader } from "@/components/datatable/header";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Trash, Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -75,10 +75,10 @@ const Division = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/divisi/${karyawan_divisi_id}`)}>
-                            Edit
+                            <Pencil />
                         </Button>
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_divisi_id)}>
-                            Delete
+                            <Trash />
                         </Button>
                     </div>
                 );
@@ -109,8 +109,8 @@ const Division = () => {
             <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Division</h1>
                 <div className="flex gap-2">
-                    <Button variant="ghost" className="text-foreground" title="Add Divisi" onClick={() => router.push("/backoffice/setting/master-data/divisi/create")}>
-                        <CirclePlus className="w-48 h-48" />
+                    <Button className="text-foreground" title="Add Divisi" onClick={() => router.push("/backoffice/setting/master-data/divisi/create")}>
+                        <CirclePlus className="w-48 h-48" /> Add data
                     </Button>
                 </div>
                 <DataTable columns={columns} fetchData={fetchDivision} />

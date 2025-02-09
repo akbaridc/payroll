@@ -26,6 +26,10 @@ export function Setting() {
                         title: "Holidays",
                         url: "backoffice/setting/master-data/holiday",
                     },
+                    {
+                        title: "Category Absensi",
+                        url: "backoffice/setting/master-data/category-absensi",
+                    },
                 ],
             },
             {

@@ -3,7 +3,7 @@
 
 import { DataTable } from "@/components/datatable/content";
 import { DataTableColumnHeader } from "@/components/datatable/header";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter, useParams } from 'next/navigation'
@@ -70,7 +70,7 @@ const HolidayView = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(libur_nasional_id)}>
-                            Delete
+                            <Trash />
                         </Button>
                     </div>
                 );

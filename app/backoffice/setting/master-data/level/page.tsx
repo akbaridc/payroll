@@ -3,7 +3,7 @@
 
 import { DataTable } from "@/components/datatable/content";
 import { DataTableColumnHeader } from "@/components/datatable/header";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Trash, Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -83,10 +83,10 @@ const Levels = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/setting/master-data/level/${karyawan_level_id}`)}>
-                            Edit
+                            <Pencil />
                         </Button>
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_level_id)}>
-                            Delete
+                            <Trash />
                         </Button>
                     </div>
                 );
@@ -117,8 +117,8 @@ const Levels = () => {
             <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Levels</h1>
                 <div className="flex gap-2">
-                    <Button variant="ghost" className="text-foreground" title="Add Level" onClick={() => router.push("/backoffice/setting/master-data/level/create")}>
-                        <CirclePlus className="w-48 h-48" />
+                    <Button  className="text-foreground" title="Add Level" onClick={() => router.push("/backoffice/setting/master-data/level/create")}>
+                        <CirclePlus className="w-48 h-48" /> Add data
                     </Button>
                 </div>
                 <DataTable columns={columns} fetchData={fetchLevels} />
