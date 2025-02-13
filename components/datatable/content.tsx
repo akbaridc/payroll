@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "@/components/datatable/pagination";
 import { DataTableViewOptions } from "@/components/datatable/toogle";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataTableProps<TData> {
     columns: ColumnDef<TData, any>[];
@@ -27,11 +28,14 @@ interface DataTableProps<TData> {
     const [page, setPage] = React.useState(1);
     const [length, setLength] = React.useState(lengthOption || 10);
     const [search, setSearch] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
 
     const fetchDataCallback = React.useCallback(async () => {
+        setLoading(true);
         const response = await fetchData({ page, length, search });
         setData(response.data);
         setTotal(response.total);
+        setLoading(false);
     }, [fetchData, page, length, search]);
     
     React.useEffect(() => {
@@ -77,23 +81,33 @@ interface DataTableProps<TData> {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={ row.getIsSelected() && "selected"}>
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell,cell.getContext())}
-                                        </TableCell>
-                                    ))}
+                        {loading ? (
+                                [...Array(5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((col, colIndex) => (
+                                            <TableCell key={colIndex}>
+                                                <Skeleton className="h-5 w-full" />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : table.getRowModel().rows?.length ? (
+                                table.getRowModel().rows.map((row) => (
+                                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
                                 </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length}className="h-24 text-center">
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
+                            )}
                     </TableBody>
                 </Table>
             </div>
