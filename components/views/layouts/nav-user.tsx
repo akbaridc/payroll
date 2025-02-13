@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
+import { 
+    // BadgeCheck, Bell, 
+    ChevronsUpDown, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
+    // DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
@@ -19,7 +22,7 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 import axios from "@/lib/axios";
-import { useRouter } from 'next/navigation'
+import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 
 export function NavUser({
     user,
@@ -31,14 +34,16 @@ export function NavUser({
     };
 }) {
     const { isMobile } = useSidebar();
-    const router = useRouter()
+    const { setAlertDialog } = useAlertDialog();
 
     const logout = async () => {
-        await axios.post("/api/logout").then(() => {
+        await axios.post("/api/logout").then((response: any) => {
+                console.log(response);
                 document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
                 localStorage.removeItem("user");
-                router.push("/");
+                window.location.href = "/";
+                setAlertDialog({title: "Success!",message: "Logout successfully",type: "success"});
             });
     }
 
@@ -98,8 +103,8 @@ export function NavUser({
                                 </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
+                        {/* <DropdownMenuSeparator /> */}
+                        {/* <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <BadgeCheck />
                                 Account
@@ -108,7 +113,7 @@ export function NavUser({
                                 <Bell />
                                 Notifications
                             </DropdownMenuItem>
-                        </DropdownMenuGroup>
+                        </DropdownMenuGroup> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer" onClick={logout}>
                             <LogOut />

@@ -55,7 +55,6 @@ export default function HolidayForm() {
 
     useEffect(() => {
         if (data) {
-            console.log(data)
             form.setValue("year", data.year);
             if(data.holidays.length > 0){
                 const mappedHolidays = data.holidays.map((item: any) => ({

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import DeleteDialog from "@/components/element/dialog/delete-dialog";
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { StatusBadge } from "@/components/badge/status";
 import { EditDialog } from "./dialog/edit-dialog";
@@ -21,12 +21,8 @@ const Levels = () => {
     const [isDeleted, setIsDeleted] = useState("");
     const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
 
-    const fetchLevels = async ({ page, length, search }: any) => {
-        const payload = {
-          size:length,
-          page,
-          search
-        };
+    const fetchLevels = useCallback(async ({ page, length, search }: any) => {
+        const payload = { size: length, page, search };
     
         const response = await axios.post("/api/level-paginate", payload);
         if (response.status === 200) {
@@ -37,7 +33,7 @@ const Levels = () => {
         }
     
         return { data: [], total: 0 };
-    };
+    }, []);
 
     const columns = [
         {

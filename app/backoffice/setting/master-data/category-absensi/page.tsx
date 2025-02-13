@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import DeleteDialog from "@/components/element/dialog/delete-dialog";
-import {useState} from 'react';
+import {useState,useCallback} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { StatusBadge } from "@/components/badge/status";
 
@@ -19,12 +19,8 @@ const Division = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleted, setIsDeleted] = useState("");
 
-    const fetchCategoryAbsensi = async ({ page, length, search }: any) => {
-        const payload = {
-          size:length,
-          page,
-          search
-        };
+    const fetchCategoryAbsensi = useCallback(async ({ page, length, search }: any) => {
+            const payload = { size: length, page, search };
     
         const response = await axios.post("/api/GetPaginateKategoriAbsensi", payload);
         if (response.status === 200) {
@@ -35,7 +31,7 @@ const Division = () => {
         }
     
         return { data: [], total: 0 };
-    };
+    }, []);
 
     const columns = [
         {

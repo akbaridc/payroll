@@ -10,15 +10,17 @@ import {
     SidebarFooter,
     SidebarHeader,
     SidebarRail,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { SidebarResource } from "../../../app/resources/sidebar";
 // import Image from "next/image";
 import { user } from "@/app/helpers/global-helper";
+import { cn } from "@/lib/utils";
 
 // This is sample data.
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
+    const { open } = useSidebar();
     const data = {
         user: {
             name: user()?.name || "Guest",
@@ -30,7 +32,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { sidebarItem } = SidebarResource();
     return (
         <>
-            <Sidebar collapsible="icon" {...props}>
+            <Sidebar collapsible="icon" {...props} >
                 <SidebarHeader
                     className="cursor-pointer"
                     onClick={() =>
@@ -38,10 +40,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     }
                 >
                     <div className="flex justify-center items-center h-12">
-                        <span className="text-4xl font-bold bg-gradient-to-r from-red-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-lg transition-all duration-300 hover:scale-110">
-                            PBS Payroll
+                        <span className={cn("font-bold bg-gradient-to-r from-red-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-lg transition-all duration-300 hover:scale-110", open ? 'text-4xl' : 'text-lg')}>
+                           {open ? 'PBS Payroll' : 'PBS'}   
                         </span>
-                        {/* <Image src="/logo.png" alt="Logo" width={200} height={30} /> */}
                     </div>
                 </SidebarHeader>
                 <SidebarContent>

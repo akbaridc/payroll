@@ -36,36 +36,6 @@ export function Setting() {
                     },
                 ],
             },
-            {
-                title: "Application Configuration",
-                url: "#",
-
-                items: [
-                    {
-                        title: "User Data",
-                        url: "#",
-
-                        items: [
-                            {
-                                title: "Username",
-                                url: "#",
-                            },
-                            {
-                                title: "User Data",
-                                url: "#",
-                            },
-                            {
-                                title: "User Function",
-                                url: "#",
-                            },
-                        ],
-                    },
-                    {
-                        title: "Company Area",
-                        url: "#",
-                    },
-                ],
-            },
         ],
     };
 }

@@ -1,8 +1,27 @@
 import { Badge } from "@/components/ui/badge"
 
 export function StatusBadge({ status }: { status: string }) {
-    const statusName = status === '1' ? "Active" : "Inactive";
-    const variantBadge = status === '1' ? "success" : "destructive";
+    let statusName = "success";
+    let variantBadge: "default" | "secondary" | "destructive" | "success" | "outline" = "success";
+    if(status === "1") {
+        statusName = "Active";
+        variantBadge = "success";
+    }
+
+    if(status === "0"){
+        statusName = "Inactive";
+        variantBadge = "destructive";
+    }
+
+    if(status === "H" || status === "HL"){
+        statusName = status === "H" ? "Hadir" : "Hadir Libur";
+        variantBadge = "success";
+    }
+
+    if(["L", "A", "C", "I", "S"].includes(status)){
+        statusName = status === "L" ? "Libur" : status === "A" ? "Alpha" : status === "C" ? "Cuti" : status === "I" ? "Izin" : "Sakit";
+        variantBadge = "destructive";
+    }
 
     return (<Badge variant={variantBadge}>{statusName}</Badge>)
 }

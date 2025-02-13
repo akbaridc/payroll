@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSWR from "swr";
 import {user} from "@/app/helpers/global-helper";
+import { StatusBadge } from "@/components/badge/status";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 const Levels = () => {
@@ -144,6 +145,10 @@ const Levels = () => {
                 header: ({ column }: { column: any }) => (
                     <DataTableColumnHeader column={column} title={item.hari3} />
                 ),
+                cell: ({ row }: { row: any }) => {
+                    const status = row.original[item.hari3];
+                    return <StatusBadge status={status} />;
+                },
             })
         })
     }

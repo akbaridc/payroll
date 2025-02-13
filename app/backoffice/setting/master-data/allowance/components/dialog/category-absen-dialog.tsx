@@ -15,18 +15,15 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
+import { useCallback } from "react";
 
 export function CategoryAbsenDialog({ open, setOpen, fields, append }: any) {
 
     const router = useRouter();
     const { setAlertDialog } = useAlertDialog();
 
-    const fetchCategoryAbsensi = async ({ page, length, search }: any) => {
-        const payload = {
-          size:length,
-          page,
-          search
-        };
+    const fetchCategoryAbsensi = useCallback(async ({ page, length, search }: any) => {
+        const payload = { size: length, page, search };
     
         const response = await axios.post("/api/GetPaginateKategoriAbsensi", payload);
         if (response.status === 200) {
@@ -37,7 +34,7 @@ export function CategoryAbsenDialog({ open, setOpen, fields, append }: any) {
         }
     
         return { data: [], total: 0 };
-    };
+    }, []);
 
     const columns = [
         {

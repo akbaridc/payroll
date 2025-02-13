@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import DeleteDialog from "@/components/element/dialog/delete-dialog";
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 
 const Holiday = () => {
@@ -18,12 +18,8 @@ const Holiday = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleted, setIsDeleted] = useState("");
 
-    const fetchHoliday = async ({ page, length, search }: any) => {
-        const payload = {
-          size:length,
-          page,
-          search
-        };
+    const fetchHoliday = useCallback(async ({ page, length, search }: any) => {
+        const payload = { size: length, page, search };
     
         const response = await axios.post("/api/GetPaginateLiburNasionalIndex", payload);
         if (response.status === 200) {
@@ -34,7 +30,7 @@ const Holiday = () => {
         }
     
         return { data: [], total: 0 };
-    };
+    }, []);
 
     const columns = [
         {
