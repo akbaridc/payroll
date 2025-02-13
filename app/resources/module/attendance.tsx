@@ -113,7 +113,7 @@ export function Attendance() {
             },
             {
                 title: "Attendance Time Sheet",
-                url: "#",
+                url: "backoffice/attendance/attendance-time-sheet",
             },
             {
                 title: "Attendance Control",
