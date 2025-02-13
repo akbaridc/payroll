@@ -84,4 +84,16 @@ const user = () => {
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
 }
-export { extractUrls, generateRandomString, directiveRawDate, generateNewID, setErrorRequest, user };
+
+const formatCurrency = (values: any) => {
+    // Pastikan values adalah angka
+    const numericValue = typeof values === "number" ? values : parseInt(values.toString().replace(/\D/g, ""), 10);
+
+    // Format angka ke format IDR (Indonesia) dengan titik sebagai pemisah ribuan
+    return numericValue.toLocaleString("id-ID");
+};
+
+const unformatCurrency = (values: any) => {
+    return values.replace(/\D/g, '');
+}
+export { extractUrls, generateRandomString, directiveRawDate, generateNewID, setErrorRequest, user, formatCurrency, unformatCurrency };
