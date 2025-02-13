@@ -11,6 +11,10 @@ export function Payroll() {
                 url: "backoffice/payroll/periode-payroll",
             },
             {
+                title: "Pre Payroll",
+                url: "backoffice/payroll/prepayroll",
+            },
+            {
                 title: "Master",
                 url: "#",
                 items: [

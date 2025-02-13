@@ -104,3 +104,8 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari, and Opera */
 }
+
+.custom-input:disabled {
+  color: black;
+  opacity: 0.5;
+}

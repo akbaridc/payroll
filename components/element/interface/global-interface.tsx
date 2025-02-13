@@ -84,3 +84,10 @@ export interface InterfacePeriodePayrollForm {
     attendance_periode_bln: string;
     attendance_is_aktif: boolean;
 }
+
+export interface InterfacePrePayrollForm {
+    trans_payroll_id: string;
+    attendance_id: string;
+    trans_payroll_periode_thn: string;
+    trans_payroll_periode_bln: string;
+}
