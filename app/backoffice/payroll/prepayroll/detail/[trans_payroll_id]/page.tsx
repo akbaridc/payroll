@@ -10,47 +10,30 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter,useParams } from 'next/navigation'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { FormInputField } from "@/components/form/field-input";
 import { Button } from "@/components/ui/button";
 import { ComboboxForm } from "@/components/form/combobox";
 import { Month } from "@/app/resources/static-option-value";
 import useSWR from "swr";
-import { Pencil, Plus, Trash, ClipboardPaste, Search } from "lucide-react";
-import { useForm, useFormContext, useFieldArray } from "react-hook-form";
+import { Pencil } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { PayrollDetailDialog } from "@/app/backoffice/payroll/prepayroll/components/dialog/payroll-detail-dialog-detail";
-import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
+import { formatCurrency } from "@/app/helpers/global-helper";
 
-interface PayrollData {
-  RowNum: number;
-  karyawan_nama: string;
-  divisi: string;
-  karyawan_level_nama: string;
-  penghasilanbruto: string;
-  trans_payroll_detail_keterangan: string;
-  trans_payroll_status: string;
-  trans_payroll_id: string;
-  trans_payroll_detail_id: string;
-  karyawan_id: string;
-}
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function TransPayrollEdit() {
     const router = useRouter()
-    const [loading, setLoading] = useState(false);
-    const { setAlertDialog } = useAlertDialog();
     const [Attendance, setAttendance] = useState([]);
-    const [selectedData, setSelectedData] = useState("");
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [KaryawanId, setKaryawanId] = useState("");
     const [KaryawanNama, setKaryawanNama] = useState("");
     const [TransPayrollId, setTransPayrollId] = useState("");
     const [TransPayrollDetailId, setTransPayrollDetailId] = useState("");
-    const { register, watch } = useForm();
     const [attendance_id, set_attendance_id] = useState('');
     const [trans_payroll_periode_bln, set_trans_payroll_periode_bln] = useState('');
     const [trans_payroll_periode_thn, set_trans_payroll_periode_thn] = useState('');

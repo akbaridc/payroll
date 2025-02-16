@@ -13,29 +13,24 @@ import { z } from "zod";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter,useParams } from 'next/navigation'
-import { useState, useEffect, useRef } from "react";
-import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
-import { InterfacePrePayrollForm } from "@/components/element/interface/global-interface";
+import { useState, useEffect, useCallback } from "react";
+import { setErrorRequest, formatCurrency } from "@/app/helpers/global-helper";
 import { FormInputField } from "@/components/form/field-input";
-import { FormInputFieldDate } from "@/components/form/field-input-date";
-import { ButtonAct } from "@/components/form/button";
 import { Button } from "@/components/ui/button";
-import { FormCheckboxField } from "@/components/form/field-checkbox";
 import { ComboboxForm } from "@/components/form/combobox";
 import { user } from "@/app/helpers/global-helper";
 import { Month } from "@/app/resources/static-option-value";
 import useSWR from "swr";
-import Attendence from "../page";
-import { Pencil, Plus, Trash, ClipboardPaste } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { count } from "console";
-import { useForm, useFormContext, useFieldArray } from "react-hook-form";
+import { Pencil } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { PayrollDetailDialog } from "../components/dialog/payroll-detail-dialog";
+import { ButtonAct } from "@/components/form/button";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function TransPayrollEdit() {
     const router = useRouter()
-    const [loading, setLoading] = useState(false);
+    const [loadingSave, setLoadingSave] = useState(false);
+    const [loadingConfirm, setLoadingConfirm] = useState(false);
     const { setAlertDialog } = useAlertDialog();
     const [Attendance, setAttendance] = useState([]);
     const [selectedData, setSelectedData] = useState("");
@@ -44,7 +39,6 @@ export default function TransPayrollEdit() {
     const [KaryawanNama, setKaryawanNama] = useState("");
     const [TransPayrollId, setTransPayrollId] = useState("");
     const [TransPayrollDetailId, setTransPayrollDetailId] = useState("");
-    const { register, watch } = useForm();
     const [attendance_id, set_attendance_id] = useState('');
     const [trans_payroll_periode_bln, set_trans_payroll_periode_bln] = useState('');
     const [trans_payroll_periode_thn, set_trans_payroll_periode_thn] = useState('');
@@ -114,10 +108,10 @@ export default function TransPayrollEdit() {
             }, 100);
             
         }
-    }, [data, form]);
+    }, [data, form, trans_payroll_id]);
 
     const handleSave = async ()=>{
-        setLoading(true);
+        setLoadingSave(true);
         
         const payload = {
             trans_payroll_id:trans_payroll_id,
@@ -136,7 +130,7 @@ export default function TransPayrollEdit() {
             .then((response) => {
                 if(response.status == 200){
                     setAlertDialog({title: "Success!",message: "Update successfully",type: "success"});
-                    setLoading(false);
+                    setLoadingSave(false);
                     router.back();
                 }
             })
@@ -147,12 +141,12 @@ export default function TransPayrollEdit() {
 
                 setAlertDialog({title: "Error!",message: error.response.data?.message || "Something went wrong",type: "error",});
             }).finally(() => {
-                setLoading(false);
+                setLoadingSave(false);
             });   
     }
 
     const handleConfirm = async ()=>{
-        setLoading(true);
+        setLoadingConfirm(true);
         
         const payload = {
             trans_payroll_id:trans_payroll_id,
@@ -171,7 +165,7 @@ export default function TransPayrollEdit() {
             .then((response) => {
                 if(response.status == 200){
                     setAlertDialog({title: "Success!",message: "Confirm successfully",type: "success"});
-                    setLoading(false);
+                    setLoadingConfirm(false);
                     router.back();
                 }
             })
@@ -182,11 +176,11 @@ export default function TransPayrollEdit() {
 
                 setAlertDialog({title: "Error!",message: error.response.data?.message || "Something went wrong",type: "error",});
             }).finally(() => {
-                setLoading(false);
+                setLoadingConfirm(false);
             });   
     }
 
-    const ProsesTransPayrollDetail = async ({ page, length, search }: any) => {
+    const ProsesTransPayrollDetail = useCallback(async ({ page, length, search }: any) => {
         const payload_payroll_detail = {
                 trans_payroll_id:trans_payroll_id,
                 attendance_id:selectedData,
@@ -211,7 +205,7 @@ export default function TransPayrollEdit() {
             }
 
         return { data: [], total: 0 };
-    }
+    },[selectedData, trans_payroll_id]);
 
     const columns = [
         {
@@ -307,7 +301,7 @@ export default function TransPayrollEdit() {
 
     return (
         <>
-        <div className="container mx-auto">
+            <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Form Pre Payroll</h1>
                 <div className="p-3 shadow-md rounded-md border border-foreground">
                     <Form {...form}>
@@ -325,8 +319,8 @@ export default function TransPayrollEdit() {
                             </div>
                             <div className="flex gap-2">
                                 <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>Back</Button>
-                                <Button type="button" variant="default" size="sm" onClick={handleSave}>Save</Button>
-                                <Button type="button" variant="default" size="sm" onClick={handleConfirm}>Confirm</Button>
+                                <ButtonAct type="button" className="w-fit" size="sm" text="Save" loading={loadingSave} onClick={handleSave}/>
+                                <ButtonAct type="button" className="w-fit" size="sm" text="Confirm" loading={loadingConfirm} onClick={handleConfirm}/>
                                 {/* <ButtonAct className="w-fit" text="Save" loading={loading} type="submit" /> */}
                             </div>
                         </form>

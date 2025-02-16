@@ -28,7 +28,8 @@ import {
 import { ComboBox } from "@/components/element/interface/global-interface";
 
 interface ComboBoxProps {
-    label: string;
+    label?: string;
+    title?: string;
     name: string;
     form?: any;
     className?: string;
@@ -40,6 +41,7 @@ interface ComboBoxProps {
 
 export function ComboboxForm({
     label,
+    title,
     name,
     form,
     className,
@@ -54,7 +56,7 @@ export function ComboboxForm({
             name={name}
             render={({ field }) => (
                 <FormItem className="flex flex-col">
-                    <FormLabel>{label}</FormLabel>
+                    {label ? <FormLabel>{label}</FormLabel> : '' }
                     <Popover>
                         <PopoverTrigger asChild>
                             <FormControl>
@@ -70,7 +72,7 @@ export function ComboboxForm({
                                 >
                                     {field.value
                                         ? combobox.find((cmbx) =>cmbx.value === field.value)?.label
-                                        : `Select ${label}`}
+                                        : `Select ${title ? title : label}`}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                             </FormControl>
@@ -80,7 +82,7 @@ export function ComboboxForm({
                             align="start"
                         >
                             <Command>
-                                <CommandInput placeholder={`Search ${label}...`} />
+                                <CommandInput placeholder={`Search ${title ? title : label}...`} />
                                 <CommandList>
                                     <CommandEmpty>No data found.</CommandEmpty>
                                     <CommandGroup>
