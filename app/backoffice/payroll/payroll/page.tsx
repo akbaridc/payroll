@@ -48,7 +48,7 @@ export default function PrePayrollCreate() {
 
         const set_payroll = async () => {
 
-            const response_attendance = await axios.get(`/api/GetTransPayrollAktif`);
+            const response_attendance = await axios.get(`/api/GetPayrollList`);
             const dataPeriodePayroll = response_attendance.data.data;
 
             console.log(response_attendance);
