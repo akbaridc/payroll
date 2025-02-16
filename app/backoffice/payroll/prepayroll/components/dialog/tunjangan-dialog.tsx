@@ -88,7 +88,7 @@ export function TunjanganDialog({ open, setOpen, dataTabelPayrollDetail, TransPa
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[90%]">
+            <DialogContent className="sm:max-w-[90%]" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                 <DialogHeader>
                     <DialogTitle>Form Allowance</DialogTitle>
                     <DialogDescription></DialogDescription>

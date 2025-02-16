@@ -143,7 +143,7 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
     return (
         <div>
             <Dialog open={open} onOpenChange={handleClose}>
-                <DialogContent className="sm:max-w-[90%]">
+                <DialogContent className="sm:max-w-[90%]" style={{ maxHeight: '800px', overflowY: 'auto' }}>
                     <DialogHeader>
                         <DialogTitle>Form Payroll Detail</DialogTitle>
                         <DialogDescription></DialogDescription>

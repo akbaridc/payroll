@@ -101,7 +101,7 @@ export function CategoryAbsenDialog({ open, setOpen, fields, append }: any) {
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[90%]">
+            <DialogContent className="sm:max-w-[90%]" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                 <DialogHeader>
                     <DialogTitle>Category Absensi</DialogTitle>
                     <DialogDescription></DialogDescription>
