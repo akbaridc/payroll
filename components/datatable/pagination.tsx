@@ -54,6 +54,7 @@ export const DataTablePagination = ({
         </div>
         <div className="flex items-center space-x-2">
           <Button
+            type="button"
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => onPageChange(1)}
@@ -63,6 +64,7 @@ export const DataTablePagination = ({
             <ChevronsLeft />
           </Button>
           <Button
+            type="button"
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => onPageChange(currentPage - 1)}
@@ -72,6 +74,7 @@ export const DataTablePagination = ({
             <ChevronLeft />
           </Button>
           <Button
+            type="button"
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => onPageChange(currentPage + 1)}
@@ -81,6 +84,7 @@ export const DataTablePagination = ({
             <ChevronRight />
           </Button>
           <Button
+            type="button"
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => onPageChange(totalPages)}

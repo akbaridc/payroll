@@ -109,3 +109,13 @@ body {
   color: black;
   opacity: 0.5;
 }
+
+.table-custom {
+    border-collapse: collapse; /* Menggabungkan border */
+    width: 100%;
+}
+
+.table-custom th, .table-custom td {
+    border: 1px solid black; /* Garis tepi */
+    padding: 8px;
+}

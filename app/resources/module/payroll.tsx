@@ -7,70 +7,26 @@ export function Payroll() {
         icon: Bot,
         items: [
             {
-                title: "Periode Payroll",
-                url: "backoffice/payroll/periode-payroll",
-            },
-            {
-                title: "Pre Payroll",
-                url: "backoffice/payroll/prepayroll",
-            },
-            {
                 title: "Master",
                 url: "#",
                 items: [
                     {
-                        title: "By Grade",
-                        url: "#",
-                    },
-                    {
-                        title: "By Title",
-                        url: "#",
-                    },
-                    {
-                        title: "By Grade and Title",
-                        url: "#",
-                    },
-                    {
-                        title: "By Employee",
-                        url: "#",
-                    },
-                ],
-            },
-            {
-                title: "Transaction",
-                url: "#",
-                items: [
-                    {
-                        title: "Payroll Transaction",
-                        url: "#",
-                    },
-                ],
-            },
-            {
-                title: "Report",
-                url: "#",
-                items: [
-                    {
-                        title: "Pay Slip",
-                        url: "#",
-                    },
-                    {
-                        title: "Salary Report",
-                        url: "#",
+                        title: "Periode Payroll",
+                        url: "backoffice/payroll/periode-payroll",
                     },
                 ],
             },
             {
                 title: "Utility",
                 url: "#",
-                items: [
+                items: [   
                     {
-                        title: "Payroll Process",
-                        url: "#",
+                        title: "Pre Payroll",
+                        url: "backoffice/payroll/prepayroll",
                     },
                     {
-                        title: "Closing Payroll",
-                        url: "#",
+                        title: "Payroll",
+                        url: "backoffice/payroll/payroll",
                     },
                 ],
             },

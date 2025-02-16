@@ -14,7 +14,7 @@ import { useAlertDialog } from "@/components/element/context/alert-dialog-contex
 import axios from "@/lib/axios";
 import { useRouter,useParams } from 'next/navigation'
 import { useState, useEffect, useRef } from "react";
-import { generateNewID, setErrorRequest } from "@/app/helpers/global-helper";
+import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
 import { InterfacePrePayrollForm } from "@/components/element/interface/global-interface";
 import { FormInputField } from "@/components/form/field-input";
 import { FormInputFieldDate } from "@/components/form/field-input-date";
@@ -188,6 +188,7 @@ export default function TransPayrollEdit() {
 
     const ProsesTransPayrollDetail = async ({ page, length, search }: any) => {
         const payload_payroll_detail = {
+                trans_payroll_id:trans_payroll_id,
                 attendance_id:selectedData,
                 size:length,
                 page,
@@ -252,6 +253,10 @@ export default function TransPayrollEdit() {
             header: ({ column }: { column: any }) => (
                 <DataTableColumnHeader column={column} title="Nett Amount" />
             ),
+            cell: ({ row }: { row: any }) => {
+                const penghasilanbruto = row.original.penghasilanbruto;
+                return formatCurrency(penghasilanbruto);
+            },
         },
         {
             accessorKey: "trans_payroll_detail_keterangan",

@@ -23,6 +23,7 @@ import useSWR from "swr";
 import { Pencil, Plus, Trash, ClipboardPaste, Search } from "lucide-react";
 import { useForm, useFormContext, useFieldArray } from "react-hook-form";
 import { PayrollDetailDialog } from "@/app/backoffice/payroll/prepayroll/components/dialog/payroll-detail-dialog-detail";
+import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
 
 interface PayrollData {
   RowNum: number;
@@ -174,6 +175,10 @@ export default function TransPayrollEdit() {
             header: ({ column }: { column: any }) => (
                 <DataTableColumnHeader column={column} title="Nett Amount" />
             ),
+            cell: ({ row }: { row: any }) => {
+                const penghasilanbruto = row.original.penghasilanbruto;
+                return formatCurrency(penghasilanbruto);
+            },
         },
         {
             accessorKey: "trans_payroll_detail_keterangan",

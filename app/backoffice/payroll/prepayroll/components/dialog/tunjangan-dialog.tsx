@@ -62,9 +62,9 @@ export function TunjanganDialog({ open, setOpen, dataTabelPayrollDetail, TransPa
                     tunjangan_id: row.tunjangan_id,
                     tunjangan_kode: row.tunjangan_kode,
                     tunjangan_nama: row.tunjangan_nama,
-                    trans_payroll_detail2_multiplier:0,
-                    trans_payroll_detail2_value:0,
-                    trans_payroll_detail2_totalvalue:0,
+                    trans_payroll_detail2_multiplier:"1",
+                    trans_payroll_detail2_value:"0",
+                    trans_payroll_detail2_totalvalue:"0",
                     trans_payroll_detail2_urut:0,
                     trans_payroll_detail2_autogen:0,
                     tunjangan_flag_pph:0

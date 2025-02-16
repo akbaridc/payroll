@@ -21,6 +21,7 @@ import { useAlertDialog } from "@/components/element/context/alert-dialog-contex
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { TunjanganDialog } from "./tunjangan-dialog";
+import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
 
 export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrollDetailId, KaryawanId, KaryawanNama }: any) {
 
@@ -68,14 +69,18 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
     }, [open]);
 
     const handleInputChange = (event: any) => {
-        console.log(event.target.value);
+        console.log(unformatCurrency(event.target.value));
         
         const { name, value } = event.target;
         const newDataTabelPayrollDetail = dataTabelPayrollDetail.map((item: any) => {
             if (item.trans_payroll_detail2_id === event.target.dataset.id) {
                 const newItem = { ...item, [name]: value };
                 if (name === 'trans_payroll_detail2_multiplier' || name === 'trans_payroll_detail2_value') {
-                    newItem.trans_payroll_detail2_totalvalue = newItem.trans_payroll_detail2_multiplier * newItem.trans_payroll_detail2_value;
+                    console.log("tes", unformatCurrency(newItem.trans_payroll_detail2_value));
+                    
+                    newItem.trans_payroll_detail2_multiplier = unformatCurrency(newItem.trans_payroll_detail2_multiplier);
+                    newItem.trans_payroll_detail2_value = unformatCurrency(newItem.trans_payroll_detail2_value);
+                    newItem.trans_payroll_detail2_totalvalue = unformatCurrency(newItem.trans_payroll_detail2_multiplier) * unformatCurrency(newItem.trans_payroll_detail2_value);
                 }
                 return newItem;
             }
@@ -84,6 +89,12 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
         
         console.log(newDataTabelPayrollDetail);
         setDataTabelPayrollDetail(newDataTabelPayrollDetail);
+    };
+
+    const setFormatCurrency = (event: any) => {
+        console.log(event.target.value);
+        const nilai = formatCurrency(event.target.value);
+        return nilai;
     };
 
     const handleClose = () => {
@@ -165,13 +176,13 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
                                                 <td className="px-4 py-2">{index + 1}</td>
                                                 <td className="px-4 py-2">{item.tunjangan_nama}</td>
                                                 <td className="px-4 py-2">
-                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_multiplier" value={item.trans_payroll_detail2_multiplier} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} />
+                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_multiplier" value={formatCurrency(item.trans_payroll_detail2_multiplier)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} onInput={setFormatCurrency} disabled/>
                                                 </td>
                                                 <td className="px-4 py-2">
-                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_value" value={item.trans_payroll_detail2_value} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} />
+                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_value" value={formatCurrency(item.trans_payroll_detail2_value)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} onInput={setFormatCurrency} />
                                                 </td>
                                                 <td className="px-4 py-2">
-                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_totalvalue" value={item.trans_payroll_detail2_totalvalue} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} disabled />
+                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_totalvalue" value={formatCurrency(item.trans_payroll_detail2_totalvalue)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} disabled />
                                                 </td>
                                                 <td className="px-4 py-2">
                                                 {item.trans_payroll_detail2_autogen !== "1" && (

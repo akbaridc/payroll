@@ -20,6 +20,7 @@ import axios from "@/lib/axios";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
 
 export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrollDetailId, KaryawanId, KaryawanNama }: any) {
 
@@ -125,25 +126,25 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
                                     <FormInputField type="hidden" className="custom-field w-full md:w-1/2" name="filter_trans_payroll_detail_id_detail2" label="Employee Id" />
                                 </div>
                             </div>
-                            <table className="table-auto w-full mb-6">
+                            <table className="table-auto w-full mb-6 table-custom">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                    <th className="px-4 py-2 text-left">No</th>
-                                    <th className="px-4 py-2 text-left">Allowance</th>
-                                    <th className="px-4 py-2 text-left">Multiplier</th>
-                                    <th className="px-4 py-2 text-left">Amount</th>
-                                    <th className="px-4 py-2 text-left">Total Amount</th>
+                                    <th className="px-4 py-2 text-center">No</th>
+                                    <th className="px-4 py-2 text-center">Allowance</th>
+                                    <th className="px-4 py-2 text-center">Multiplier</th>
+                                    <th className="px-4 py-2 text-center">Amount</th>
+                                    <th className="px-4 py-2 text-center">Total Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {dataTabelPayrollDetail && (
                                         dataTabelPayrollDetail.map((item, index) => (
                                             <tr key={item.trans_payroll_detail2_id}>
-                                                <td className="px-4 py-2">{index + 1}</td>
+                                                <td className="px-4 py-2 text-center">{index + 1}</td>
                                                 <td className="px-4 py-2">{item.tunjangan_nama}</td>
-                                                <td className="px-4 py-2">{item.trans_payroll_detail2_multiplier}</td>
-                                                <td className="px-4 py-2">{item.trans_payroll_detail2_value}</td>
-                                                <td className="px-4 py-2">{item.trans_payroll_detail2_totalvalue}</td>
+                                                <td className="px-4 py-2 text-end">{item.trans_payroll_detail2_multiplier}</td>
+                                                <td className="px-4 py-2 text-end">{formatCurrency(item.trans_payroll_detail2_value)}</td>
+                                                <td className="px-4 py-2 text-end">{formatCurrency(item.trans_payroll_detail2_totalvalue)}</td>
                                             </tr>
                                         ))
                                     )}
