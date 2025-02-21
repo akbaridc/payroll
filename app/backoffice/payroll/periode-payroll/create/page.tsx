@@ -13,7 +13,7 @@ import { z } from "zod";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { generateNewID, setErrorRequest } from "@/app/helpers/global-helper";
 import { InterfacePeriodePayrollForm } from "@/components/element/interface/global-interface";
 import { FormInputField } from "@/components/form/field-input";
@@ -24,6 +24,7 @@ import { FormCheckboxField } from "@/components/form/field-checkbox";
 import { ComboboxForm } from "@/components/form/combobox";
 import { Month } from "@/app/resources/static-option-value";
 import { user } from "@/app/helpers/global-helper";
+import { Loading } from "@/components/utils/loading";
 
 export default function DivisiCreate() {
     const router = useRouter()
@@ -54,6 +55,8 @@ export default function DivisiCreate() {
         const tgl_awal = new Date(values.attendance_tgl_awal);
         const tgl_akhir = new Date(values.attendance_tgl_akhir);
 
+        const selisihHari = (tgl_akhir - tgl_awal) / (1000 * 60 * 60 * 24) + 1;
+
         const attendance_thn_awal = tgl_awal.getFullYear(); 
         const attendance_bln_awal = (tgl_awal.getMonth() + 1) < 10 ? "0"+(tgl_awal.getMonth() + 1): (tgl_awal.getMonth() + 1);
         const attendance_hari_awal = tgl_awal.getDate() < 10 ? "0"+tgl_awal.getDate() : tgl_awal.getDate();
@@ -64,6 +67,12 @@ export default function DivisiCreate() {
 
         const tgl_awal_new = attendance_thn_awal + "-" + attendance_bln_awal + "-" + attendance_hari_awal;
         const tgl_akhir_new = attendance_thn_akhir + "-" + attendance_bln_akhir + "-" + attendance_hari_akhir;
+
+        if(selisihHari > 31){
+            setAlertDialog({title: "Error!",message: "The periode must be less than or equal to 31 days.",type: "error"});
+            setLoading(false);
+            return;
+        }
         
         const payload = {
                     attendance_id,
@@ -105,28 +114,31 @@ export default function DivisiCreate() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Periode Payroll Create</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
-                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date tes" />
-                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_periode_thn?.message} name="attendance_periode_thn" label="Year Periode" />
-                            <ComboboxForm className="custom-field" form={form} name="attendance_periode_bln" label="Month Periode" combobox={Month()} />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="attendance_is_aktif" label="Active" />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+        <>  
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Periode Payroll Create</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
+                                <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
+                                <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_periode_thn?.message} name="attendance_periode_thn" label="Year Periode" />
+                                <ComboboxForm className="custom-field" form={form} name="attendance_periode_bln" label="Month Periode" combobox={Month()} />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="attendance_is_aktif" label="Active" />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

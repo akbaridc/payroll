@@ -32,14 +32,13 @@ export default function PrePayrollCreate() {
 
             const response_attendance = await axios.get(`/api/GetPayrollList`);
             const dataPeriodePayroll = response_attendance.data.data;
-
-            console.log(response_attendance);
         
-            const data_temp = dataPeriodePayroll.map((item: any) => {
-                return { value: item.trans_payroll_id, label: `${item.trans_payroll_periode_thn} - ${item.trans_payroll_periode_bln_name}` }
-            });
-
-            setPayroll(data_temp);
+            if(dataPeriodePayroll){
+                const data_temp = dataPeriodePayroll.map((item: any) => {
+                    return { value: item.trans_payroll_id, label: `${item.trans_payroll_periode_thn} - ${item.trans_payroll_periode_bln_name}` }
+                });
+                setPayroll(data_temp);
+            }
         };
 
         const set_divisi = async () => {
@@ -47,8 +46,6 @@ export default function PrePayrollCreate() {
             const response = await axios.get(`/api/KaryawanDivisiAktif`);
             const dataDivisi = response.data.data;
 
-            console.log(dataDivisi);
-        
             const data_temp = [
                 { value: "", label: "Select Divisi" },
                 ...dataDivisi.map((item: any) => {
@@ -63,8 +60,6 @@ export default function PrePayrollCreate() {
 
             const response = await axios.get(`/api/BankAktif`);
             const dataBank = response.data.data;
-
-            console.log(dataBank);
 
             const data_temp = [
                 { value: "", label: "Select Bank" },

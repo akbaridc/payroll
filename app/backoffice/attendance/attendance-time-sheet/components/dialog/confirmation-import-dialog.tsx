@@ -16,6 +16,7 @@ import { useAlertDialog } from "@/components/element/context/alert-dialog-contex
 import { useCallback } from "react";
 import {user} from "@/app/helpers/global-helper";
 import { useState } from "react";
+import { Loading } from "@/components/utils/loading";
 
 export function ConfirmationImportDialog({ open, setOpen }: any) {
     const { setAlertDialog } = useAlertDialog();
@@ -103,32 +104,35 @@ export function ConfirmationImportDialog({ open, setOpen }: any) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[90%] flex flex-col max-h-[90vh]">
-                <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">
-                    <DialogTitle>Confirmation Import Attendance</DialogTitle>
-                    <DialogDescription></DialogDescription>
-                </DialogHeader>
+        <>
+            {loading && <Loading />}
+            <Dialog open={open} onOpenChange={handleClose}>
+                <DialogContent className="sm:max-w-[90%] flex flex-col max-h-[90vh]">
+                    <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">
+                        <DialogTitle>Confirmation Import Attendance</DialogTitle>
+                        <DialogDescription></DialogDescription>
+                    </DialogHeader>
 
-                <div className="flex-1 overflow-y-auto p-4">
-                    <div className="container mx-auto">
-                        <div className="mb-4">
-                            {error > 0 && (
-                                <h6>There was an error importing data</h6>
-                            )}
-                            {error == 0 ? (
-                                <h6>There was no error importing data</h6>
-                            ) : (
-                                <h6>Error : {error}, Success: {success}</h6>
-                            )}
-                            {success > 0 && (
-                                <ButtonAct className="w-fit" text="Confirm Upload Data Success" loading={loading} onClick={handlerConfirm}/>
-                            )}
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <div className="container mx-auto">
+                            <div className="mb-4">
+                                {error > 0 && (
+                                    <h6>There was an error importing data</h6>
+                                )}
+                                {error == 0 ? (
+                                    <h6>There was no error importing data</h6>
+                                ) : (
+                                    <h6>Error : {error}, Success: {success}</h6>
+                                )}
+                                {success > 0 && (
+                                    <ButtonAct className="w-fit" text="Confirm Upload Data Success" loading={loading} onClick={handlerConfirm}/>
+                                )}
+                            </div>
+                            <DataTable columns={columns} fetchData={fetchAttendanceImportResult} />
                         </div>
-                        <DataTable columns={columns} fetchData={fetchAttendanceImportResult} />
                     </div>
-                </div>
-            </DialogContent>
-        </Dialog>
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }

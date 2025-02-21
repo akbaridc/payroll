@@ -23,6 +23,7 @@ import { setErrorRequest, generateNewID } from "@/app/helpers/global-helper";
 import { ComboboxForm } from "@/components/form/combobox";
 import {TypeAllowance, PaymentBasis, PaidMode} from "@/app/resources/static-option-value";
 import {MultipleCategoryAbsenInput} from "../components/multiple-category-absen-input";
+import { Loading } from "@/components/utils/loading";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function DivisiForm() {
@@ -150,38 +151,41 @@ export default function DivisiForm() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Allowance Edit</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-2 gap-4">
-                            <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="code" label="Code"/>
-                            <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="name" label="Name" />
-                            <ComboboxForm className="custom-field" form={form} name="jenis" label="Jenis" combobox={TypeAllowance()} />
-                            <ComboboxForm className="custom-field" form={form} name="dasar_bayar" label="Dasar Bayar" combobox={PaymentBasis()} />
-                            <ComboboxForm className="custom-field" form={form} name="dibayar_oleh" label="Dibayar Oleh" combobox={PaidMode()} />
-                            <ComboboxForm className="custom-field" form={form} name="dibayar_kepada" label="Dibayar Kepada" combobox={PaidMode()} />
-                            <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="keterangan" label="Keterangan" />
-                        </div>
-                        <div className="flex aligns-center items-center gap-3">
-                            <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="print_payslip" label="Tunjangan dicetak di payslip" />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="allowance_special" label="Tunjangan khusus" />
-                        </div>
-                        <hr />
-                        <div className="my-3">
-                            <MultipleCategoryAbsenInput />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Allowance Edit</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="code" label="Code"/>
+                                <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="name" label="Name" />
+                                <ComboboxForm className="custom-field" form={form} name="jenis" label="Jenis" combobox={TypeAllowance()} />
+                                <ComboboxForm className="custom-field" form={form} name="dasar_bayar" label="Dasar Bayar" combobox={PaymentBasis()} />
+                                <ComboboxForm className="custom-field" form={form} name="dibayar_oleh" label="Dibayar Oleh" combobox={PaidMode()} />
+                                <ComboboxForm className="custom-field" form={form} name="dibayar_kepada" label="Dibayar Kepada" combobox={PaidMode()} />
+                                <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.code?.message} name="keterangan" label="Keterangan" />
+                            </div>
+                            <div className="flex aligns-center items-center gap-3">
+                                <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="print_payslip" label="Tunjangan dicetak di payslip" />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="allowance_special" label="Tunjangan khusus" />
+                            </div>
+                            <hr />
+                            <div className="my-3">
+                                <MultipleCategoryAbsenInput />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

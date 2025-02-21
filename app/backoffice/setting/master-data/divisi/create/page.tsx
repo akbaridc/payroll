@@ -20,6 +20,7 @@ import { FormInputField } from "@/components/form/field-input";
 import { ButtonAct } from "@/components/form/button";
 import { Button } from "@/components/ui/button";
 import { FormCheckboxField } from "@/components/form/field-checkbox";
+import { Loading } from "@/components/utils/loading";
 
 export default function DivisiCreate() {
     const router = useRouter()
@@ -69,25 +70,28 @@ export default function DivisiCreate() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Divisi Create</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="code" label="Divisi Code"/>
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="name" label="Divisi Name" />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Divisi Create</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="code" label="Divisi Code"/>
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="name" label="Divisi Name" />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

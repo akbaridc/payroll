@@ -95,9 +95,9 @@ const Employee = () => {
                 const karyawan_id = row.original.karyawan_id;
                 return (
                     <div className="flex space-x-2">
-                        <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/employee/${karyawan_id}`)}>
+                        {/* <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/employee/${karyawan_id}`)}>
                             <Pencil />
-                        </Button>
+                        </Button> */}
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(karyawan_id)}>
                             <Trash />
                         </Button>

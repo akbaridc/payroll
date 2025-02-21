@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { FormCheckboxField } from "@/components/form/field-checkbox";
 import { ComboboxForm } from "@/components/form/combobox";
 import useSWR from "swr";
+import { Loading } from "@/components/utils/loading";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function LevelCreate() {
@@ -87,26 +88,29 @@ export default function LevelCreate() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Level Create</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="code" label="Level Code"/>
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="name" label="Level Name" />
-                            <ComboboxForm className="custom-field" form={form} error={form.formState.errors.code?.message} name="divisi" label="Divisi" combobox={divisi} />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Level Create</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="code" label="Level Code"/>
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.code?.message} name="name" label="Level Name" />
+                                <ComboboxForm className="custom-field" form={form} error={form.formState.errors.code?.message} name="divisi" label="Divisi" combobox={divisi} />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="active" label="Active" />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

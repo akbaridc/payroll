@@ -25,6 +25,7 @@ import { Pencil } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { PayrollDetailDialog } from "../components/dialog/payroll-detail-dialog";
 import { ButtonAct } from "@/components/form/button";
+import { Loading } from "@/components/utils/loading";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function TransPayrollEdit() {
@@ -301,6 +302,7 @@ export default function TransPayrollEdit() {
 
     return (
         <>
+            {(loadingSave || loadingConfirm) && <Loading />}
             <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Form Pre Payroll</h1>
                 <div className="p-3 shadow-md rounded-md border border-foreground">

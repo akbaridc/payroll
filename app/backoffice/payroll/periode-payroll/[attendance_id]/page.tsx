@@ -25,6 +25,7 @@ import { FormCheckboxField } from "@/components/form/field-checkbox";
 import { ComboboxForm } from "@/components/form/combobox";
 import { Month } from "@/app/resources/static-option-value";
 import { user } from "@/app/helpers/global-helper";
+import { Loading } from "@/components/utils/loading";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function DivisiCreate() {
@@ -123,28 +124,31 @@ export default function DivisiCreate() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Periode Payroll Create</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
-                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
-                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_periode_thn?.message} name="attendance_periode_thn" label="Year Periode" />
-                            <ComboboxForm className="custom-field" form={form} name="attendance_periode_bln" label="Month Periode" combobox={Month()} />
-                            <FormCheckboxField className="w-4 h-4" form={form} name="attendance_is_aktif" label="Active" />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Periode Payroll Create</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
+                                <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
+                                <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_periode_thn?.message} name="attendance_periode_thn" label="Year Periode" />
+                                <ComboboxForm className="custom-field" form={form} name="attendance_periode_bln" label="Month Periode" combobox={Month()} />
+                                <FormCheckboxField className="w-4 h-4" form={form} name="attendance_is_aktif" label="Active" />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

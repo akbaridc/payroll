@@ -14,6 +14,7 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Loading } from "@/components/utils/loading";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 const AttendanceRecap = () => {
@@ -66,7 +67,8 @@ const AttendanceRecap = () => {
     };
 
     return (
-        <>
+        <>  
+            {loading && <Loading />}
             <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Attendance Recap</h1>
                 <div className="p-3 shadow-md rounded-md border border-foreground">

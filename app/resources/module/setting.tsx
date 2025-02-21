@@ -10,10 +10,10 @@ export function Setting() {
                 title: "Master Data",
                 url: "#",
                 items: [
-                    {
-                        title: "Religion",
-                        url: "backoffice/setting/master-data/religion",
-                    },
+                    // {
+                    //     title: "Religion",
+                    //     url: "backoffice/setting/master-data/religion",
+                    // },
                     {
                         title: "Division",
                         url: "backoffice/setting/master-data/divisi",

@@ -32,6 +32,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { count } from "console";
 import { useForm, useFormContext, useFieldArray } from "react-hook-form";
 import { PayrollDetailDialog } from "../components/dialog/payroll-detail-dialog";
+import { Loading } from "@/components/utils/loading";
 
 export default function PrePayrollCreate() {
     const router = useRouter()
@@ -354,37 +355,38 @@ export default function PrePayrollCreate() {
     // };
 
     return (
-    <>
-    <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Create Pre Payroll</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> */}
-                    <form className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="attendance_id" label="Periode Payroll" combobox={Attendance} onChange={() => {
-                                const selectedValue = form.getValues('attendance_id');
-                                GetAttendance(selectedValue);
-                            }}/>
-                            <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_periode_thn?.message} name="trans_payroll_periode_thn" label="Year Periode" onChange={handleTahunChange} disabled/>
-                            <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_periode_bln" label="Month Periode" combobox={Month()} onChange={handleBulanChange} disabled/>
-                            <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_id?.message} name="trans_payroll_id" label="" />
-                            {/* <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_status?.message} name="trans_payroll_status" label="" />
-                            <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.jenis_pajak?.message} name="jenis_pajak" label="" /> */}
-                        </div>
-                        <div className="grid grid-cols-1 gap-4">
-                            <DataTable columns={columns} fetchData={ProsesTransPayrollDetail} lengthOption={5} />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>Back</Button>
-                            <Button type="button" variant="default" size="sm" onClick={handleSave}>Save</Button>
-                            {/* <ButtonAct className="w-fit" text="Save" loading={loading} type="submit" /> */}
-                        </div>
-                    </form>
-                </Form>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Create Pre Payroll</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> */}
+                        <form className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="attendance_id" label="Periode Payroll" combobox={Attendance} onChange={() => {
+                                    const selectedValue = form.getValues('attendance_id');
+                                    GetAttendance(selectedValue);
+                                }}/>
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_periode_thn?.message} name="trans_payroll_periode_thn" label="Year Periode" onChange={handleTahunChange} disabled/>
+                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_periode_bln" label="Month Periode" combobox={Month()} onChange={handleBulanChange} disabled/>
+                                <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_id?.message} name="trans_payroll_id" label="" />
+                                {/* <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_status?.message} name="trans_payroll_status" label="" />
+                                <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.jenis_pajak?.message} name="jenis_pajak" label="" /> */}
+                            </div>
+                            <div className="grid grid-cols-1 gap-4">
+                                <DataTable columns={columns} fetchData={ProsesTransPayrollDetail} lengthOption={5} />
+                            </div>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>Back</Button>
+                                <Button type="button" variant="default" size="sm" onClick={handleSave}>Save</Button>
+                                {/* <ButtonAct className="w-fit" text="Save" loading={loading} type="submit" /> */}
+                            </div>
+                        </form>
+                    </Form>
+                </div>
+                <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={TransPayrollId} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
             </div>
-            <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={TransPayrollId} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
-        </div>
-    </>
+        </>
     );
 }

@@ -21,6 +21,7 @@ import { ButtonAct } from "@/components/form/button";
 import { Button } from "@/components/ui/button";
 import { MultipleHolidayInput } from "../components/multiple-holiday-input";
 import { user } from "@/app/helpers/global-helper";
+import { Loading } from "@/components/utils/loading";
 
 export default function HolidayCreate() {
     const router = useRouter()
@@ -91,28 +92,31 @@ export default function HolidayCreate() {
     };
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Holiday Create</h1>
-            <div className="p-3 shadow-md rounded-md border border-foreground">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormInputField className="custom-field w-full md:w-1/4" form={form} error={form.formState.errors.year?.message} name="year" label="Year" disabled/>
-                        </div>
+        <>
+            {loading && <Loading />}
+            <div className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-4">Holiday Create</h1>
+                <div className="p-3 shadow-md rounded-md border border-foreground">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <div className="grid grid-cols-1 gap-4">
+                                <FormInputField className="custom-field w-full md:w-1/4" form={form} error={form.formState.errors.year?.message} name="year" label="Year" disabled/>
+                            </div>
 
-                        <div className="my-3">
-                            <MultipleHolidayInput />
-                        </div>
+                            <div className="my-3">
+                                <MultipleHolidayInput />
+                            </div>
 
-                        <div className="flex gap-2">
-                            <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
-                                Back
-                            </Button>
-                            <ButtonAct className="w-fit" text="Submit" loading={loading} />
-                        </div>
-                    </form>
-                </Form>
+                            <div className="flex gap-2">
+                                <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>
+                                    Back
+                                </Button>
+                                <ButtonAct className="w-fit" text="Submit" loading={loading} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

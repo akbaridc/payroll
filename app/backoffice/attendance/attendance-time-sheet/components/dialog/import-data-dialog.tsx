@@ -20,6 +20,7 @@ import { ButtonAct } from "@/components/form/button";
 import { Button } from "@/components/ui/button";
 import {user} from "@/app/helpers/global-helper";
 import {ConfirmationImportDialog} from "./confirmation-import-dialog";
+import { Loading } from "@/components/utils/loading";
 
 export function ImportDataDialog({ open, setOpen}: any) {
 
@@ -75,11 +76,6 @@ export function ImportDataDialog({ open, setOpen}: any) {
 
         await axios.post("/api/attendance/import/attendance", formData, {
             headers: { "Content-Type": "multipart/form-data" }
-            // onUploadProgress: (progressEvent) => {
-            //     console.log(progressEvent);
-            //     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent?.total);
-            //     console.log(`Upload Progress: ${percentCompleted}%`);
-            // },
         })
         .then((response) => {
             if(response.status == 200){
@@ -95,7 +91,8 @@ export function ImportDataDialog({ open, setOpen}: any) {
     };
 
     return (
-        <>
+        <>  
+            {loading && <Loading />}
             <Dialog open={open} onOpenChange={handleClose}>
                 <DialogContent className="sm:max-w-[30%] flex flex-col max-h-[90vh]">
                     <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">

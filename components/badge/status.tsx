@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge"
 
 export function StatusBadge({ status }: { status: string }) {
-    let statusName = "success";
-    let variantBadge: "default" | "secondary" | "destructive" | "success" | "outline" = "success";
+    let statusName = "-";
+    let variantBadge: "default" | "secondary" | "destructive" | "success" | "outline" = "outline";
     if(status === "1") {
         statusName = "Active";
         variantBadge = "success";
