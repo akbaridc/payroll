@@ -7,6 +7,7 @@ interface ButtonActProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;
     loading: boolean;
     variant?: any;
+    size?: "default" | "sm" | "lg" | "icon";
 }
 
 
@@ -15,15 +16,17 @@ export function ButtonAct({
     type = "submit",
     className,
     variant = "default",
+    size = "sm",
     loading,
     ...props
 }: ButtonActProps) {
     return (
         <Button
-            size="sm"
+            size={size}
             variant={variant}
             type={type}
             className={cn("w-full flex items-center justify-center", className)}
+            disabled={loading}
             {...props}
         >
             {loading ? (

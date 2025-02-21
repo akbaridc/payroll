@@ -101,18 +101,22 @@ export function CategoryAbsenDialog({ open, setOpen, fields, append }: any) {
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[90%]" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                <DialogHeader>
+            <DialogContent className="sm:max-w-[90%] flex flex-col max-h-[90vh]">
+                <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">
                     <DialogTitle>Category Absensi</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <div className="container mx-auto">
-                    <div className="flex gap-2">
-                        <Button className="text-foreground" title="Add Divisi" onClick={() => router.push("/backoffice/setting/master-data/category-absensi/create")}>
-                            <CirclePlus className="w-48 h-48" /> Add data
-                        </Button>
+
+                <div className="flex-1 overflow-y-auto p-4">
+                    <div className="container mx-auto">
+                        <div className="flex gap-2 mb-4">
+                            <Button className="text-foreground" title="Add Divisi" 
+                                onClick={() => router.push("/backoffice/setting/master-data/category-absensi/create")}>
+                                <CirclePlus className="w-48 h-48" /> Add data
+                            </Button>
+                        </div>
+                        <DataTable columns={columns} fetchData={fetchCategoryAbsensi} />
                     </div>
-                    <DataTable columns={columns} fetchData={fetchCategoryAbsensi} lengthOption={5} />
                 </div>
             </DialogContent>
         </Dialog>

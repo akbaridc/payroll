@@ -54,7 +54,7 @@ const Levels = () => {
                 who: user()?.name,
             };
     
-            const response = await axios.post("/api/attendance_timesheet", payload);
+            const response = await axios.post("/api/attendace-list", payload);
             if (response.status === 200) {
                 setColumnData(response.data.columnData);
                 return {
@@ -79,7 +79,15 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "masuk",
+            accessorKey: "karyawan_nip",
+            alias: "NIP",
+            size: 150,
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="NIP" />
+            ),
+        },
+        {
+            accessorKey: "attendance_detail_masuk",
             alias: "Masuk",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -87,7 +95,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "dinas",
+            accessorKey: "attendance_detail_dinas",
             alias: "Dinas",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -95,7 +103,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "cuti",
+            accessorKey: "attendance_detail_cuti",
             alias: "Cuti",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -103,7 +111,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "ijin",
+            accessorKey: "attendance_detail_ijin",
             alias: "Ijin",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -111,7 +119,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "off",
+            accessorKey: "attendance_detail_off",
             alias: "Off",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -119,7 +127,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "alpha",
+            accessorKey: "attendance_detail_alpha",
             alias: "Alpha",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -127,7 +135,7 @@ const Levels = () => {
             ),
         },
         {
-            accessorKey: "libur",
+            accessorKey: "attendance_detail_libur",
             alias: "Libur",
             size: 150,
             header: ({ column }: { column: any }) => (
@@ -139,14 +147,14 @@ const Levels = () => {
     if(columnData){
         columnData.map((item:any) => {
             columns.push({
-                accessorKey: item.hari3,
-                alias: item.hari3,
+                accessorKey: item.nameAs,
+                alias: item.display,
                 size: 150,
                 header: ({ column }: { column: any }) => (
-                    <DataTableColumnHeader column={column} title={item.hari3} />
+                    <DataTableColumnHeader column={column} title={item.display} />
                 ),
                 cell: ({ row }: { row: any }) => {
-                    const status = row.original[item.hari3];
+                    const status = row.original[item.nameAs];
                     return <StatusBadge status={status} />;
                 },
             })
@@ -167,7 +175,7 @@ const Levels = () => {
                     </Form>
                     
                 </div>
-                <DataTable columns={columns} fetchData={fetchAttendanceList} lengthOption={-1} />
+                <DataTable columns={columns} fetchData={fetchAttendanceList} />
             </div>
         </>
     );

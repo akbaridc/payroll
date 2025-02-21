@@ -11,34 +11,16 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
-import { useRouter } from 'next/navigation'
-import { useState, useEffect, useRef, useCallback } from "react";
-import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
-import { InterfacePrePayrollForm } from "@/components/element/interface/global-interface";
-import { FormInputField } from "@/components/form/field-input";
-import { FormInputFieldDate } from "@/components/form/field-input-date";
-import { ButtonAct } from "@/components/form/button";
-import { Button } from "@/components/ui/button";
-import { FormCheckboxField } from "@/components/form/field-checkbox";
+import { useState, useEffect, useCallback } from "react";
+import {  formatCurrency } from "@/app/helpers/global-helper";
 import { ComboboxForm } from "@/components/form/combobox";
-import { user } from "@/app/helpers/global-helper";
-import { Month } from "@/app/resources/static-option-value";
-import useSWR from "swr";
-import { Pencil, Plus, Trash, ClipboardPaste, Search } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { count } from "console";
-import { useForm, useFormContext, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export default function PrePayrollCreate() {
-    const router = useRouter()
-    const [loading, setLoading] = useState(false);
-    const { setAlertDialog } = useAlertDialog();
     const [Payroll, setPayroll] = useState([]);
     const [Divisi, setDivisi] = useState<any[]>([]);
     const [Bank, setBank] = useState<any[]>([]);
-    const [selectedData, setSelectedData] = useState("");
     const [trans_payroll_id, set_trans_payroll_id] = useState(null);
     const [jenisbank_kode, set_jenisbank_kode] = useState('');
     const [divisi_id, set_divisi_id] = useState('');
@@ -232,7 +214,7 @@ export default function PrePayrollCreate() {
         }
         
         DataPayroll({page:1, length:50, search:''});
-    }, []);
+    }, [DataPayroll]);
 
     return (
     <div className="container mx-auto">
