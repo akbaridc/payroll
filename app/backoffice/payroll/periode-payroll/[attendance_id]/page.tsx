@@ -72,10 +72,15 @@ export default function DivisiCreate() {
         const tgl_akhir = new Date(values.attendance_tgl_akhir);
 
         const attendance_thn_awal = tgl_awal.getFullYear(); 
-        const attendance_bln_awal = tgl_awal.getMonth() + 1;
+        const attendance_bln_awal = (tgl_awal.getMonth() + 1) < 10 ? "0"+(tgl_awal.getMonth() + 1): (tgl_awal.getMonth() + 1);
+        const attendance_hari_awal = tgl_awal.getDate() < 10 ? "0"+tgl_awal.getDate() : tgl_awal.getDate();
 
         const attendance_thn_akhir = tgl_akhir.getFullYear(); 
-        const attendance_bln_akhir = tgl_akhir.getMonth() + 1;
+        const attendance_bln_akhir = (tgl_akhir.getMonth() + 1) < 10 ? "0"+(tgl_akhir.getMonth() + 1): (tgl_akhir.getMonth() + 1);
+        const attendance_hari_akhir = tgl_akhir.getDate() < 10 ? "0"+tgl_akhir.getDate() : tgl_akhir.getDate();
+
+        const tgl_awal_new = attendance_thn_awal + "-" + attendance_bln_awal + "-" + attendance_hari_awal;
+        const tgl_akhir_new = attendance_thn_akhir + "-" + attendance_bln_akhir + "-" + attendance_hari_akhir;
 
         const payload = {
                     attendance_id,
@@ -84,10 +89,10 @@ export default function DivisiCreate() {
                     attendance_kode:values.attendance_kode,
                     attendance_thn_awal:attendance_thn_awal,
                     attendance_bln_awal:attendance_bln_awal,
-                    attendance_tgl_awal:values.attendance_tgl_awal,
+                    attendance_tgl_awal:tgl_awal_new,
                     attendance_thn_akhir:attendance_thn_akhir,
                     attendance_bln_akhir:attendance_bln_akhir,
-                    attendance_tgl_akhir:values.attendance_tgl_akhir,
+                    attendance_tgl_akhir:tgl_akhir_new,
                     attendance_who_create:user().name,
                     attendance_tgl_create:new Date(),
                     attendance_who_update:user().name,
@@ -97,6 +102,7 @@ export default function DivisiCreate() {
                     attendance_periode_bln:values.attendance_periode_bln,
                     attendance_periode_thn:values.attendance_periode_thn
         }
+        
         await axios.put(`/api/Attendance/${attendance_id}`, payload)
             .then((response) => {
                 if(response.status == 200){

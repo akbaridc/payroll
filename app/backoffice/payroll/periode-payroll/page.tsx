@@ -3,7 +3,6 @@
 
 import { DataTable } from "@/components/datatable/content";
 import { DataTableColumnHeader } from "@/components/datatable/header";
-import { CirclePlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -12,6 +11,7 @@ import DeleteDialog from "@/components/element/dialog/delete-dialog";
 import {useState} from 'react';
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import { StatusBadge } from "@/components/badge/status";
+import { Pencil, Plus, Trash, ClipboardPaste, CirclePlus, Search } from "lucide-react";
 
 const Attendence = () => {
     const router = useRouter();
@@ -117,10 +117,10 @@ const Attendence = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button type="button" variant="warning" size="sm" onClick={() => router.push(`/backoffice/payroll/periode-payroll/${attendance_id}`)}>
-                            Edit
+                            <Pencil />
                         </Button>
                         <Button type="button" variant="destructive" size="sm" onClick={() => onTriggerDelete(attendance_id)}>
-                            Delete
+                            <Trash />
                         </Button>
                     </div>
                 );

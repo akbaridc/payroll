@@ -18,8 +18,8 @@ export function StatusBadge({ status }: { status: string }) {
         variantBadge = "success";
     }
 
-    if(["L", "A", "C", "I", "S"].includes(status)){
-        statusName = status === "L" ? "Libur" : status === "A" ? "Alpha" : status === "C" ? "Cuti" : status === "I" ? "Izin" : "Sakit";
+    if(["L", "A", "C", "I", "S", "OFF"].includes(status)){
+        statusName = status === "L" ? "Libur" : status === "A" ? "Alpha" : status === "C" ? "Cuti" : status === "I" ? "Izin" : status === "OFF" ? "OFF" : "Sakit";
         variantBadge = "destructive";
     }
 

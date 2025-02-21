@@ -46,8 +46,6 @@ export default function DivisiCreate() {
 
 
     const onSubmit =  async (values: InterfacePeriodePayrollForm) => {
-
-        console.log("tes LOG");
         
         setLoading(true);
 
@@ -57,11 +55,16 @@ export default function DivisiCreate() {
         const tgl_akhir = new Date(values.attendance_tgl_akhir);
 
         const attendance_thn_awal = tgl_awal.getFullYear(); 
-        const attendance_bln_awal = tgl_awal.getMonth() + 1;
+        const attendance_bln_awal = (tgl_awal.getMonth() + 1) < 10 ? "0"+(tgl_awal.getMonth() + 1): (tgl_awal.getMonth() + 1);
+        const attendance_hari_awal = tgl_awal.getDate() < 10 ? "0"+tgl_awal.getDate() : tgl_awal.getDate();
 
         const attendance_thn_akhir = tgl_akhir.getFullYear(); 
-        const attendance_bln_akhir = tgl_akhir.getMonth() + 1;
+        const attendance_bln_akhir = (tgl_akhir.getMonth() + 1) < 10 ? "0"+(tgl_akhir.getMonth() + 1): (tgl_akhir.getMonth() + 1);
+        const attendance_hari_akhir = tgl_akhir.getDate() < 10 ? "0"+tgl_akhir.getDate() : tgl_akhir.getDate();
 
+        const tgl_awal_new = attendance_thn_awal + "-" + attendance_bln_awal + "-" + attendance_hari_awal;
+        const tgl_akhir_new = attendance_thn_akhir + "-" + attendance_bln_akhir + "-" + attendance_hari_akhir;
+        
         const payload = {
                     attendance_id,
                     perusahaan_id:'2C3AFF51-4388-4D30-8C91-2580750960FC',
@@ -69,10 +72,10 @@ export default function DivisiCreate() {
                     attendance_kode:values.attendance_kode,
                     attendance_thn_awal:attendance_thn_awal,
                     attendance_bln_awal:attendance_bln_awal,
-                    attendance_tgl_awal:values.attendance_tgl_awal,
+                    attendance_tgl_awal:tgl_awal_new,
                     attendance_thn_akhir:attendance_thn_akhir,
                     attendance_bln_akhir:attendance_bln_akhir,
-                    attendance_tgl_akhir:values.attendance_tgl_akhir,
+                    attendance_tgl_akhir:tgl_akhir_new,
                     attendance_who_create:user().name,
                     attendance_tgl_create:new Date(),
                     attendance_who_update:user().name,
@@ -109,7 +112,7 @@ export default function DivisiCreate() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="grid grid-cols-1 gap-4">
                             <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
-                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
+                            <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date tes" />
                             <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
                             <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_periode_thn?.message} name="attendance_periode_thn" label="Year Periode" />
                             <ComboboxForm className="custom-field" form={form} name="attendance_periode_bln" label="Month Periode" combobox={Month()} />
