@@ -83,10 +83,13 @@ export default function PrePayrollCreate() {
             const dataBank = response.data.data;
 
             console.log(dataBank);
-        
-            const data_temp = dataBank.map((item: any) => {
-                return { value: item.jenisbank_kode, label: `${item.jenisbank_kode} - ${item.jenisbank_nama}` }
-            });
+
+            const data_temp = [
+                { value: "", label: "Select Bank" },
+                ...dataBank.map((item: any) => {
+                    return { value: item.jenisbank_kode, label: `${item.jenisbank_kode} - ${item.jenisbank_nama}` }
+                }),
+            ];
 
             setBank(data_temp);
         };

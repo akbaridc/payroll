@@ -176,7 +176,7 @@ export function PayrollDetailDialog({ open, setOpen, TransPayrollId, TransPayrol
                                                 <td className="px-4 py-2">{index + 1}</td>
                                                 <td className="px-4 py-2">{item.tunjangan_nama}</td>
                                                 <td className="px-4 py-2">
-                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_multiplier" value={formatCurrency(item.trans_payroll_detail2_multiplier)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} onInput={setFormatCurrency} disabled/>
+                                                    <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_multiplier" value={formatCurrency(item.trans_payroll_detail2_multiplier)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} onInput={setFormatCurrency} />
                                                 </td>
                                                 <td className="px-4 py-2">
                                                     <FormInputField className="w-full p-2 border border-gray-300 rounded" name="trans_payroll_detail2_value" value={formatCurrency(item.trans_payroll_detail2_value)} label="" data-id={item.trans_payroll_detail2_id} onChange={handleInputChange} onInput={setFormatCurrency} />

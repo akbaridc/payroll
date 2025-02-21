@@ -242,7 +242,7 @@ export default function TransPayrollEdit() {
                                 <FormInputField className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_periode_thn" label="Year Periode" disabled/>
                                 <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_periode_bln" label="Month Periode" combobox={Month()} disabled/>
                                 <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_id" label="" />
-                                <FormInputField className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_status" label="" disabled/>
+                                <FormInputField className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_status" label="Status" disabled/>
                             </div>
                             <div className="grid grid-cols-1 gap-4">
                                <DataTable columns={columns} fetchData={ProsesTransPayrollDetail} lengthOption={10} />

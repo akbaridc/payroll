@@ -54,28 +54,32 @@ export function TunjanganDialog({ open, setOpen, dataTabelPayrollDetail, TransPa
 
             setTimeout(() => {
 
-                dataTabelPayrollDetail.push({
-                    karyawan_id:KaryawanId,
-                    trans_payroll_detail2_id:trans_payroll_detail2_id,
-                    trans_payroll_detail_id:TransPayrollDetailId,
-                    trans_payroll_id:TransPayrollId,
-                    tunjangan_id: row.tunjangan_id,
-                    tunjangan_kode: row.tunjangan_kode,
-                    tunjangan_nama: row.tunjangan_nama,
-                    trans_payroll_detail2_multiplier:"1",
-                    trans_payroll_detail2_value:"0",
-                    trans_payroll_detail2_totalvalue:"0",
-                    trans_payroll_detail2_urut:0,
-                    trans_payroll_detail2_autogen:0,
-                    tunjangan_flag_pph:0
-                });
+                if (trans_payroll_detail2_id !== null) {
 
-                console.log(dataTabelPayrollDetail);
-                
+                    dataTabelPayrollDetail.push({
+                        karyawan_id:KaryawanId,
+                        trans_payroll_detail2_id:trans_payroll_detail2_id,
+                        trans_payroll_detail_id:TransPayrollDetailId,
+                        trans_payroll_id:TransPayrollId,
+                        tunjangan_id: row.tunjangan_id,
+                        tunjangan_kode: row.tunjangan_kode,
+                        tunjangan_nama: row.tunjangan_nama,
+                        trans_payroll_detail2_multiplier:"1",
+                        trans_payroll_detail2_value:"0",
+                        trans_payroll_detail2_totalvalue:"0",
+                        trans_payroll_detail2_urut:0,
+                        trans_payroll_detail2_autogen:0,
+                        tunjangan_flag_pph:0
+                    });
 
-                handleClose();
+                    console.log("dataTabelPayrollDetail", dataTabelPayrollDetail);
+                    
+
+                    handleClose();
+
+                }
                 
-            }, 100);
+            }, 1000);
             
         } else {
             setAlertDialog({title: "Warning!",message: "Data already exist in the list", type: "warning"});
