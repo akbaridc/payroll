@@ -15,11 +15,16 @@ import useSWR from "swr";
 import {user} from "@/app/helpers/global-helper";
 import { StatusBadge } from "@/components/badge/status";
 
+import { FileUp} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ImportDataDialog } from "./components/dialog/import-data-dialog";
+
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 const Levels = () => {
     const [attendance, setAttendance] = useState("");
     const [periodePayroll, setPeriodePayroll] = useState([]);
     const [columnData, setColumnData] = useState([]);
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(
@@ -165,18 +170,25 @@ const Levels = () => {
         <>
             <div className="container mx-auto">
                 <h1 className="text-2xl font-bold mb-4">Attendance Time Sheet</h1>
-                <div className="flex gap-2 my-2">
+                <div className="my-2">
                     <Form {...form}>
                         <form className="space-y-8">
-                            <div className="grid grid-cols-1 gap-4">
-                                <ComboboxForm className="custom-field" form={form} name="periode_payroll" label="Month Periode" combobox={periodePayroll} onChange={(value: string) => setAttendance(value)} />
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <ComboboxForm className="custom-field" form={form} name="periode_payroll" label="Month Periode" combobox={periodePayroll} onChange={(value: string) => setAttendance(value)} />
+                                </div>
+                                <div>
+                                    <Button type="button" className="text-foreground" title="Import Data" onClick={() => setIsOpenDialog(true)}>
+                                        <FileUp className="w-48 h-48"/>
+                                    </Button>
+                                </div>
                             </div>
                         </form>
                     </Form>
-                    
                 </div>
                 <DataTable columns={columns} fetchData={fetchAttendanceList} />
             </div>
+            <ImportDataDialog open={isOpenDialog} setOpen={setIsOpenDialog}/>
         </>
     );
 };
