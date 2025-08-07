@@ -14,7 +14,7 @@ import { z } from "zod";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { generateNewID, setErrorRequest, formatCurrency, unformatCurrency } from "@/app/helpers/global-helper";
 import { InterfacePrePayrollForm } from "@/components/element/interface/global-interface";
 import { FormInputField } from "@/components/form/field-input";
@@ -27,18 +27,84 @@ import { user } from "@/app/helpers/global-helper";
 import { Month } from "@/app/resources/static-option-value";
 import useSWR from "swr";
 import Attendence from "../page";
-import { Pencil, Plus, Trash, ClipboardPaste } from "lucide-react";
+import {
+    // Navigasi / Arah
+    Home,
+    Menu,
+    ChevronDown,
+    ChevronUp,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsUpDown,
+    ArrowRight,
+    ArrowLeft,
+  
+    // Tindakan (CRUD)
+    Plus,
+    Minus,
+    Edit,
+    Pencil,
+    Trash,
+    Save,
+    X,
+    Check,
+    ClipboardCopy,
+    ClipboardPaste,
+  
+    // Status / Notifikasi
+    Bell,
+    AlertCircle,
+    Info,
+    HelpCircle,
+    Loader,
+    Circle,
+    CircleCheck,
+    CircleX,
+  
+    // Input & Form
+    Eye,
+    EyeOff,
+    Search,
+    Filter,
+    Upload,
+    Download,
+  
+    // Data & UI
+    Table,
+    List,
+    FileText,
+    Calendar,
+    Clock,
+    Tag,
+    Star,
+  
+    // User & Setting
+    User,
+    Users,
+    Settings,
+    LogOut,
+    Lock,
+    Key,
+  
+    // Icon Khusus (Opsional)
+    Globe,
+    Database,
+    Server,
+    Building2
+  } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { count } from "console";
 import { useForm, useFormContext, useFieldArray } from "react-hook-form";
 import { PayrollDetailDialog } from "../components/dialog/payroll-detail-dialog";
 import { Loading } from "@/components/utils/loading";
+import { log } from "util";
 
 export default function PrePayrollCreate() {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const { setAlertDialog } = useAlertDialog();
     const [Attendance, setAttendance] = useState([]);
+    const [KaryawanDivisi, setKaryawanDivisi] = useState([]);
     const [selectedData, setSelectedData] = useState("");
     const [trans_payroll_id, set_trans_payroll_id] = useState(null);
     const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -48,8 +114,11 @@ export default function PrePayrollCreate() {
     const [TransPayrollDetailId, setTransPayrollDetailId] = useState("");
     const { register, watch } = useForm();
     const [attendance_id, set_attendance_id] = useState('');
+    const [karyawan_divisi_id, set_karyawan_divisi_id] = useState('');
     const [trans_payroll_periode_bln, set_trans_payroll_periode_bln] = useState('');
     const [trans_payroll_periode_thn, set_trans_payroll_periode_thn] = useState('');
+    const [reloadKey, setReloadKey] = useState(0);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const handleTahunChange = (event: any) => {
         set_trans_payroll_periode_thn(event.target.value);
@@ -75,7 +144,8 @@ export default function PrePayrollCreate() {
             trans_payroll_tgl_create:new Date(),
             trans_payroll_who_update:user().name,
             trans_payroll_tgl_update:new Date(),
-            jenis_pajak:''
+            jenis_pajak:'',
+            karyawan_divisi_id:karyawan_divisi_id
         }
 
         console.log(payload);
@@ -106,7 +176,7 @@ export default function PrePayrollCreate() {
             set_trans_payroll_id(new_id);
         };
 
-        const set_attendance_temp = async () => {
+        const set_atributte = async () => {
             const payload_attendance = {
                 perusahaan_id: '2C3AFF51-4388-4D30-8C91-2580750960FC',
                 depo_id: '7B186AAD-1DC8-478B-AEEE-0D2C263510EA'
@@ -125,9 +195,20 @@ export default function PrePayrollCreate() {
             });
 
             setAttendance(tempAttendance);
+
+            const response_karyawan_divisi = await axios.get(`/api/KaryawanDivisiAktif`);
+            const dataKaryawanDivisi = response_karyawan_divisi.data.data;
+
+            console.log("KaryawanDivisiAktif", dataKaryawanDivisi);
+
+            const tempKaryawanDivisi = dataKaryawanDivisi.map((item:any) => {
+                return { value: item.karyawan_divisi_id, label: `${item.karyawan_divisi_nama}`}
+            });
+
+            setKaryawanDivisi(tempKaryawanDivisi);
         };
 
-        set_attendance_temp();
+        set_atributte();
         set_newid();
     }, []);
 
@@ -143,8 +224,9 @@ export default function PrePayrollCreate() {
         tunjangan_flag_pph: number;
     }
 
-    const ProsesTransPayrollDetail = async ({ page, length, search }: any) => {
-        if(selectedData){
+    const ProsesTransPayrollDetail = useCallback(async ({ page, length, search }: any) => {
+
+        if (selectedData) {
             const payload_payroll_detail = {
                 trans_payroll_id:trans_payroll_id,
                 attendance_id:selectedData,
@@ -153,6 +235,8 @@ export default function PrePayrollCreate() {
                 search
             };
  
+            console.log("Sending to API GetPaginateSummaryTransPayrollDetailTemp ...");
+
             const response_payroll_detail = await axios.post("/api/GetPaginateSummaryTransPayrollDetailTemp", payload_payroll_detail);
 
             if (response_payroll_detail.status === 200) {
@@ -162,6 +246,8 @@ export default function PrePayrollCreate() {
                     RowNum: (page - 1) * length + index + 1, // Hitung nomor urut
                 }));
 
+                console.log("success API GetPaginateSummaryTransPayrollDetailTemp ...");
+
                 return {
                     data: dataWithRowNum,
                     total: response_payroll_detail.data.meta.total,
@@ -170,7 +256,8 @@ export default function PrePayrollCreate() {
         }
 
         return { data: [], total: 0 };
-    }
+
+    }, [selectedData, trans_payroll_id]);
 
     const ViewModalPayrollDetail = (trans_payroll_id: string, trans_payroll_detail_id: string, karyawan_id: string, karyawan_nama: string) => {
         setKaryawanId(karyawan_id);
@@ -178,7 +265,7 @@ export default function PrePayrollCreate() {
         setTransPayrollId(trans_payroll_id);
         setTransPayrollDetailId(trans_payroll_detail_id);
 
-        console.log("trans_payroll_id", trans_payroll_id);
+        console.log("trans_payroll_detail_id",trans_payroll_detail_id);
         
     
         setIsOpenDialog(true);
@@ -272,11 +359,12 @@ export default function PrePayrollCreate() {
             z.object({
                 trans_payroll_id: z.string().min(1, "Trans Payroll ID is required"),
                 attendance_id: z.string().min(1, "Periode Payroll is required"),
+                karyawan_divisi_id: z.string().min(1, "Karyawan Divisi is required"),
                 trans_payroll_periode_thn: z.string().min(1, "Year periode is required"),
                 trans_payroll_periode_bln: z.string().min(1, "Month periode is required"),
             }),
         ),
-        defaultValues: {trans_payroll_id:"",attendance_id:"",trans_payroll_periode_thn:"",trans_payroll_periode_bln:""},
+        defaultValues: {trans_payroll_id:"",attendance_id:"",karyawan_divisi_id:"",trans_payroll_periode_thn:"",trans_payroll_periode_bln:""},
     });
 
     const GetAttendance = async (selectedValue: any) => {
@@ -297,62 +385,42 @@ export default function PrePayrollCreate() {
 
         setSelectedData(selectedValue);
 
-        if(attendance_id_new){
-            const payload = {
-                trans_payroll_id:trans_payroll_id,
-                attendance_id:attendance_id_new,
-                pengguna_username:user().name,
-            };
-            
-            const response = await axios.post("/api/ProsesSimpanHasilHitungPayrollTemp", payload);
-
-            console.log(response);
-            
-        }
-
-        return;
-
     };
-    
-    // const onSubmit =  async (values: InterfacePrePayrollForm) => {
+
+    const GetKaryawanDivisiId = async (selectedValue:any) => {
+        set_karyawan_divisi_id(selectedValue)
+    }
+
+    const ProsesPayrollTemp = async (params: any) => {
+        if (isProcessing) return;
+
+        setIsProcessing(true);
+        setLoading(true);
         
-    //     setLoading(true);
+        try {
+            const payload = {
+            trans_payroll_id,
+            attendance_id,
+            karyawan_divisi_id,
+            pengguna_username: user().name,
+            };
 
-    //     console.log("form submit");
+            console.log("Sending to API...");
+            const response = await axios.post("/api/ProsesSimpanHasilHitungPayrollTemp", payload);
+            console.log("API Success", response);
+
+            setTimeout(() => {
+                setReloadKey(prev => prev + 1);
+            }, 500);
+
+        } catch (err) {
+            console.error("API Error", err);
+        } finally {
+            setIsProcessing(false);
+            setLoading(false);
+        }
         
-
-    //     const payload = {
-    //         trans_payroll_id:values.trans_payroll_id,
-    //         perusahaan_id:'2C3AFF51-4388-4D30-8C91-2580750960FC',
-    //         depo_id:'7B186AAD-1DC8-478B-AEEE-0D2C263510EA',
-    //         attendance_id:values.attendance_id,
-    //         trans_payroll_status:'Draft',
-    //         trans_payroll_periode_bln:values.trans_payroll_periode_bln,
-    //         trans_payroll_periode_thn:values.trans_payroll_periode_thn,
-    //         trans_payroll_who_create:user().name,
-    //         trans_payroll_tgl_create:new Date(),
-    //         trans_payroll_who_update:user().name,
-    //         trans_payroll_tgl_update:new Date(),
-    //         jenis_pajak:''
-    //     }
-    //     await axios.post("/api/TransPayroll", payload)
-    //         .then((response) => {
-    //             if(response.status == 200){
-    //                 setAlertDialog({title: "Success!",message: "Create successfully",type: "success"});
-    //                 setLoading(false);
-    //                 router.back();
-    //             }
-    //         })
-    //         .catch(error => {
-    //             const errors = error.response?.data?.data;
-    //             const convertFieldName = {attendance_kode: "code"};
-    //             setErrorRequest(errors, form, convertFieldName);
-
-    //             setAlertDialog({title: "Error!",message: error.response.data?.message || "Something went wrong",type: "error",});
-    //         }).finally(() => {
-    //             setLoading(false);
-    //         });
-    // };
+    }
 
     return (
         <>
@@ -364,18 +432,35 @@ export default function PrePayrollCreate() {
                         {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> */}
                         <form className="space-y-8">
                             <div className="grid grid-cols-1 gap-4">
-                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="attendance_id" label="Periode Payroll" combobox={Attendance} onChange={() => {
-                                    const selectedValue = form.getValues('attendance_id');
-                                    GetAttendance(selectedValue);
-                                }}/>
-                                <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_periode_thn?.message} name="trans_payroll_periode_thn" label="Year Periode" onChange={handleTahunChange} disabled/>
-                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="trans_payroll_periode_bln" label="Month Periode" combobox={Month()} onChange={handleBulanChange} disabled/>
-                                <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_id?.message} name="trans_payroll_id" label="" />
+                                <div className="w-full md:w-1/2">
+                                    <ComboboxForm className="w-full" form={form} name="attendance_id" label="Periode Payroll" combobox={Attendance} onChange={() => {
+                                            const selectedValue = form.getValues('attendance_id');
+                                            GetAttendance(selectedValue);
+                                        }}/>
+                                </div>
+                                <div className="w-full md:w-1/2">
+                                    <FormInputField className="custom-field w-full" form={form} error={form.formState.errors.trans_payroll_periode_thn?.message} name="trans_payroll_periode_thn" label="Year Periode" onChange={handleTahunChange} disabled/>
+                                </div>
+                                <div className="w-full md:w-1/2">
+                                    <ComboboxForm className="custom-field w-full" form={form} name="trans_payroll_periode_bln" label="Month Periode" combobox={Month()} onChange={handleBulanChange} disabled/>
+                                </div>
+                                <div className="w-full md:w-1/2">
+                                    <FormInputField type="hidden" className="custom-field w-full" form={form} error={form.formState.errors.trans_payroll_id?.message} name="trans_payroll_id" label="" />
+                                </div>
+                                <div className="w-full md:w-1/2">
+                                    <ComboboxForm className="custom-field w-full" form={form} name="karyawan_divisi_id" label="Karyawan Divisi" combobox={KaryawanDivisi} onChange={() => {
+                                        const selectedValue = form.getValues('karyawan_divisi_id');
+                                        GetKaryawanDivisiId(selectedValue);
+                                    }}/>
+                                </div>
                                 {/* <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_status?.message} name="trans_payroll_status" label="" />
                                 <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.jenis_pajak?.message} name="jenis_pajak" label="" /> */}
+                                <div className="w-half md:w-1/2">
+                                    <Button type="button" variant="default" size="sm" onClick={ProsesPayrollTemp} disabled={loading || isProcessing}>Proses</Button>
+                                </div>
                             </div>
                             <div className="grid grid-cols-1 gap-4">
-                                <DataTable columns={columns} fetchData={ProsesTransPayrollDetail} lengthOption={5} />
+                                <DataTable key={reloadKey} columns={columns} fetchData={ProsesTransPayrollDetail} lengthOption={10} />
                             </div>
                             <div className="flex gap-2">
                                 <Button type="button" variant="destructive" size="sm" onClick={() => router.back()}>Back</Button>
@@ -385,7 +470,10 @@ export default function PrePayrollCreate() {
                         </form>
                     </Form>
                 </div>
-                <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={TransPayrollId} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
+
+                {isOpenDialog && (           
+                    <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={TransPayrollId} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
+                )}
             </div>
         </>
     );

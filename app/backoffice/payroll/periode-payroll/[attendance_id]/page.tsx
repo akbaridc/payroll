@@ -72,6 +72,8 @@ export default function DivisiCreate() {
         const tgl_awal = new Date(values.attendance_tgl_awal);
         const tgl_akhir = new Date(values.attendance_tgl_akhir);
 
+        const selisihHari = (tgl_akhir - tgl_awal) / (1000 * 60 * 60 * 24) + 1;
+
         const attendance_thn_awal = tgl_awal.getFullYear(); 
         const attendance_bln_awal = (tgl_awal.getMonth() + 1) < 10 ? "0"+(tgl_awal.getMonth() + 1): (tgl_awal.getMonth() + 1);
         const attendance_hari_awal = tgl_awal.getDate() < 10 ? "0"+tgl_awal.getDate() : tgl_awal.getDate();
@@ -82,6 +84,12 @@ export default function DivisiCreate() {
 
         const tgl_awal_new = attendance_thn_awal + "-" + attendance_bln_awal + "-" + attendance_hari_awal;
         const tgl_akhir_new = attendance_thn_akhir + "-" + attendance_bln_akhir + "-" + attendance_hari_akhir;
+
+        if(selisihHari > 31){
+            setAlertDialog({title: "Error!",message: "The periode must be less than or equal to 31 days.",type: "error"});
+            setLoading(false);
+            return;
+        }
 
         const payload = {
                     attendance_id,
