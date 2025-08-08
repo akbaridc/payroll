@@ -99,18 +99,19 @@ import { PayrollDetailDialog } from "../components/dialog/payroll-detail-dialog"
 import { Loading } from "@/components/utils/loading";
 import { log } from "util";
 
+const NProgress = require("nprogress");
+import "nprogress/nprogress.css";
+
 export default function PrePayrollCreate() {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const { setAlertDialog } = useAlertDialog();
     const [Attendance, setAttendance] = useState([]);
     const [KaryawanDivisi, setKaryawanDivisi] = useState([]);
-    const [selectedData, setSelectedData] = useState("");
-    const [trans_payroll_id, set_trans_payroll_id] = useState(null);
+    const [trans_payroll_id, set_trans_payroll_id] = useState("");
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [KaryawanId, setKaryawanId] = useState("");
     const [KaryawanNama, setKaryawanNama] = useState("");
-    const [TransPayrollId, setTransPayrollId] = useState("");
     const [TransPayrollDetailId, setTransPayrollDetailId] = useState("");
     const { register, watch } = useForm();
     const [attendance_id, set_attendance_id] = useState('');
@@ -128,6 +129,11 @@ export default function PrePayrollCreate() {
     const handleBulanChange = (event: any) => {
         set_trans_payroll_periode_bln(event.target.value);
     };
+    
+
+    const GetKaryawanDivisiId = async (selectedValue:any) => {
+        set_karyawan_divisi_id(selectedValue)
+    }
 
     const handleSave = async ()=>{
         setLoading(true);
@@ -169,100 +175,128 @@ export default function PrePayrollCreate() {
             });   
     }
 
-
-    useEffect(() => {
-        const set_newid = async () => {
+    const set_newid = async (): Promise<string> => {
+        try {
             const new_id = await generateNewID();
-            set_trans_payroll_id(new_id);
-        };
+            return new_id ?? ""; // fallback jika null
+        } catch {
+            return "";
+        }
+    };
 
-        const set_atributte = async () => {
+    const getKaryawanDivisi = async () => {
+        try {
+            const res = await axios.get(`/api/KaryawanDivisiAktif`);
+            return res.data.data.map((item: any) => ({
+                value: item.karyawan_divisi_id,
+                label: `${item.karyawan_divisi_nama}`,
+            }));
+        } catch {
+            return [];
+        }
+    };
+
+    const getAttendance = async () => {
+        try {
             const payload_attendance = {
                 perusahaan_id: '2C3AFF51-4388-4D30-8C91-2580750960FC',
                 depo_id: '7B186AAD-1DC8-478B-AEEE-0D2C263510EA'
             };
 
-            const response_attendance = await axios.get(`/api/GetPeriodePayrollByPerusahaan`, {
+            const res = await axios.get(`/api/GetPeriodePayrollByPerusahaan`, {
                 params: payload_attendance
             });
-            const dataPeriodePayroll = response_attendance.data.data;
 
-            console.log(response_attendance);
-            
-            
-            const tempAttendance = dataPeriodePayroll.map((item: any) => {
-                return { value: item.attendance_id, label: `${item.attendance_kode}` }
-            });
+            return res.data.data.map((item: any) => ({
+                value: item.attendance_id,
+                label: `${item.attendance_kode}`,
+            }));
+        } catch {
+            return [];
+        }
+    };
 
-            setAttendance(tempAttendance);
+    useEffect(() => {
+        (async () => {
+          NProgress.start(); // mulai progress bar
+    
+          const attendanceData = await getAttendance();
+          const divisiData = await getKaryawanDivisi();
+          const NewID = await set_newid();
+    
+          setKaryawanDivisi(divisiData);
+          setAttendance(attendanceData);
+          set_trans_payroll_id(NewID);
 
-            const response_karyawan_divisi = await axios.get(`/api/KaryawanDivisiAktif`);
-            const dataKaryawanDivisi = response_karyawan_divisi.data.data;
+          console.log("attendanceData",attendanceData);
+          console.log("divisiData",divisiData);
 
-            console.log("KaryawanDivisiAktif", dataKaryawanDivisi);
-
-            const tempKaryawanDivisi = dataKaryawanDivisi.map((item:any) => {
-                return { value: item.karyawan_divisi_id, label: `${item.karyawan_divisi_nama}`}
-            });
-
-            setKaryawanDivisi(tempKaryawanDivisi);
-        };
-
-        set_atributte();
-        set_newid();
+          setLoading(false);
+          NProgress.done(); // hentikan progress bar
+        })();
     }, []);
 
-    interface PayrollDetail {
-        karyawan_id: string;
-        tunjangan_id: string;
-        tunjangan_kode: string;
-        tunjangan_nama: string;
-        trans_payroll_detail2_multiplier: number;
-        trans_payroll_detail2_value: number;
-        trans_payroll_detail2_totalvalue: number;
-        trans_payroll_detail2_autogen: number;
-        tunjangan_flag_pph: number;
-    }
+    const ProsesTransPayrollDetail = useCallback(
+        async ({ page, length, search }: any) => {
+        try {
+            NProgress.start(); // progress saat load tabel
 
-    const ProsesTransPayrollDetail = useCallback(async ({ page, length, search }: any) => {
+            if(trans_payroll_id !== "" && attendance_id !== ""){
+                const payload = { trans_payroll_id, attendance_id: attendance_id, size: length, page, search };
+                const res = await axios.post("/api/GetPaginateSummaryTransPayrollDetailTemp", payload);
 
-        if (selectedData) {
-            const payload_payroll_detail = {
-                trans_payroll_id:trans_payroll_id,
-                attendance_id:selectedData,
-                size:length,
-                page,
-                search
-            };
- 
-            console.log("Sending to API GetPaginateSummaryTransPayrollDetailTemp ...");
-
-            const response_payroll_detail = await axios.post("/api/GetPaginateSummaryTransPayrollDetailTemp", payload_payroll_detail);
-
-            if (response_payroll_detail.status === 200) {
-                // Tambahkan RowNum ke setiap item dalam data
-                const dataWithRowNum = response_payroll_detail.data.data.map((item: any, index: number) => ({
+                if (res.status === 200) {
+                    const dataWithRowNum = res.data.data.map((item: any, index: number) => ({
                     ...item,
-                    RowNum: (page - 1) * length + index + 1, // Hitung nomor urut
+                    RowNum: (page - 1) * length + index + 1,
                 }));
+                    return { data: dataWithRowNum, total: res.data.meta.total };
+                }
 
-                console.log("success API GetPaginateSummaryTransPayrollDetailTemp ...");
-
-                return {
-                    data: dataWithRowNum,
-                    total: response_payroll_detail.data.meta.total,
-                };
+            }else{
+                return { data: [], total: 0 };
             }
+        } finally {
+            NProgress.done();
         }
+            return { data: [], total: 0 };
+        },
+        [attendance_id, trans_payroll_id]
+    );
 
-        return { data: [], total: 0 };
-
-    }, [selectedData, trans_payroll_id]);
+    const columns = [
+        { accessorKey: "RowNum", alias: "No", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="No" /> },
+        { accessorKey: "karyawan_nama", alias: "Employee", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="Employee" /> },
+        { accessorKey: "divisi", alias: "Divisi", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="Divisi" /> },
+        { accessorKey: "karyawan_level_nama", alias: "Level", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="Level" /> },
+        {
+        accessorKey: "penghasilanbruto",
+        alias: "Nett Amount",
+        size: 150,
+        header: ({ column }: any) => <DataTableColumnHeader column={column} title="Nett Amount" />,
+        cell: ({ row }: any) => formatCurrency(row.original.penghasilanbruto),
+        },
+        { accessorKey: "trans_payroll_detail_keterangan", alias: "Remark", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="Remark" /> },
+        { accessorKey: "trans_payroll_status", alias: "Status", size: 150, header: ({ column }: any) => <DataTableColumnHeader column={column} title="Status" /> },
+        {
+        id: "actions",
+        alias: "Actions",
+        header: "Actions",
+        size: 70,
+        cell: ({ row }: any) => (
+            <div className="flex space-x-2">
+            <Button type="button" variant="warning" size="sm" onClick={() => ViewModalPayrollDetail(row.original.trans_payroll_id, row.original.trans_payroll_detail_id, row.original.karyawan_id, row.original.karyawan_nama)}>
+                <Pencil className="h-4 w-4" />
+            </Button>
+            </div>
+        ),
+        },
+    ];
 
     const ViewModalPayrollDetail = (trans_payroll_id: string, trans_payroll_detail_id: string, karyawan_id: string, karyawan_nama: string) => {
         setKaryawanId(karyawan_id);
         setKaryawanNama(karyawan_nama);
-        setTransPayrollId(trans_payroll_id);
+        set_trans_payroll_id(trans_payroll_id);
         setTransPayrollDetailId(trans_payroll_detail_id);
 
         console.log("trans_payroll_detail_id",trans_payroll_detail_id);
@@ -270,89 +304,6 @@ export default function PrePayrollCreate() {
     
         setIsOpenDialog(true);
     }
-
-    const columns = [
-        {
-            accessorKey: "RowNum",
-            alias: "No",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="No" />
-            ),
-        },
-        {
-            accessorKey: "karyawan_nama",
-            alias: "Employee",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Employee" />
-            ),
-        },
-        {
-            accessorKey: "divisi",
-            alias: "Divisi",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Divisi" />
-            ),
-        },
-        {
-            accessorKey: "karyawan_level_nama",
-            alias: "Level",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Level" />
-            ),
-        },
-        {
-            accessorKey: "penghasilanbruto",
-            alias: "Nett Amount",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Nett Amount" />
-            ),
-            cell: ({ row }: { row: any }) => {
-                const penghasilanbruto = row.original.penghasilanbruto;
-                return formatCurrency(penghasilanbruto);
-            },
-        },
-        {
-            accessorKey: "trans_payroll_detail_keterangan",
-            alias: "Remark",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Remark" />
-            ),
-        },
-        {
-            accessorKey: "trans_payroll_status",
-            alias: "Status",
-            size: 150,
-            header: ({ column }: { column: any }) => (
-                <DataTableColumnHeader column={column} title="Status" />
-            ),
-        },
-        {
-            id: "actions",
-            alias: "Actions",
-            header: "Actions",
-            size: 70,
-            cell: ({ row }: { row: any }) => {
-                const trans_payroll_id = row.original.trans_payroll_id;
-                const trans_payroll_detail_id = row.original.trans_payroll_detail_id;
-                const karyawan_id = row.original.karyawan_id;
-                const karyawan_nama = row.original.karyawan_nama;
-                return (
-                    <div className="flex space-x-2">
-                        <Button type="button" variant="warning" size="sm"
-                         onClick={() => ViewModalPayrollDetail(trans_payroll_id, trans_payroll_detail_id, karyawan_id, karyawan_nama)}>
-                            <Pencil className="h-4 w-4" />
-                        </Button>
-                    </div>
-                );
-            },
-        },
-    ];
 
     const form = useForm({
         resolver: zodResolver(
@@ -367,7 +318,7 @@ export default function PrePayrollCreate() {
         defaultValues: {trans_payroll_id:"",attendance_id:"",karyawan_divisi_id:"",trans_payroll_periode_thn:"",trans_payroll_periode_bln:""},
     });
 
-    const GetAttendance = async (selectedValue: any) => {
+    const GetSelectedAttendance = async (selectedValue: any) => {
         const attendance_id_new = selectedValue;
 
         // Jalankan API ketika nilai combo box berubah
@@ -383,13 +334,10 @@ export default function PrePayrollCreate() {
             form.setValue("trans_payroll_periode_bln", dataPeriodePayroll.data.attendance_periode_bln);
         }
 
-        setSelectedData(selectedValue);
+        console.log("attendance_id_new",attendance_id_new);
+        
 
     };
-
-    const GetKaryawanDivisiId = async (selectedValue:any) => {
-        set_karyawan_divisi_id(selectedValue)
-    }
 
     const ProsesPayrollTemp = async (params: any) => {
         if (isProcessing) return;
@@ -435,7 +383,7 @@ export default function PrePayrollCreate() {
                                 <div className="w-full md:w-1/2">
                                     <ComboboxForm className="w-full" form={form} name="attendance_id" label="Periode Payroll" combobox={Attendance} onChange={() => {
                                             const selectedValue = form.getValues('attendance_id');
-                                            GetAttendance(selectedValue);
+                                            GetSelectedAttendance(selectedValue);
                                         }}/>
                                 </div>
                                 <div className="w-full md:w-1/2">
@@ -472,7 +420,7 @@ export default function PrePayrollCreate() {
                 </div>
 
                 {isOpenDialog && (           
-                    <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={TransPayrollId} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
+                    <PayrollDetailDialog open={isOpenDialog} setOpen={setIsOpenDialog} TransPayrollId={trans_payroll_id} TransPayrollDetailId={TransPayrollDetailId} KaryawanId={KaryawanId} KaryawanNama={KaryawanNama} />
                 )}
             </div>
         </>

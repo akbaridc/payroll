@@ -164,3 +164,16 @@ body {
     0%,30% {rotate:  0deg}
     70%,to {rotate: 90deg}
 }
+
+/* Progress bar warna biru */
+#nprogress .bar {
+  background: #3b82f6 !important;
+  height: 3px;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6;
+}
+#nprogress .spinner-icon {
+  border-top-color: #3b82f6;
+  border-left-color: #3b82f6;
+}
