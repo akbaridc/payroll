@@ -13,7 +13,7 @@ import { z } from "zod";
 import { useAlertDialog } from "@/components/element/context/alert-dialog-context";
 import axios from "@/lib/axios";
 import { useRouter } from 'next/navigation'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { generateNewID, setErrorRequest } from "@/app/helpers/global-helper";
 import { InterfacePeriodePayrollForm } from "@/components/element/interface/global-interface";
 import { FormInputField } from "@/components/form/field-input";
@@ -26,10 +26,15 @@ import { Month } from "@/app/resources/static-option-value";
 import { user } from "@/app/helpers/global-helper";
 import { Loading } from "@/components/utils/loading";
 
+const NProgress = require("nprogress");
+import "nprogress/nprogress.css";
+
 export default function DivisiCreate() {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const { setAlertDialog } = useAlertDialog();
+    const [karyawan_divisi_id, set_karyawan_divisi_id] = useState('');
+    const [KaryawanDivisi, setKaryawanDivisi] = useState([]);
 
     const form = useForm({
         resolver: zodResolver(
@@ -39,12 +44,42 @@ export default function DivisiCreate() {
                 attendance_tgl_akhir: z.date({ required_error: "End date is required" }),
                 attendance_periode_thn: z.string().min(1, "Year periode is required"),
                 attendance_periode_bln: z.string().min(1, "Month periode is required"),
+                karyawan_divisi_id: z.string().min(1, "Karyawan divisi is required"),
                 attendance_is_aktif: z.boolean().default(true),
             }),
         ),
-        defaultValues: {attendance_kode:"",attendance_tgl_awal:"",attendance_tgl_akhir:"",attendance_periode_thn:"",attendance_periode_bln:"",attendance_is_aktif:true},
+        defaultValues: {attendance_kode:"",attendance_tgl_awal:"",attendance_tgl_akhir:"",attendance_periode_thn:"",attendance_periode_bln:"",karyawan_divisi_id:"",attendance_is_aktif:true},
     });
 
+    const GetKaryawanDivisiId = async (selectedValue:any) => {
+        set_karyawan_divisi_id(selectedValue)
+    }
+
+    const getKaryawanDivisi = async () => {
+        try {
+            const res = await axios.get(`/api/KaryawanDivisiAktif`);
+            return res.data.data.map((item: any) => ({
+                value: item.karyawan_divisi_id,
+                label: `${item.karyawan_divisi_nama}`,
+            }));
+        } catch {
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+          NProgress.start(); // mulai progress bar
+
+          const divisiData = await getKaryawanDivisi();
+          
+          setKaryawanDivisi(divisiData);
+          console.log("divisiData",divisiData);
+
+          setLoading(false);
+          NProgress.done(); // hentikan progress bar
+        })();
+    }, []);
 
     const onSubmit =  async (values: InterfacePeriodePayrollForm) => {
         
@@ -92,7 +127,8 @@ export default function DivisiCreate() {
                     attendance_is_aktif:values.attendance_is_aktif ? 1 : 0,
                     attendance_is_generate_pph21:0,
                     attendance_periode_bln:values.attendance_periode_bln,
-                    attendance_periode_thn:values.attendance_periode_thn
+                    attendance_periode_thn:values.attendance_periode_thn,
+                    karyawan_divisi_id:karyawan_divisi_id,
         }
         await axios.post("/api/Attendance", payload)
             .then((response) => {
@@ -122,6 +158,10 @@ export default function DivisiCreate() {
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <div className="grid grid-cols-1 gap-4">
+                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="karyawan_divisi_id" label="Karyawan Divisi" combobox={KaryawanDivisi} onChange={() => {
+                                        const selectedValue = form.getValues('karyawan_divisi_id');
+                                        GetKaryawanDivisiId(selectedValue);
+                                }}/>
                                 <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
                                 <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
                                 <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />

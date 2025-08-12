@@ -48,6 +48,14 @@ const Attendence = () => {
             ),
         },
         {
+            accessorKey: "karyawan_divisi_nama",
+            alias: "Division",
+            size: 150,
+            header: ({ column }: { column: any }) => (
+                <DataTableColumnHeader column={column} title="Division" />
+            ),
+        },
+        {
             accessorKey: "attendance_thn_awal",
             alias: "First Year",
             size: 150,

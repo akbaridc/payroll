@@ -328,13 +328,16 @@ export default function PrePayrollCreate() {
         set_attendance_id(attendance_id_new);
         set_trans_payroll_periode_thn(dataPeriodePayroll.data.attendance_periode_thn);
         set_trans_payroll_periode_bln(dataPeriodePayroll.data.attendance_periode_bln);
+        set_karyawan_divisi_id(dataPeriodePayroll.data.karyawan_divisi_id);
         
         if (dataPeriodePayroll) {
             form.setValue("trans_payroll_periode_thn", dataPeriodePayroll.data.attendance_periode_thn);
             form.setValue("trans_payroll_periode_bln", dataPeriodePayroll.data.attendance_periode_bln);
+            form.setValue("karyawan_divisi_id", dataPeriodePayroll.data.karyawan_divisi_id);
         }
 
         console.log("attendance_id_new",attendance_id_new);
+        console.log("dataPeriodePayroll",dataPeriodePayroll);
         
 
     };
@@ -399,7 +402,7 @@ export default function PrePayrollCreate() {
                                     <ComboboxForm className="custom-field w-full" form={form} name="karyawan_divisi_id" label="Karyawan Divisi" combobox={KaryawanDivisi} onChange={() => {
                                         const selectedValue = form.getValues('karyawan_divisi_id');
                                         GetKaryawanDivisiId(selectedValue);
-                                    }}/>
+                                    }} disabled/>
                                 </div>
                                 {/* <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.trans_payroll_status?.message} name="trans_payroll_status" label="" />
                                 <FormInputField type="hidden" className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.jenis_pajak?.message} name="jenis_pajak" label="" /> */}

@@ -27,12 +27,17 @@ import { Month } from "@/app/resources/static-option-value";
 import { user } from "@/app/helpers/global-helper";
 import { Loading } from "@/components/utils/loading";
 
+const NProgress = require("nprogress");
+import "nprogress/nprogress.css";
+
 const fetcher = (url: string) => axios.get(url).then((res) => res.data.data);
 export default function DivisiCreate() {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const { setAlertDialog } = useAlertDialog();
     const { attendance_id } = useParams();
+    const [karyawan_divisi_id, set_karyawan_divisi_id] = useState('');
+    const [KaryawanDivisi, setKaryawanDivisi] = useState([]);
 
     const { data } = useSWR(
         attendance_id ? `/api/Attendance/${attendance_id}` : null,
@@ -47,21 +52,57 @@ export default function DivisiCreate() {
                 attendance_tgl_akhir: z.date({ required_error: "End date is required" }),
                 attendance_periode_thn: z.string().min(1, "Year periode is required"),
                 attendance_periode_bln: z.string().min(1, "Month periode is required"),
+                karyawan_divisi_id: z.string().min(1, "Karyawan divisi is required"),
                 attendance_is_aktif: z.boolean().default(true),
             }),
         ),
-        defaultValues: {attendance_kode:"",attendance_tgl_awal:"",attendance_tgl_akhir:"",attendance_periode_thn:"",attendance_periode_bln:"",attendance_is_aktif:true},
+        defaultValues: {attendance_kode:"",attendance_tgl_awal:"",attendance_tgl_akhir:"",attendance_periode_thn:"",attendance_periode_bln:"",karyawan_divisi_id:"",attendance_is_aktif:true},
     });
 
+    const GetKaryawanDivisiId = async (selectedValue:any) => {
+        set_karyawan_divisi_id(selectedValue)
+    }
+
+    const getKaryawanDivisi = async () => {
+        try {
+            const res = await axios.get(`/api/KaryawanDivisiAktif`);
+            console.log(res);
+            
+            return res.data.data.map((item: any) => ({
+                value: item.karyawan_divisi_id,
+                label: `${item.karyawan_divisi_nama}`,
+            }));
+        } catch {
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+          NProgress.start(); // mulai progress bar
+
+          const divisiData = await getKaryawanDivisi();
+          
+          setKaryawanDivisi(divisiData);
+          console.log("divisiData",divisiData);
+
+          setLoading(false);
+          NProgress.done(); // hentikan progress bar
+        })();
+    }, []);
+
      useEffect(() => {
+        
         if (data) {
             form.setValue("attendance_kode", data.attendance_kode);
             form.setValue("attendance_tgl_awal", data.attendance_tgl_awal);
             form.setValue("attendance_tgl_akhir", data.attendance_tgl_akhir);
             form.setValue("attendance_periode_thn", data.attendance_periode_thn);
             form.setValue("attendance_periode_bln", data.attendance_periode_bln);
+            form.setValue("karyawan_divisi_id", data.karyawan_divisi_id);
             form.setValue("attendance_is_aktif", data.attendance_is_aktif == 1 ? true : false);
-        }
+                
+        } 
     }, [data, form]);
 
 
@@ -109,7 +150,8 @@ export default function DivisiCreate() {
                     attendance_is_aktif:values.attendance_is_aktif ? 1 : 0,
                     attendance_is_generate_pph21:0,
                     attendance_periode_bln:values.attendance_periode_bln,
-                    attendance_periode_thn:values.attendance_periode_thn
+                    attendance_periode_thn:values.attendance_periode_thn,
+                    karyawan_divisi_id:karyawan_divisi_id
         }
         
         await axios.put(`/api/Attendance/${attendance_id}`, payload)
@@ -140,6 +182,10 @@ export default function DivisiCreate() {
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <div className="grid grid-cols-1 gap-4">
+                                <ComboboxForm className="custom-field w-full md:w-1/2" form={form} name="karyawan_divisi_id" label="Karyawan Divisi" combobox={KaryawanDivisi} onChange={() => {
+                                    const selectedValue = form.getValues('karyawan_divisi_id');
+                                    GetKaryawanDivisiId(selectedValue);
+                                }}/>
                                 <FormInputField className="custom-field w-full md:w-1/2" form={form} error={form.formState.errors.attendance_kode?.message} name="attendance_kode" label="Periode Payroll Code"/>
                                 <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_awal" label="First Date" />
                                 <FormInputFieldDate className="custom-field w-1/2" form={form} name="attendance_tgl_akhir" label="End Date" />
